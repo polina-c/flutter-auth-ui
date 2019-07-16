@@ -33,7 +33,7 @@ So, you need to take co-development dependency:
 1. Clone **fa** into it:
 ```
 cd lib/external
-git clone https://github.com/pcherkasova/flutter_auth.git
+git clone https://github.com/pcherkasova/fa.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
@@ -66,8 +66,8 @@ if (fa.User == null) {
 
 Packages to import:
 ```
-import 'package:job_chat.ui/external/fa/lib/flutter_auth.dart';
-import 'package:job_chat.ui/external/fa/lib/flutter_auth_model.dart';
+import 'package:job_chat.ui/external/fa/lib/fa.dart';
+import 'package:job_chat.ui/external/fa/lib/fa_model.dart';
 ```
 
 
