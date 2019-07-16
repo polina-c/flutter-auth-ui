@@ -4,8 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 
-import 'FaUser.dart';
 import 'FaUtil.dart';
+import 'flutter_auth_model.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
 

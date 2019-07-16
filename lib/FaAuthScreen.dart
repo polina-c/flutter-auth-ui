@@ -2,19 +2,20 @@ import 'package:flutter_web/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'FaAuthState.dart';
-import 'FaConfig.dart';
 import 'FaConnector.dart';
-import 'FaUser.dart';
+import 'flutter_auth_model.dart';
 
 var uuid = new Uuid();
 
 class FaAuthScreen extends StatefulWidget {
   final VoidCallback onSuccess;
   final VoidCallback onCancel;
+  final String firebaseApiKey;
 
   FaAuthScreen(
       {@required VoidCallback this.onSuccess,
-      @required VoidCallback this.onCancel});
+      @required VoidCallback this.onCancel,
+      @required String this.firebaseApiKey});
 
   @override
   _FaAuthScreenState createState() => _FaAuthScreenState();
@@ -96,13 +97,13 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
             onPressed: () async {
               try {
                 await FaConnector.registerUser(
-                  apiKey: FaConfig.FirebaseApiKey,
+                  apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: uuid.v4(),
                 );
 
                 await FaConnector.sendResetLink(
-                  apiKey: FaConfig.FirebaseApiKey,
+                  apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                 );
 
@@ -159,7 +160,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
             onPressed: () async {
               try {
                 FaUser user = await FaConnector.signInUser(
-                  apiKey: FaConfig.FirebaseApiKey,
+                  apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: passwordController.text,
                 );
@@ -185,7 +186,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
             child: Text('Forgot Password?'),
             onPressed: () {
               FaConnector.sendResetLink(
-                apiKey: FaConfig.FirebaseApiKey,
+                apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
               );
               this.switchScreen(
