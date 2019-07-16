@@ -71,9 +71,9 @@ import 'package:job_chat.ui/external/fa/lib/fa_model.dart';
 ```
 
 
-To get user email call `fa.User.email`. 
+Get user email: `fa.User.email`. 
 
-Sign out by calling `fa.SignOut()`.
+Sign out: `fa.SignOut()`.
  
 
 
