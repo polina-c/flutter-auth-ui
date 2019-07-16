@@ -37,6 +37,18 @@ git clone https://github.com/pcherkasova/flutter_auth.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
+4. Make sure your project references needed packages in pubspec.yaml:
+```
+dependencies:
+  ...
+  http: ^0.12.0+2
+  uuid: 2.0.1
+
+dev_dependencies:
+  ...
+  test: any
+```
+
 ### Update Code
 
 In the beginning of the method `build` of the widget that requires 

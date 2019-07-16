@@ -72,8 +72,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
   }
 
   Widget _buildCreateAccountScreen(BuildContext context) {
-    final TextEditingController emailController =
-        new TextEditingController(text: "polina.c@live.com");
+    final TextEditingController emailController = new TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
@@ -130,10 +129,9 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
   }
 
   Widget _buildSignInScreen(BuildContext context) {
-    final TextEditingController emailController =
-        new TextEditingController(text: "polina.c@live.com");
+    final TextEditingController emailController = new TextEditingController();
     final TextEditingController passwordController =
-        new TextEditingController(text: "Ffbb12345");
+        new TextEditingController();
 
     return Scaffold(
       appBar: AppBar(
