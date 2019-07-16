@@ -110,11 +110,9 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
 
                 this.switchScreen(AuthScreen.verifyEmail, emailController.text);
               } catch (e) {
-                print("Error creating account: ");
-                print(e);
                 this.setState(() {
-                  this._error =
-                      "Error creating account. See details in console.";
+                  this._error = FaExceptionAnalyser.ToUiMessage(e);
+                  this._email = emailController.text;
                 });
               }
             },
@@ -211,7 +209,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
         children: <Widget>[
           Text("We sent verification link to $email"),
           FlatButton(
-            child: Text('Sign in.'),
+            child: Text('Sign In'),
             onPressed: () {
               this.switchScreen(AuthScreen.signIn, email);
             },
@@ -231,7 +229,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
         children: <Widget>[
           Text("We sent password reset instructions to $email"),
           FlatButton(
-            child: Text('Sign in.'),
+            child: Text('Sign In'),
             onPressed: () {
               this.switchScreen(AuthScreen.signIn, email);
             },

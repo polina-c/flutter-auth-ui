@@ -13,6 +13,8 @@ class FaExceptionAnalyser {
         return "Invalid EMail.";
       if (exception.message.contains(FbException.InvalidPasswordCode))
         return "Invalid password.";
+      if (exception.message.contains(FbException.EmailExistsCode))
+        return "This email is already registered.";
     }
     print(exception);
     return "Unexpected error. Check console for details.";
