@@ -1,7 +1,8 @@
-import 'package:flutter_auth/FaConnector.dart';
-import 'package:flutter_auth/FaUser.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
+
+import '../lib/FaConnector.dart';
+import '../lib/FaUser.dart';
 
 final uuid = new Uuid();
 final apiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";

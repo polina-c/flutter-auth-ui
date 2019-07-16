@@ -1,9 +1,10 @@
-import 'package:flutter_auth/FaAuthState.dart';
-import 'package:flutter_auth/FaConfig.dart';
-import 'package:flutter_auth/FaConnector.dart';
-import 'package:flutter_auth/FaUser.dart';
 import 'package:flutter_web/material.dart';
 import 'package:uuid/uuid.dart';
+
+import 'FaAuthState.dart';
+import 'FaConfig.dart';
+import 'FaConnector.dart';
+import 'FaUser.dart';
 
 var uuid = new Uuid();
 

@@ -1,10 +1,11 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:flutter_auth/FaUser.dart';
-import 'package:flutter_auth/FaUtil.dart';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+
+import 'FaUser.dart';
+import 'FaUtil.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
 
