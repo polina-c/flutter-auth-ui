@@ -1,8 +1,8 @@
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
-import '../lib/FaConnector.dart';
-import '../lib/flutter_auth_model.dart';
+import '../lib/FbConnector.dart';
+import '../lib/fa_model.dart';
 
 final uuid = new Uuid();
 final apiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
@@ -12,29 +12,29 @@ void main() {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FaUser user = await FaConnector.registerUser(
+    FaUser user = await FbConnector.registerUser(
         apiKey: apiKey, email: email, password: id);
-    user = await FaConnector.signInUser(
+    user = await FbConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
-    await FaConnector.sendResetLink(apiKey: apiKey, email: email);
-    await FaConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
-    await FaConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
+    await FbConnector.sendResetLink(apiKey: apiKey, email: email);
+    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
+    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
   });
 
   test('Register fails if user exists', () async {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FaUser user = await FaConnector.registerUser(
+    FaUser user = await FbConnector.registerUser(
         apiKey: apiKey, email: email, password: id);
 
     try {
-      await FaConnector.registerUser(
+      await FbConnector.registerUser(
           apiKey: apiKey, email: email, password: id);
     } on Exception catch (exception) {
       expect(exception.toString().contains("EMAIL_EXISTS"), true);
     }
 
-    await FaConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
+    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
   });
 }

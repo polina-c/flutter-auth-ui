@@ -2,7 +2,7 @@ import 'package:flutter_web/material.dart';
 
 import 'FaAuthScreen.dart';
 import 'FaAuthState.dart';
-import 'flutter_auth_model.dart';
+import 'fa_model.dart';
 
 class fa {
   static FaUser get User {

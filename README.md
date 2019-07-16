@@ -1,5 +1,5 @@
-# flutterAuth
-**flutter_auth** is an authentication library for flutter web applications. 
+# fa
+**fa** is an authentication library for flutter web applications. 
 Uses Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ) to sign in with email and password.
 The library rovides UI to register user, validate email, sign in, sign out, restore password.
@@ -30,7 +30,7 @@ So, you need to take co-development dependency:
 1. Create folder 'external' under your 'lib'
 
 
-1. Clone flutter_auth into it:
+1. Clone **fa** into it:
 ```
 cd lib/external
 git clone https://github.com/pcherkasova/flutter_auth.git
@@ -66,8 +66,8 @@ if (fa.User == null) {
 
 Packages to import:
 ```
-import 'package:job_chat.ui/external/flutter_auth/lib/flutter_auth.dart';
-import 'package:job_chat.ui/external/flutter_auth/lib/flutter_auth_model.dart';
+import 'package:job_chat.ui/external/fa/lib/flutter_auth.dart';
+import 'package:job_chat.ui/external/fa/lib/flutter_auth_model.dart';
 ```
 
 

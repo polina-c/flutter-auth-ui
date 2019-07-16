@@ -7,7 +7,7 @@ class FaUtil {
       throw "$name should not be null";
     }
     if (value.isEmpty) {
-      throw "$name should not be empry";
+      throw "$name should not be empty";
     }
   }
 }

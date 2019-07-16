@@ -2,8 +2,9 @@ import 'package:flutter_web/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'FaAuthState.dart';
-import 'FaConnector.dart';
-import 'flutter_auth_model.dart';
+import 'FaExceptionAnalyser.dart';
+import 'FbConnector.dart';
+import 'fa_model.dart';
 
 var uuid = new Uuid();
 
@@ -72,7 +73,8 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
   }
 
   Widget _buildCreateAccountScreen(BuildContext context) {
-    final TextEditingController emailController = new TextEditingController();
+    final TextEditingController emailController =
+        new TextEditingController(text: this._email);
 
     return Scaffold(
       appBar: AppBar(
@@ -95,13 +97,13 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
             child: Text('Create Account'),
             onPressed: () async {
               try {
-                await FaConnector.registerUser(
+                await FbConnector.registerUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: uuid.v4(),
                 );
 
-                await FaConnector.sendResetLink(
+                await FbConnector.sendResetLink(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                 );
@@ -129,7 +131,8 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
   }
 
   Widget _buildSignInScreen(BuildContext context) {
-    final TextEditingController emailController = new TextEditingController();
+    final TextEditingController emailController =
+        new TextEditingController(text: this._email);
     final TextEditingController passwordController =
         new TextEditingController();
 
@@ -153,23 +156,25 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
               labelText: "Password",
             ),
           ),
+          Text(
+            this._error ?? "",
+            style: TextStyle(color: Colors.red),
+          ),
           RaisedButton(
             child: Text('Sign In'),
             onPressed: () async {
               try {
-                FaUser user = await FaConnector.signInUser(
+                FaUser user = await FbConnector.signInUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: passwordController.text,
                 );
-                // todo: htrow if user is null
                 print("User signed in: ${user}, ${user?.email}");
                 this.afterAuthorized(context, user);
               } catch (e) {
-                print("Error signing in: ");
-                print(e);
                 this.setState(() {
-                  this._error = "Error signing in. See details in console.";
+                  this._error = FaExceptionAnalyser.ToUiMessage(e);
+                  this._email = emailController.text;
                 });
               }
             },
@@ -183,7 +188,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
           FlatButton(
             child: Text('Forgot Password?'),
             onPressed: () {
-              FaConnector.sendResetLink(
+              FbConnector.sendResetLink(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
               );

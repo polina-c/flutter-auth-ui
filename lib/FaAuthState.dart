@@ -1,4 +1,4 @@
-import 'flutter_auth_model.dart';
+import 'fa_model.dart';
 
 class FaAuthState {
   static FaUser User;

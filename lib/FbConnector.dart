@@ -5,11 +5,11 @@ import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 
 import 'FaUtil.dart';
-import 'flutter_auth_model.dart';
+import 'FbException.dart';
+import 'fa_model.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
-
-class FaConnector {
+class FbConnector {
   static Future<void> deleteUserIfExists({
     @required String apiKey,
     @required String idToken,
@@ -18,12 +18,13 @@ class FaConnector {
     FaUtil.ThrowIfNullOrEmpty(value: idToken, name: "idToken");
 
     await _sendFbApiRequest(
-        apiKey: apiKey,
-        action: "deleteAccount",
-        params: {
-          "idToken": idToken,
-        },
-        acceptableErrors: HashSet.from({"USER_NOT_FOUND"}));
+      apiKey: apiKey,
+      action: "deleteAccount",
+      params: {
+        "idToken": idToken,
+      },
+      acceptableErrors: HashSet.from({FbException.UserNotFoundCode}),
+    );
   }
 
   static Future<void> sendResetLink({
@@ -126,6 +127,6 @@ class FaConnector {
     print("code: " + response.statusCode.toString());
     print("response body: " + response.body);
     print("reason: " + response.reasonPhrase);
-    throw Exception(message + response.body);
+    throw FbException(message + response.body);
   }
 }
