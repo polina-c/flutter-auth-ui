@@ -11,10 +11,11 @@ as soon as flutter for web gets released.
 ## Getting Started
 
 ### Create Project in Firebase
-To test the library you can use apiKey of the demo project:   
-`"AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4"`.
+To test the library use demo project. 
+  
+`apiKey: "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4"`
 
-Then you will want to switch to your own project:
+Then you will want to create your project:
 
 1. Sign in to firebase console https://console.firebase.google.com/
 1. Add, configure and open project
@@ -37,7 +38,7 @@ git clone https://github.com/pcherkasova/fa.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
-4. Make sure your project references needed packages in pubspec.yaml:
+4. Make sure your project references necessary packages in pubspec.yaml:
 ```
 dependencies:
   ...
