@@ -1,8 +1,8 @@
 # fa
 **fa** is an authentication library for flutter web applications. 
-Uses Firebase security as a service 
-( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ) to sign in with email and password.
-The library rovides UI to register user, validate email, sign in, sign out, restore password.
+It registers users with email and password using Firebase security as a service 
+( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
+The library provides UI to register user, validate email, sign in, sign out and restore password.
 
 The library works with [flutter for web tech preview](https://github.com/flutter/flutter_web),
  with intent to switch to production, and to start supporting iOS and Android, 
