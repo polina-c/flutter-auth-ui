@@ -55,8 +55,8 @@ dev_dependencies:
 In the beginning of the method `build` of the widget that requires 
 authentication (it should be stateful), add the code:
 ```
-if (fa.User == null) {
-  return fa.BuildAuthScreen(
+if (faui.User == null) {
+  return faui.BuildAuthScreen(
     onSuccess: this.setState((){...}),
     onCancel: this.setState((){...}),
     firebaseApiKey: "...",
@@ -67,14 +67,14 @@ if (fa.User == null) {
 
 Packages to import:
 ```
-import 'package:job_chat.ui/external/fa/lib/fa.dart';
-import 'package:job_chat.ui/external/fa/lib/fa_model.dart';
+import 'package:job_chat.ui/external/fa/lib/faui.dart';
+import 'package:job_chat.ui/external/fa/lib/faui_model.dart';
 ```
 
 
-Get user email: `fa.User.email` 
+Get user email: `faui.User.email` 
 
-Sign out: `fa.SignOut()`
+Sign out: `faui.SignOut()`
  
 
 
