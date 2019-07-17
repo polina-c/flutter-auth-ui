@@ -1,5 +1,5 @@
-# flutter-auth (fa)
-**fa** is an authentication library for flutter web applications. 
+# flutter-auth-ui (faui)
+**faui** is an authentication library for flutter web applications. 
 It registers users with email and password using Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
 The library provides UI to register user, validate email, sign in, sign out and restore password.
@@ -31,10 +31,10 @@ So, you need to take co-development dependency:
 1. Create folder 'external' under your 'lib'
 
 
-1. Clone **flutter-auth** into it:
+1. Clone **flutter-auth-ui** into it:
 ```
 cd lib/external
-git clone https://github.com/pcherkasova/flutter-auth.git
+git clone https://github.com/pcherkasova/flutter-auth-ui.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
