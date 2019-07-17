@@ -1,25 +1,25 @@
 import 'package:flutter_web/material.dart';
 import 'package:uuid/uuid.dart';
 
-import 'FaAuthState.dart';
-import 'FaExceptionAnalyser.dart';
+import 'FauiAuthState.dart';
+import 'FauiExceptionAnalyser.dart';
 import 'FbConnector.dart';
-import 'fa_model.dart';
+import 'faui_model.dart';
 
 var uuid = new Uuid();
 
-class FaAuthScreen extends StatefulWidget {
+class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onSuccess;
   final VoidCallback onCancel;
   final String firebaseApiKey;
 
-  FaAuthScreen(
+  FauiAuthScreen(
       {@required VoidCallback this.onSuccess,
       @required VoidCallback this.onCancel,
       @required String this.firebaseApiKey});
 
   @override
-  _FaAuthScreenState createState() => _FaAuthScreenState();
+  _FauiAuthScreenState createState() => _FauiAuthScreenState();
 }
 
 enum AuthScreen {
@@ -29,7 +29,7 @@ enum AuthScreen {
   verifyEmail,
 }
 
-class _FaAuthScreenState extends State<FaAuthScreen> {
+class _FauiAuthScreenState extends State<FauiAuthScreen> {
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
@@ -42,8 +42,8 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
     });
   }
 
-  void afterAuthorized(BuildContext context, FaUser user) {
-    FaAuthState.User = user;
+  void afterAuthorized(BuildContext context, FauiUser user) {
+    FauiAuthState.User = user;
     this.widget.onSuccess();
   }
 
@@ -111,7 +111,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
                 this.switchScreen(AuthScreen.verifyEmail, emailController.text);
               } catch (e) {
                 this.setState(() {
-                  this._error = FaExceptionAnalyser.ToUiMessage(e);
+                  this._error = FauiExceptionAnalyser.ToUiMessage(e);
                   this._email = emailController.text;
                 });
               }
@@ -162,7 +162,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
             child: Text('Sign In'),
             onPressed: () async {
               try {
-                FaUser user = await FbConnector.signInUser(
+                FauiUser user = await FbConnector.signInUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: passwordController.text,
@@ -171,7 +171,7 @@ class _FaAuthScreenState extends State<FaAuthScreen> {
                 this.afterAuthorized(context, user);
               } catch (e) {
                 this.setState(() {
-                  this._error = FaExceptionAnalyser.ToUiMessage(e);
+                  this._error = FauiExceptionAnalyser.ToUiMessage(e);
                   this._email = emailController.text;
                 });
               }

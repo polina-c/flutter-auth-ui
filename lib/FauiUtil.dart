@@ -1,6 +1,6 @@
 import 'package:meta/meta.dart';
 
-class FaUtil {
+class FauiUtil {
   static void ThrowIfNullOrEmpty(
       {@required String value, @required String name}) {
     if (value == null) {

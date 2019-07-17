@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
 
-import 'FaUtil.dart';
+import 'FauiUtil.dart';
 import 'FbException.dart';
-import 'fa_model.dart';
+import 'faui_model.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
 class FbConnector {
@@ -14,8 +14,8 @@ class FbConnector {
     @required String apiKey,
     @required String idToken,
   }) async {
-    FaUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FaUtil.ThrowIfNullOrEmpty(value: idToken, name: "idToken");
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: idToken, name: "idToken");
 
     await _sendFbApiRequest(
       apiKey: apiKey,
@@ -31,8 +31,8 @@ class FbConnector {
     @required String apiKey,
     @required String email,
   }) async {
-    FaUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FaUtil.ThrowIfNullOrEmpty(value: email, name: "email");
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
     _sendFbApiRequest(
       apiKey: apiKey,
       action: "getOobConfirmationCode",
@@ -43,7 +43,7 @@ class FbConnector {
     );
   }
 
-  static Future<FaUser> registerUser({
+  static Future<FauiUser> registerUser({
     @required String apiKey,
     @required String email,
     @required String password,
@@ -57,7 +57,7 @@ class FbConnector {
     );
   }
 
-  static Future<FaUser> signInUser({
+  static Future<FauiUser> signInUser({
     @required String apiKey,
     @required String email,
     @required String password,
@@ -71,16 +71,16 @@ class FbConnector {
     );
   }
 
-  static Future<FaUser> _registerOrSignIn({
+  static Future<FauiUser> _registerOrSignIn({
     @required String apiKey,
     @required String email,
     @required String password,
     @required String action,
     @required String actionDisplayName,
   }) async {
-    FaUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FaUtil.ThrowIfNullOrEmpty(value: email, name: "email");
-    FaUtil.ThrowIfNullOrEmpty(value: password, name: "password");
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
+    FauiUtil.ThrowIfNullOrEmpty(value: password, name: "password");
 
     var result = await _sendFbApiRequest(
       apiKey: apiKey,
@@ -92,7 +92,7 @@ class FbConnector {
       },
     );
 
-    return FaUser.fromJson(result);
+    return FauiUser.fromJson(result);
   }
 
   static dynamic _sendFbApiRequest({
@@ -101,8 +101,8 @@ class FbConnector {
     @required Map<String, dynamic> params,
     HashSet<String> acceptableErrors,
   }) async {
-    FaUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FaUtil.ThrowIfNullOrEmpty(value: action, name: "action");
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: action, name: "action");
 
     Response response = await post(
       "https://www.googleapis.com/identitytoolkit/v3/relyingparty/${action}?key=$apiKey",

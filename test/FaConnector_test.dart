@@ -2,7 +2,7 @@ import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 import '../lib/FbConnector.dart';
-import '../lib/fa_model.dart';
+import '../lib/faui_model.dart';
 
 final uuid = new Uuid();
 final apiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
@@ -12,7 +12,7 @@ void main() {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FaUser user = await FbConnector.registerUser(
+    FauiUser user = await FbConnector.registerUser(
         apiKey: apiKey, email: email, password: id);
     user = await FbConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
@@ -25,7 +25,7 @@ void main() {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FaUser user = await FbConnector.registerUser(
+    FauiUser user = await FbConnector.registerUser(
         apiKey: apiKey, email: email, password: id);
 
     try {

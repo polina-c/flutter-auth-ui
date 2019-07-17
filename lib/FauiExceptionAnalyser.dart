@@ -1,6 +1,6 @@
 import 'FbException.dart';
 
-class FaExceptionAnalyser {
+class FauiExceptionAnalyser {
   static String ToUiMessage(Object exception) {
     if (exception is String) return exception;
 

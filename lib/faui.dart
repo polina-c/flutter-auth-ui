@@ -1,17 +1,17 @@
 import 'package:flutter_web/material.dart';
 
-import 'FaAuthScreen.dart';
-import 'FaAuthState.dart';
-import 'fa_model.dart';
+import 'FauiAuthScreen.dart';
+import 'FauiAuthState.dart';
+import 'faui_model.dart';
 
-class fa {
-  static FaUser get User {
-    FaUser user = FaAuthState.User;
+class faui {
+  static FauiUser get User {
+    FauiUser user = FauiAuthState.User;
     return user;
   }
 
   static void SignOut() {
-    FaAuthState.User = null;
+    FauiAuthState.User = null;
   }
 
   static Widget BuildAuthScreen({
@@ -19,7 +19,7 @@ class fa {
     @required VoidCallback onCancel,
     @required String firebaseApiKey,
   }) {
-    return FaAuthScreen(
+    return FauiAuthScreen(
       onSuccess: onSuccess,
       onCancel: onCancel,
       firebaseApiKey: firebaseApiKey,
