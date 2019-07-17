@@ -38,7 +38,7 @@ git clone https://github.com/pcherkasova/fa.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
-4. Make sure your project references necessary packages in pubspec.yaml:
+4. Update pubspec.yaml to make sure your project references necessary packages:
 ```
 dependencies:
   ...
