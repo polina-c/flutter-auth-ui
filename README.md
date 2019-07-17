@@ -1,4 +1,4 @@
-# fa
+# flutter-auth (fa)
 **fa** is an authentication library for flutter web applications. 
 It registers users with email and password using Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
@@ -34,7 +34,7 @@ So, you need to take co-development dependency:
 1. Clone **fa** into it:
 ```
 cd lib/external
-git clone https://github.com/pcherkasova/fa.git
+git clone https://github.com/pcherkasova/flutter-auth.git
 ```
 3. Add line "lib/external/" to .gitignore of your project
 
