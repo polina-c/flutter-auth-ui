@@ -31,7 +31,7 @@ So, you need to take co-development dependency:
 1. Create folder 'external' under your 'lib'
 
 
-1. Clone **fa** into it:
+1. Clone **flutter-auth** into it:
 ```
 cd lib/external
 git clone https://github.com/pcherkasova/flutter-auth.git
