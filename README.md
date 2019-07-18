@@ -27,19 +27,14 @@ Then you will want to create your project:
 	
 ### Set Dependency
 While flitter_web is not published in pub, the packages that depend on it, cannot be published too. 
-So, you need to take co-development dependency:
+So, you need to setup submodule:
 
-1. Create folder 'external' under your 'lib'
-
-
-1. Clone **flutter-auth-ui** into it:
+1. Run
 ```
-cd lib/external
-git clone https://github.com/pcherkasova/flutter-auth-ui.git
+git submodule add https://github.com/pcherkasova/flutter-auth-ui ./lib/external
 ```
-3. Add line "lib/external/" to .gitignore of your project
 
-4. Update pubspec.yaml to make sure your project references necessary packages:
+2. Update pubspec.yaml to make sure your project references necessary packages:
 ```
 dependencies:
   ...
