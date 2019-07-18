@@ -29,7 +29,7 @@ Then you will want to create your project:
 While flitter_web is not published in pub, the packages that depend on it, cannot be published too. 
 So, you need to setup submodule:
 
-1. Run
+1. Run:
 ```
 git submodule add https://github.com/pcherkasova/flutter-auth-ui ./lib/external
 ```
