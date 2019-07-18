@@ -208,7 +208,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       body: Column(
         children: <Widget>[
           Text("We sent verification link to $email"),
-          FlatButton(
+          RaisedButton(
             child: Text('Sign In'),
             onPressed: () {
               this.switchScreen(AuthScreen.signIn, email);
