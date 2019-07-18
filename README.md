@@ -31,7 +31,7 @@ So, you need to setup submodule:
 
 1. Run:
 ```
-git submodule add https://github.com/pcherkasova/flutter-auth-ui ./lib/external
+git submodule add https://github.com/pcherkasova/flutter-auth-ui ./lib/external/flutter-auth-ui
 ```
 
 2. Update pubspec.yaml to make sure your project references necessary packages:
