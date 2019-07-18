@@ -63,8 +63,8 @@ if (faui.User == null) {
 
 Packages to import:
 ```
-import 'package:job_chat.ui/external/flutter-auth-ui/lib/faui.dart';
-import 'package:job_chat.ui/external/flutter-auth-ui/lib/faui_model.dart';
+import 'package:<your app name>/external/flutter-auth-ui/lib/faui.dart';
+import 'package:<your app name>/external/flutter-auth-ui/lib/faui_model.dart';
 ```
 
 
