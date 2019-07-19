@@ -10,7 +10,7 @@ as soon as flutter for web gets released.
 
 ## Demo
 
-[flutter-auth-ui-demo](https://github.com/pcherkasova/flutter-auth-ui-demo)
+[flutter-auth-ui-demo](https://github.com/polina-c/flutter-auth-ui-demo)
 
 ## Getting Started
 
@@ -35,7 +35,7 @@ So, you need to setup submodule:
 
 1. Run:
 ```
-git submodule add https://github.com/pcherkasova/flutter-auth-ui ./lib/external/flutter-auth-ui
+git submodule add https://github.com/polina-c/flutter-auth-ui ./lib/external/flutter-auth-ui
 ```
 
 2. Update pubspec.yaml to make sure your project references necessary packages:
