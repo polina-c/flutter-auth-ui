@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter_web/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -33,6 +35,25 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
+
+  FocusNode _passwordFocus;
+  FocusNode _emailFocus;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _emailFocus = FocusNode();
+    _passwordFocus = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+
+    super.dispose();
+  }
 
   void switchScreen(AuthScreen authScreen, String email) {
     setState(() {
@@ -84,6 +105,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       body: Column(
         children: <Widget>[
           TextField(
+            autofocus: true,
             controller: emailController,
             decoration: InputDecoration(
               labelText: "EMail",
@@ -134,6 +156,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
         new TextEditingController();
 
+    document.addEventListener('keydown', (dynamic event) {
+      if (event.code == 'Tab') {
+        event.preventDefault();
+      }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Sign In'),
@@ -141,15 +169,25 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       ),
       body: Column(
         children: <Widget>[
-          TextField(
-            controller: emailController,
-            decoration: InputDecoration(
-              labelText: "EMail",
+          RawKeyboardListener(
+            child: TextField(
+              autofocus: true,
+              controller: emailController,
+              decoration: InputDecoration(
+                labelText: "EMail",
+              ),
             ),
+            onKey: (dynamic key) {
+              if (key.data.keyCode == 9) {
+                FocusScope.of(context).requestFocus(_passwordFocus);
+              }
+            },
+            focusNode: _emailFocus,
           ),
           TextField(
             controller: passwordController,
             obscureText: true,
+            focusNode: _passwordFocus,
             decoration: InputDecoration(
               labelText: "Password",
             ),
@@ -167,7 +205,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                   email: emailController.text,
                   password: passwordController.text,
                 );
-                print("User signed in: ${user}, ${user?.email}");
                 this.afterAuthorized(context, user);
               } catch (e) {
                 this.setState(() {
