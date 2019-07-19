@@ -8,6 +8,10 @@ The library works with [flutter for web tech preview](https://github.com/flutter
  with intent to switch to production, and to start supporting iOS and Android, 
 as soon as flutter for web gets released.
 
+## Demo
+
+[flutter-auth-ui-demo](https://github.com/pcherkasova/flutter-auth-ui-demo)
+
 ## Getting Started
 
 
