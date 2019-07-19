@@ -58,8 +58,7 @@ authentication (it should be stateful), add the code:
 ```
 if (faui.User == null) {
   return faui.BuildAuthScreen(
-    onSuccess: this.setState((){...}),
-    onCancel: this.setState((){...}),
+    onExit: this.setState((){...}),
     firebaseApiKey: "...",
   );
 }

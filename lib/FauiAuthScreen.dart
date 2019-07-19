@@ -11,13 +11,11 @@ import 'faui_model.dart';
 var uuid = new Uuid();
 
 class FauiAuthScreen extends StatefulWidget {
-  final VoidCallback onSuccess;
-  final VoidCallback onCancel;
+  final VoidCallback onExit;
   final String firebaseApiKey;
 
   FauiAuthScreen(
-      {@required VoidCallback this.onSuccess,
-      @required VoidCallback this.onCancel,
+      {@required VoidCallback this.onExit,
       @required String this.firebaseApiKey});
 
   @override
@@ -65,14 +63,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   void afterAuthorized(BuildContext context, FauiUser user) {
     FauiAuthState.User = user;
-    this.widget.onSuccess();
+    this.widget.onExit();
   }
 
   List<Widget> getActions() {
     return <Widget>[
       IconButton(
         icon: Icon(Icons.close),
-        onPressed: this.widget.onCancel,
+        onPressed: this.widget.onExit,
       )
     ];
   }

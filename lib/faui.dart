@@ -15,13 +15,11 @@ class faui {
   }
 
   static Widget BuildAuthScreen({
-    @required VoidCallback onSuccess,
-    @required VoidCallback onCancel,
+    @required VoidCallback onExit,
     @required String firebaseApiKey,
   }) {
     return FauiAuthScreen(
-      onSuccess: onSuccess,
-      onCancel: onCancel,
+      onExit: onExit,
       firebaseApiKey: firebaseApiKey,
     );
   }
