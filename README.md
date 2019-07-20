@@ -77,5 +77,7 @@ Get user email: `faui.User.email`
 Sign out: `faui.SignOut()`
  
 
+## Run Tests
 
+flutter pub run test
 

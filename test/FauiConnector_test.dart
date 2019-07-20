@@ -1,6 +1,9 @@
+import 'dart:core';
+
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
+import '../lib/FauiExceptionAnalyser.dart';
 import '../lib/FbConnector.dart';
 import '../lib/faui_model.dart';
 
@@ -32,7 +35,10 @@ void main() {
       await FbConnector.registerUser(
           apiKey: apiKey, email: email, password: id);
     } on Exception catch (exception) {
-      expect(exception.toString().contains("EMAIL_EXISTS"), true);
+      expect(
+          FauiExceptionAnalyser.ToUiMessage(exception)
+              .contains("already registered"),
+          true);
     }
 
     await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.idToken);
