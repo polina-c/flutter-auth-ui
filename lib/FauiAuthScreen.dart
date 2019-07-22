@@ -13,10 +13,12 @@ var uuid = new Uuid();
 class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
   final String firebaseApiKey;
+  final bool startWithRegistration;
 
   FauiAuthScreen(
       {@required VoidCallback this.onExit,
-      @required String this.firebaseApiKey});
+      @required String this.firebaseApiKey,
+      bool this.startWithRegistration});
 
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
@@ -40,6 +42,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   @override
   void initState() {
     super.initState();
+
+    if (this.widget.startWithRegistration) {
+      this._authScreen = AuthScreen.createAccount;
+    }
 
     _emailFocus = FocusNode();
     _passwordFocus = FocusNode();
@@ -221,10 +227,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           FlatButton(
             child: Text('Forgot Password?'),
             onPressed: () {
-              FbConnector.sendResetLink(
-                apiKey: this.widget.firebaseApiKey,
-                email: emailController.text,
-              );
               this.switchScreen(
                   AuthScreen.forgotPassword, emailController.text);
             },
@@ -255,6 +257,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   }
 
   Widget _buildForgotPasswordScreen(BuildContext context, String email) {
+    final TextEditingController emailController =
+        new TextEditingController(text: this._email);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Reset Password'),
@@ -262,11 +267,37 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       ),
       body: Column(
         children: <Widget>[
-          Text("We sent password reset instructions to $email"),
+          TextField(
+            autofocus: true,
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: "EMail",
+            ),
+          ),
+          Text(
+            this._error ?? "",
+            style: TextStyle(color: Colors.red),
+          ),
+          RaisedButton(
+            child: Text('Send Password Reset Link'),
+            onPressed: () {
+              FbConnector.sendResetLink(
+                apiKey: this.widget.firebaseApiKey,
+                email: emailController.text,
+              );
+              this.switchScreen(AuthScreen.signIn, email);
+            },
+          ),
           FlatButton(
             child: Text('Sign In'),
             onPressed: () {
               this.switchScreen(AuthScreen.signIn, email);
+            },
+          ),
+          FlatButton(
+            child: Text('Create Account'),
+            onPressed: () {
+              this.switchScreen(AuthScreen.createAccount, email);
             },
           ),
         ],

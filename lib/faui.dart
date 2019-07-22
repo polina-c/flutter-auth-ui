@@ -14,13 +14,14 @@ class faui {
     FauiAuthState.User = null;
   }
 
-  static Widget BuildAuthScreen({
-    @required VoidCallback onExit,
-    @required String firebaseApiKey,
-  }) {
+  static Widget BuildAuthScreen(
+      {@required VoidCallback onExit,
+      @required String firebaseApiKey,
+      bool startWithRegistration = false}) {
     return FauiAuthScreen(
       onExit: onExit,
       firebaseApiKey: firebaseApiKey,
+      startWithRegistration: startWithRegistration,
     );
   }
 }
