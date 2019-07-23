@@ -1,7 +1,9 @@
+import 'package:http/http.dart';
+
 import 'FbException.dart';
 
 class FauiExceptionAnalyser {
-  static String ToUiMessage(Object exception) {
+  static String ToUiMessage(dynamic exception) {
     if (exception is String) return exception;
 
     if (exception is FbException) {
@@ -16,7 +18,18 @@ class FauiExceptionAnalyser {
       if (exception.message.contains(FbException.EmailExistsCode))
         return "This email is already registered.";
     }
-    print(exception);
+
+    if (exception is ClientException) {
+      ClientException clientException = exception;
+
+      if (clientException.message.contains("HttpRequest error"))
+        return "Issues with internet connection.";
+    }
+
+    print(
+        "Unexpected error in flutter-auth-ui of type ${exception.runtimeType}: " +
+            exception.toString());
+
     return "Unexpected error. Check console for details.";
   }
 }
