@@ -13,7 +13,7 @@ class FauiUtil {
     }
   }
 
-  static Map<String, dynamic> parseJwt(String token) {
+  static Map<String, dynamic> ParseJwt(String token) {
     final parts = token.split('.');
     if (parts.length != 3) {
       throw Exception('invalid token');

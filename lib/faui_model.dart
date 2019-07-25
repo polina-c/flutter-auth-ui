@@ -1,19 +1,9 @@
-import 'FauiUtil.dart';
+import 'package:meta/meta.dart';
 
 class FauiUser {
   final String email;
-  final String idToken;
-  final String refreshToken;
   final String userId;
+  final String token;
 
-  FauiUser({this.email, this.idToken, this.refreshToken, this.userId});
-
-  factory FauiUser.fromJson(Map<String, dynamic> json) {
-    return FauiUser(
-      email: json['email'],
-      idToken: json['idToken'],
-      refreshToken: json['refreshToken'],
-      userId: FauiUtil.parseJwt(json['idToken'])["userId"],
-    );
-  }
+  FauiUser({@required this.email, @required this.userId, @required this.token});
 }

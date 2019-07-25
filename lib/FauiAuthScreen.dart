@@ -126,7 +126,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                 await FbConnector.registerUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
-                  password: uuid.v4(),
                 );
 
                 await FbConnector.sendResetLink(

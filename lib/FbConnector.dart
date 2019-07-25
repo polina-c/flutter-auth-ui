@@ -3,10 +3,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
+import 'package:uuid/uuid.dart';
 
 import 'FauiUtil.dart';
 import 'FbException.dart';
 import 'faui_model.dart';
+
+var uuid = Uuid();
 
 // https://firebase.google.com/docs/reference/rest/auth
 class FbConnector {
@@ -43,18 +46,35 @@ class FbConnector {
     );
   }
 
-  static Future<FauiUser> registerUser({
-    @required String apiKey,
-    @required String email,
-    @required String password,
-  }) async {
-    return await _registerOrSignIn(
+  static Future registerUser(
+      {@required String apiKey,
+      @required String email,
+      String password}) async {
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
+
+    var response = await _sendFbApiRequest(
       apiKey: apiKey,
-      email: email,
-      password: password,
       action: 'signupNewUser',
-      actionDisplayName: 'register user',
+      params: {
+        "email": email,
+        "password": password ?? uuid.v4(),
+      },
     );
+
+    print(jsonEncode(response));
+    _PrintResponse(response);
+
+    response = await _sendFbApiRequest(
+      apiKey: apiKey,
+      action: "sendOobCode",
+      params: {
+        "email": email,
+        "requestType": "PASSWORD_RESET",
+      },
+    );
+
+    _PrintResponse(response);
   }
 
   static Future<FauiUser> signInUser({
@@ -62,37 +82,35 @@ class FbConnector {
     @required String email,
     @required String password,
   }) async {
-    return await _registerOrSignIn(
-      apiKey: apiKey,
-      email: email,
-      password: password,
-      action: 'verifyPassword',
-      actionDisplayName: 'sign in user',
-    );
-  }
-
-  static Future<FauiUser> _registerOrSignIn({
-    @required String apiKey,
-    @required String email,
-    @required String password,
-    @required String action,
-    @required String actionDisplayName,
-  }) async {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
     FauiUtil.ThrowIfNullOrEmpty(value: password, name: "password");
 
-    var result = await _sendFbApiRequest(
+    var response = await _sendFbApiRequest(
       apiKey: apiKey,
-      action: action,
+      action: 'verifyPassword',
       params: {
         "email": email,
         "password": password,
-        "requestType": "PASSWORD_RESET",
       },
     );
 
-    return FauiUser.fromJson(result);
+    Map<String, dynamic> parsedToken = FauiUtil.ParseJwt(response['idToken']);
+    print("parsedToken: ${jsonEncode(parsedToken)}");
+
+    var user = FauiUser(
+      email: response['email'],
+      userId: parsedToken["userId"] ?? parsedToken["user_id"],
+      token: response['idToken'],
+    );
+
+    if (user.email == null)
+      throw Exception(
+          "Email is not expected to be null in Firebase response for action");
+    if (user.userId == null)
+      throw Exception(
+          "UserId is not expected to be null in Firebase response for action");
+    return user;
   }
 
   static dynamic _sendFbApiRequest({
@@ -124,9 +142,11 @@ class FbConnector {
 
     String message = "Error requesting firebase api $action.";
     print(message);
-    print("code: " + response.statusCode.toString());
-    print("response body: " + response.body);
-    print("reason: " + response.reasonPhrase);
+    _PrintResponse(response);
     throw FbException(message + response.body);
+  }
+
+  static void _PrintResponse(dynamic response) {
+    print(jsonEncode(response));
   }
 }
