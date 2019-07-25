@@ -22,7 +22,7 @@ class FbConnector {
 
     await _sendFbApiRequest(
       apiKey: apiKey,
-      action: "deleteAccount",
+      action: FirebaseActions.DeleteAccount,
       params: {
         "idToken": idToken,
       },
@@ -38,7 +38,7 @@ class FbConnector {
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
     _sendFbApiRequest(
       apiKey: apiKey,
-      action: "getOobConfirmationCode",
+      action: FirebaseActions.SendResetLink,
       params: {
         "email": email,
         "requestType": "PASSWORD_RESET",
@@ -55,26 +55,18 @@ class FbConnector {
 
     var response = await _sendFbApiRequest(
       apiKey: apiKey,
-      action: 'signupNewUser',
+      action: FirebaseActions.RegisterUser,
       params: {
         "email": email,
         "password": password ?? uuid.v4(),
       },
     );
+//    print("response for registration :" + jsonEncode(response));
+//    print("waiting...");
 
-    print(jsonEncode(response));
-    _PrintResponse(response);
+    //await Future.delayed(const Duration(seconds: 5), () => {});
 
-    response = await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: "sendOobCode",
-      params: {
-        "email": email,
-        "requestType": "PASSWORD_RESET",
-      },
-    );
-
-    _PrintResponse(response);
+    await sendResetLink(apiKey: apiKey, email: email);
   }
 
   static Future<FauiUser> signInUser({
@@ -88,7 +80,7 @@ class FbConnector {
 
     var response = await _sendFbApiRequest(
       apiKey: apiKey,
-      action: 'verifyPassword',
+      action: FirebaseActions.SignIn,
       params: {
         "email": email,
         "password": password,
@@ -96,7 +88,6 @@ class FbConnector {
     );
 
     Map<String, dynamic> parsedToken = FauiUtil.ParseJwt(response['idToken']);
-    print("parsedToken: ${jsonEncode(parsedToken)}");
 
     var user = FauiUser(
       email: response['email'],
@@ -123,7 +114,7 @@ class FbConnector {
     FauiUtil.ThrowIfNullOrEmpty(value: action, name: "action");
 
     Response response = await post(
-      "https://www.googleapis.com/identitytoolkit/v3/relyingparty/${action}?key=$apiKey",
+      "https://identitytoolkit.googleapis.com/v1/accounts:${action}?key=$apiKey",
       body: jsonEncode(params),
       headers: {'Content-Type': 'application/json'},
     );
@@ -147,6 +138,23 @@ class FbConnector {
   }
 
   static void _PrintResponse(dynamic response) {
-    print(jsonEncode(response));
+    if (response is Response) {
+      print("code: " + response.statusCode.toString());
+      print("response body: " + response.body);
+      print("reason: " + response.reasonPhrase);
+      return;
+    }
+    print("canot print response of type ${response.runtimeType.toString()}");
   }
+}
+
+//https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=[API_KEY]
+//https://identitytoolkit.googleapis.com/v1/accounts:delete?key=[API_KEY]
+//https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
+//https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]
+class FirebaseActions {
+  static const SendResetLink = "sendOobCode";
+  static const DeleteAccount = "delete";
+  static const RegisterUser = "signUp";
+  static const SignIn = "signInWithPassword";
 }

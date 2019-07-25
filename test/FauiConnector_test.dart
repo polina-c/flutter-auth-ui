@@ -15,10 +15,14 @@ void main() {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FauiUser user = await FbConnector.registerUser(
+    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+
+    FauiUser user = await FbConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
-    user = await FbConnector.signInUser(
-        apiKey: apiKey, email: email, password: id);
+
+    expect(user.userId == null, false);
+    expect(user.email, email);
+    expect(user.token == null, false);
     await FbConnector.sendResetLink(apiKey: apiKey, email: email);
     await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
     await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
@@ -28,11 +32,11 @@ void main() {
     final String id = uuid.v4();
     final String email = "${id}@fakedomain.com";
 
-    FauiUser user =
-        await FbConnector.registerUser(apiKey: apiKey, email: email);
+    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
 
     try {
       await FbConnector.registerUser(apiKey: apiKey, email: email);
+      expect(true, false);
     } on Exception catch (exception) {
       expect(
           FauiExceptionAnalyser.ToUiMessage(exception)
@@ -40,6 +44,8 @@ void main() {
           true);
     }
 
+    FauiUser user = await FbConnector.signInUser(
+        apiKey: apiKey, email: email, password: id);
     await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 }
