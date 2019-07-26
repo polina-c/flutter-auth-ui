@@ -72,10 +72,30 @@ import 'package:<your app name>/external/flutter-auth-ui/lib/faui_model.dart';
 ```
 
 
-Get user email: `faui.User.email` 
+Get user email:
 
-Sign out: `faui.SignOut()`
- 
+```
+faui.User.email
+```
+
+
+Sign out: 
+```
+faui.SignOut()
+```
+
+
+Silent sign-in:
+```
+
+// Before start:
+FauiUser user =
+      await faui.TrySignInSilently(firebaseApiKey: XfConfig.FirebaseApiKey);
+...
+
+// After sign in with dialog:
+faui.SaveUserLocallyForSilentSignIn();
+``` 
 
 ## Run Tests
 
