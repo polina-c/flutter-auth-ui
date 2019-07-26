@@ -2,16 +2,31 @@ import 'package:flutter_web/material.dart';
 
 import 'FauiAuthScreen.dart';
 import 'FauiAuthState.dart';
+import 'FauiLocalStorage.dart';
 import 'faui_model.dart';
 
 class faui {
   static FauiUser get User {
-    FauiUser user = FauiAuthState.User;
-    return user;
+    return FauiAuthState.User;
+  }
+
+  static void set User(v) {
+    FauiAuthState.User = v;
   }
 
   static void SignOut() {
     FauiAuthState.User = null;
+    FauiLocalStorage.DeleteUserLocally();
+  }
+
+  static void SaveUserLocallyForSilentSignIn() {
+    FauiLocalStorage.SaveUserLocallyForSilentSignIn();
+  }
+
+  static Future TrySignInSilently({
+    @required String firebaseApiKey,
+  }) async {
+    return await FauiLocalStorage.TrySignInSilently(firebaseApiKey);
   }
 
   static Widget BuildAuthScreen(

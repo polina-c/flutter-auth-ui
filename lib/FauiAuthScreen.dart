@@ -123,12 +123,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             child: Text('Create Account'),
             onPressed: () async {
               try {
-                await FbConnector.registerUser(
+                await FbConnector.RegisterUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                 );
 
-                await FbConnector.sendResetLink(
+                await FbConnector.SendResetLink(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                 );
@@ -203,7 +203,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             child: Text('Sign In'),
             onPressed: () async {
               try {
-                FauiUser user = await FbConnector.signInUser(
+                FauiUser user = await FbConnector.SignInUser(
                   apiKey: this.widget.firebaseApiKey,
                   email: emailController.text,
                   password: passwordController.text,
@@ -280,7 +280,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           RaisedButton(
             child: Text('Send Password Reset Link'),
             onPressed: () {
-              FbConnector.sendResetLink(
+              FbConnector.SendResetLink(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
               );

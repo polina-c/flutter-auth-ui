@@ -13,14 +13,14 @@ var uuid = Uuid();
 
 // https://firebase.google.com/docs/reference/rest/auth
 class FbConnector {
-  static Future<void> deleteUserIfExists({
+  static Future<void> DeleteUserIfExists({
     @required String apiKey,
     @required String idToken,
   }) async {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: idToken, name: "idToken");
 
-    await _sendFbApiRequest(
+    await _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.DeleteAccount,
       params: {
@@ -30,13 +30,13 @@ class FbConnector {
     );
   }
 
-  static Future<void> sendResetLink({
+  static Future<void> SendResetLink({
     @required String apiKey,
     @required String email,
   }) async {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
-    _sendFbApiRequest(
+    _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SendResetLink,
       params: {
@@ -46,14 +46,14 @@ class FbConnector {
     );
   }
 
-  static Future registerUser(
+  static Future RegisterUser(
       {@required String apiKey,
       @required String email,
       String password}) async {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
 
-    var response = await _sendFbApiRequest(
+    var response = await _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.RegisterUser,
       params: {
@@ -61,15 +61,11 @@ class FbConnector {
         "password": password ?? uuid.v4(),
       },
     );
-//    print("response for registration :" + jsonEncode(response));
-//    print("waiting...");
 
-    //await Future.delayed(const Duration(seconds: 5), () => {});
-
-    await sendResetLink(apiKey: apiKey, email: email);
+    await SendResetLink(apiKey: apiKey, email: email);
   }
 
-  static Future<FauiUser> signInUser({
+  static Future<FauiUser> SignInUser({
     @required String apiKey,
     @required String email,
     @required String password,
@@ -78,33 +74,44 @@ class FbConnector {
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
     FauiUtil.ThrowIfNullOrEmpty(value: password, name: "password");
 
-    var response = await _sendFbApiRequest(
+    Map<String, dynamic> response = await _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SignIn,
       params: {
         "email": email,
         "password": password,
+        "returnSecureToken": true,
       },
     );
 
-    Map<String, dynamic> parsedToken = FauiUtil.ParseJwt(response['idToken']);
+    var user = FbResponseToUser(response);
+
+    if (user.email == null)
+      throw Exception(
+          "Email is not expected to be null in Firebase response for sign in");
+    if (user.userId == null)
+      throw Exception(
+          "UserId is not expected to be null in Firebase response for sign in");
+
+    return user;
+  }
+
+  static FauiUser FbResponseToUser(Map<String, dynamic> response) {
+    String idToken = response['idToken'] ?? response['id_token'];
+
+    Map<String, dynamic> parsedToken = FauiUtil.ParseJwt(idToken);
 
     var user = FauiUser(
       email: response['email'],
       userId: parsedToken["userId"] ?? parsedToken["user_id"],
-      token: response['idToken'],
+      token: idToken,
+      refreshToken: response['refreshToken'] ?? response['refresh_token'],
     );
 
-    if (user.email == null)
-      throw Exception(
-          "Email is not expected to be null in Firebase response for action");
-    if (user.userId == null)
-      throw Exception(
-          "UserId is not expected to be null in Firebase response for action");
     return user;
   }
 
-  static dynamic _sendFbApiRequest({
+  static Future<Map<String, dynamic>> _SendFbApiRequest({
     @required String apiKey,
     @required String action,
     @required Map<String, dynamic> params,
@@ -120,7 +127,8 @@ class FbConnector {
     );
 
     if (response.statusCode == 200) {
-      return json.decode(response.body);
+      Map<String, dynamic> map = json.decode(response.body);
+      return map;
     }
 
     if (acceptableErrors != null) {
@@ -133,18 +141,19 @@ class FbConnector {
 
     String message = "Error requesting firebase api $action.";
     print(message);
-    _PrintResponse(response);
+    PrintResponse(response);
     throw FbException(message + response.body);
   }
 
-  static void _PrintResponse(dynamic response) {
+  static void PrintResponse(dynamic response) {
     if (response is Response) {
       print("code: " + response.statusCode.toString());
       print("response body: " + response.body);
       print("reason: " + response.reasonPhrase);
       return;
     }
-    print("canot print response of type ${response.runtimeType.toString()}");
+    print(
+        "Could not print response of type ${response.runtimeType.toString()}");
   }
 }
 

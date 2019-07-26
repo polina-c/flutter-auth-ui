@@ -13,29 +13,29 @@ final apiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 void main() {
   test('Register, sign-in, send reset, delete and delete', () async {
     final String id = uuid.v4();
-    final String email = "${id}@fakedomain.com";
+    final String email = "_test_${id}@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+    await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
 
-    FauiUser user = await FbConnector.signInUser(
+    FauiUser user = await FbConnector.SignInUser(
         apiKey: apiKey, email: email, password: id);
 
     expect(user.userId == null, false);
     expect(user.email, email);
     expect(user.token == null, false);
-    await FbConnector.sendResetLink(apiKey: apiKey, email: email);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await FbConnector.SendResetLink(apiKey: apiKey, email: email);
+    await FbConnector.DeleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await FbConnector.DeleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 
   test('Register fails if user exists', () async {
     final String id = uuid.v4();
-    final String email = "${id}@fakedomain.com";
+    final String email = "_test_${id}@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+    await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
 
     try {
-      await FbConnector.registerUser(apiKey: apiKey, email: email);
+      await FbConnector.RegisterUser(apiKey: apiKey, email: email);
       expect(true, false);
     } on Exception catch (exception) {
       expect(
@@ -44,8 +44,8 @@ void main() {
           true);
     }
 
-    FauiUser user = await FbConnector.signInUser(
+    FauiUser user = await FbConnector.SignInUser(
         apiKey: apiKey, email: email, password: id);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await FbConnector.DeleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 }
