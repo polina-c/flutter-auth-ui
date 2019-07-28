@@ -18,20 +18,20 @@ class FauiLocalStorage {
     print("ssi: deleted locally");
   }
 
-  static Future<FauiUser> TrySignInSilently(String apiKey) async {
+  static Future TrySignInSilently(String apiKey) async {
     print("ssi: started silent sign-in");
     try {
       FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
       String v = _GetLocalValue(_LocalKey);
       if (v == null) {
         print("ssi: no user stored");
-        return null;
+        return;
       }
 
       FauiUser user = FauiUser.fromJson(jsonDecode(v));
       if (user == null || user.refreshToken == null) {
         print("ssi: no refresh token found");
-        return null;
+        return;
       }
 
       Response response = await post(
@@ -44,21 +44,21 @@ class FauiLocalStorage {
       );
 
       if (response.statusCode != 200) {
-        print("Error refreshing token.");
+        print("ssi: error refreshing token.");
         FbConnector.PrintResponse(response);
         print("ssi: refresh token: " + FauiAuthState.User.refreshToken);
-        return null;
+        return;
       }
 
       user = FbConnector.FbResponseToUser(jsonDecode(response.body));
       _StoreLocally(_LocalKey, jsonEncode(user));
-
+      FauiAuthState.User = user;
       print("ssi: succeeded silent sign-in");
-      return user;
+      return;
     } catch (ex) {
       print("ssi: error during silent sign-in:");
       print(ex.toString());
-      return null;
+      return;
     }
   }
 
