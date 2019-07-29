@@ -23,12 +23,13 @@ class FauiLocalStorage {
     try {
       FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
       String v = _GetLocalValue(_LocalKey);
-      if (v == null) {
+      if (v == null || v == "null") {
         print("ssi: no user stored");
         return;
       }
 
       FauiUser user = FauiUser.fromJson(jsonDecode(v));
+      print(user);
       if (user == null || user.refreshToken == null) {
         print("ssi: no refresh token found");
         return;
@@ -46,7 +47,7 @@ class FauiLocalStorage {
       if (response.statusCode != 200) {
         print("ssi: error refreshing token.");
         FbConnector.PrintResponse(response);
-        print("ssi: refresh token: " + FauiAuthState.User.refreshToken);
+        print("ssi: refresh token: " + user.refreshToken);
         return;
       }
 
