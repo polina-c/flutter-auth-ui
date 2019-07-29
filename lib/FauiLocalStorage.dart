@@ -29,7 +29,6 @@ class FauiLocalStorage {
       }
 
       FauiUser user = FauiUser.fromJson(jsonDecode(v));
-      print(user);
       if (user == null || user.refreshToken == null) {
         print("ssi: no refresh token found");
         return;
