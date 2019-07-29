@@ -102,7 +102,7 @@ class FbConnector {
     Map<String, dynamic> parsedToken = FauiUtil.ParseJwt(idToken);
 
     var user = FauiUser(
-      email: response['email'],
+      email: response['email'] ?? parsedToken['email'],
       userId: parsedToken["userId"] ?? parsedToken["user_id"],
       token: idToken,
       refreshToken: response['refreshToken'] ?? response['refresh_token'],
