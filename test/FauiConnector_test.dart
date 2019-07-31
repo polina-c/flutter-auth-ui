@@ -28,6 +28,28 @@ void main() {
     await FbConnector.DeleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 
+  test('Refresh token', () async {
+    final String id = uuid.v4();
+    final String email = "_test_${id}@fakedomain.com";
+
+    await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
+
+    FauiUser user1 = await FbConnector.SignInUser(
+        apiKey: apiKey, email: email, password: id);
+
+    expect(user1.userId == null, false);
+    expect(user1.email, email);
+    expect(user1.token == null, false);
+
+    FauiUser user2 =
+        await FbConnector.RefreshToken(apiKey: apiKey, user: user1);
+
+    expect(user2.userId, user1.userId);
+    expect(user2.email, user1.email);
+    expect(user2.token != user1.token, true);
+    expect(user2.token != null, true);
+  });
+
   test('Register fails if user exists', () async {
     final String id = uuid.v4();
     final String email = "_test_${id}@fakedomain.com";

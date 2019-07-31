@@ -6,6 +6,7 @@ import 'faui_model.dart';
 import 'package:http/http.dart';
 
 import 'FbConnector.dart';
+import 'package:meta/meta.dart';
 
 class FauiLocalStorage {
   static void SaveUserLocallyForSilentSignIn() {
@@ -33,24 +34,7 @@ class FauiLocalStorage {
         print("ssi: no refresh token found");
         return;
       }
-
-      Response response = await post(
-        "https://securetoken.googleapis.com/v1/token?key=$apiKey",
-        body: jsonEncode({
-          "grant_type": "refresh_token",
-          "refresh_token": user.refreshToken,
-        }),
-        headers: {'Content-Type': 'application/json'},
-      );
-
-      if (response.statusCode != 200) {
-        print("ssi: error refreshing token.");
-        FbConnector.PrintResponse(response);
-        print("ssi: refresh token: " + user.refreshToken);
-        return;
-      }
-
-      user = FbConnector.FbResponseToUser(jsonDecode(response.body));
+      user = await FbConnector.RefreshToken(user: user, apiKey: apiKey);
       _StoreLocally(_LocalKey, jsonEncode(user));
       FauiAuthState.User = user;
       print("ssi: succeeded silent sign-in");

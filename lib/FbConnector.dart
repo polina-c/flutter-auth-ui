@@ -138,7 +138,34 @@ class FbConnector {
         }
       }
     }
+    ReportFailedRequest(action, response);
+  }
 
+  static Future<FauiUser> RefreshToken(
+      {@required FauiUser user, @required String apiKey}) async {
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
+
+    Response response = await post(
+      "https://securetoken.googleapis.com/v1/token?key=$apiKey",
+      body: jsonEncode({
+        "grant_type": "refresh_token",
+        "refresh_token": user.refreshToken,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode != 200) {
+      ReportFailedRequest("refresh_token", response);
+      return null;
+    }
+
+    user = FbResponseToUser(jsonDecode(response.body));
+
+    return user;
+  }
+
+  static void ReportFailedRequest(String action, dynamic response) {
     String message = "Error requesting firebase api $action.";
     print(message);
     PrintResponse(response);
