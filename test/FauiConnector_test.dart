@@ -46,7 +46,6 @@ void main() {
 
     expect(user2.userId, user1.userId);
     expect(user2.email, user1.email);
-    expect(user2.token != user1.token, true);
     expect(user2.token != null, true);
   });
 
