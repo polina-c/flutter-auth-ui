@@ -84,7 +84,7 @@ class FbConnector {
       },
     );
 
-    var user = FbResponseToUser(response);
+    FauiUser user = FbResponseToUser(response);
 
     if (user.email == null)
       throw Exception(
@@ -93,6 +93,26 @@ class FbConnector {
       throw Exception(
           "UserId is not expected to be null in Firebase response for sign in");
 
+    return user;
+  }
+
+  static Future<FauiUser> VerifyToken({
+    @required String apiKey,
+    @required String token,
+  }) async {
+    FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+    FauiUtil.ThrowIfNullOrEmpty(value: token, name: "token");
+
+    Map<String, dynamic> response = await _SendFbApiRequest(
+      apiKey: apiKey,
+      action: FirebaseActions.SignIn,
+      params: {
+        "idToken": token,
+        "returnSecureToken": true,
+      },
+    );
+
+    FauiUser user = FbResponseToUser(response);
     return user;
   }
 
@@ -139,6 +159,7 @@ class FbConnector {
       }
     }
     ReportFailedRequest(action, response);
+    return null;
   }
 
   static Future<FauiUser> RefreshToken(
@@ -188,9 +209,11 @@ class FbConnector {
 //https://identitytoolkit.googleapis.com/v1/accounts:delete?key=[API_KEY]
 //https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
 //https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]
+//https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=[API_KEY]
 class FirebaseActions {
   static const SendResetLink = "sendOobCode";
   static const DeleteAccount = "delete";
   static const RegisterUser = "signUp";
   static const SignIn = "signInWithPassword";
+  static const Verify = "lookup";
 }
