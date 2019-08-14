@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'dart:core';
 
 import 'package:http/http.dart';
 import 'package:meta/meta.dart';
@@ -53,7 +54,7 @@ class FbConnector {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
 
-    var response = await _SendFbApiRequest(
+    await _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.RegisterUser,
       params: {
@@ -105,14 +106,27 @@ class FbConnector {
 
     Map<String, dynamic> response = await _SendFbApiRequest(
       apiKey: apiKey,
-      action: FirebaseActions.SignIn,
+      action: FirebaseActions.Verify,
       params: {
         "idToken": token,
         "returnSecureToken": true,
       },
     );
 
-    FauiUser user = FbResponseToUser(response);
+    List<dynamic> users = response['users'];
+    if (users == null || users.length != 1) {
+      return null;
+    }
+
+    Map<String, dynamic> fbUser = users[0];
+
+    FauiUser user = FauiUser(
+      email: fbUser['email'],
+      userId: fbUser["localId"],
+      token: token,
+      refreshToken: null,
+    );
+
     return user;
   }
 
