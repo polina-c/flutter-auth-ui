@@ -37,7 +37,7 @@ class FbConnector {
   }) async {
     FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.ThrowIfNullOrEmpty(value: email, name: "email");
-    _SendFbApiRequest(
+    await _SendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SendResetLink,
       params: {
