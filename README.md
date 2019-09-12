@@ -9,10 +9,10 @@ The library works with [flutter for web tech preview](https://github.com/flutter
 as soon as flutter for web gets released.
 
 ## Demo
-Explore UX [here](https://flutter-auth-ui-demo.codemagic.app/#/).
+Explore UX [here](http://teeny-tiny-stranger.surge.sh/#/).
 
 Source code: [flutter-auth-ui-demo](https://github.com/polina-c/flutter-auth-ui-demo).
-
+f
 ## Getting Started
 
 
