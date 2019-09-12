@@ -87,13 +87,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black87,
-      padding: MediaQuery.of(context).size.width > 900
+      padding: MediaQuery.of(context).size.width > 1000
           ? EdgeInsets.symmetric(vertical: 150.0, horizontal: screenWidth / 3.5)
-          : EdgeInsets.symmetric(vertical: 150.0, horizontal: screenWidth / 6),
+          : null,
       child: ClipRRect(
-        borderRadius: BorderRadius.all(
-          Radius.circular(30),
-        ),
+        borderRadius: BorderRadius.all(MediaQuery.of(context).size.width > 1000
+            ? Radius.circular(30)
+            : Radius.circular(0)),
         child: _switchScreens(context),
       ),
     );
