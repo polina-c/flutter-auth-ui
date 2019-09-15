@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:meta/meta.dart';
+import 'package:flutter/material.dart';
 
 class FauiUtil {
   static void ThrowIfNullOrEmpty(
