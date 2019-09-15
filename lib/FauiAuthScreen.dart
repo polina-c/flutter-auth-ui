@@ -14,9 +14,9 @@ class FauiAuthScreen extends StatefulWidget {
   final bool startWithRegistration;
 
   FauiAuthScreen(
-      {@required VoidCallback this.onExit,
-      @required String this.firebaseApiKey,
-      bool this.startWithRegistration});
+      {@required this.onExit,
+      @required this.firebaseApiKey,
+      this.startWithRegistration});
 
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
@@ -31,6 +31,11 @@ enum AuthScreen {
 }
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
+  static const double _BoxWidth = 500;
+  static const double _BoxHeight = 500;
+  static const double _MinMargin = 20;
+  static const double _Padding = 5;
+
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
@@ -80,24 +85,36 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     ];
   }
 
+  static bool _IsSmall(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    return (screenWidth < _BoxWidth + _MinMargin) ||
+        (screenHeight < _BoxHeight + _MinMargin);
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    bool isSmall = _IsSmall(context);
+
     return Container(
       color: Colors.black87,
-      padding: MediaQuery.of(context).size.width > 1000
-          ? EdgeInsets.symmetric(vertical: 150.0, horizontal: screenWidth / 3.5)
-          : null,
+      padding: isSmall
+          ? null
+          : EdgeInsets.symmetric(
+              vertical: (screenHeight - _BoxHeight) / 2,
+              horizontal: (screenWidth - _BoxWidth) / 2),
       child: ClipRRect(
-        borderRadius: BorderRadius.all(MediaQuery.of(context).size.width > 1000
-            ? Radius.circular(30)
-            : Radius.circular(0)),
-        child: _switchScreens(context),
+        borderRadius: isSmall
+            ? BorderRadius.all(Radius.circular(0))
+            : BorderRadius.all(Radius.circular(3)),
+        child: _getScreen(context),
       ),
     );
   }
 
-  Widget _switchScreens(BuildContext context) {
+  Widget _getScreen(BuildContext context) {
     switch (this._authScreen) {
       case AuthScreen.signIn:
         return _buildSignInScreen(context);
@@ -124,8 +141,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       ),
       body: Center(
         child: Container(
-          padding: EdgeInsets.only(top: 50.0),
-          width: 400.0,
+          padding: EdgeInsets.only(top: _Padding),
+          width: _BoxWidth - _Padding * 2,
           child: Column(
             children: <Widget>[
               TextField(
@@ -182,11 +199,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
         new TextEditingController();
 
+    // TODO: find other way to prevent default
     // document.addEventListener('keydown', (dynamic event) {
     //   if (event.code == 'Tab') {
     //     event.preventDefault();
     //   }
     // });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
