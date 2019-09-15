@@ -3,10 +3,7 @@
 It registers users with email and password using Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
 The library provides UI to register user, validate email, sign in, sign out and restore password.
-
-The library works with [flutter for web tech preview](https://github.com/flutter/flutter_web),
- with intent to switch to production, and to start supporting iOS and Android, 
-as soon as flutter for web gets released.
+Also it supports silent sign in.
 
 ## Demo
 Explore UX [here](http://teeny-tiny-stranger.surge.sh/#/).
@@ -31,24 +28,11 @@ Then you will want to create your project:
 1. Copy your "Web API Key"
 	
 ### Set Dependency
-While flitter_web is not published in pub, the packages that depend on it, cannot be published too. 
-So, you need to setup submodule:
-
-1. Run:
-```
-git submodule add https://github.com/polina-c/flutter-auth-ui ./lib/external/flutter-auth-ui
-```
-
 2. Update pubspec.yaml to make sure your project references necessary packages:
 ```
 dependencies:
   ...
-  http: ^0.12.0+2
-  uuid: 2.0.1
-
-dev_dependencies:
-  ...
-  test: any
+  faui: ^0.0.1
 ```
 
 ### Update Code
@@ -67,8 +51,8 @@ if (faui.User == null) {
 
 Packages to import:
 ```
-import 'package:<your app name>/external/flutter-auth-ui/lib/faui.dart';
-import 'package:<your app name>/external/flutter-auth-ui/lib/faui_model.dart';
+import 'package:faui/faui.dart';
+import 'package:faui/faui_model.dart';
 ```
 
 
@@ -97,7 +81,5 @@ await faui.TrySignInSilently(firebaseApiKey: '...');
 faui.SaveUserLocallyForSilentSignIn();
 ``` 
 
-## Run Tests
 
-flutter pub run test
 
