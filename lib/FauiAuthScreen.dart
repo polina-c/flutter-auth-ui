@@ -1,6 +1,4 @@
-import 'dart:html';
-
-import 'package:flutter_for_web/material.dart';
+import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import 'FauiAuthState.dart';
@@ -184,11 +182,11 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
         new TextEditingController();
 
-    document.addEventListener('keydown', (dynamic event) {
-      if (event.code == 'Tab') {
-        event.preventDefault();
-      }
-    });
+    // document.addEventListener('keydown', (dynamic event) {
+    //   if (event.code == 'Tab') {
+    //     event.preventDefault();
+    //   }
+    // });
     return Scaffold(
       appBar: AppBar(
         title: Text(

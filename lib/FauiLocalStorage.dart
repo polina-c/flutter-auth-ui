@@ -1,12 +1,9 @@
 import 'dart:convert';
-import 'dart:html';
 import 'FauiAuthState.dart';
 import 'FauiUtil.dart';
 import 'faui_model.dart';
-import 'package:http/http.dart';
 
 import 'FbConnector.dart';
-import 'package:meta/meta.dart';
 
 class FauiLocalStorage {
   static void SaveUserLocallyForSilentSignIn() {
@@ -49,14 +46,14 @@ class FauiLocalStorage {
   static const _LocalKey = "user";
 
   static void _DeleteLocally(String key) {
-    window.localStorage.remove(key);
+    //window.localStorage.remove(key);
   }
 
   static String _GetLocalValue(String key) {
-    return window.localStorage[key];
+    //return window.localStorage[key];
   }
 
   static void _StoreLocally(String key, String value) {
-    window.localStorage[key] = value;
+    //window.localStorage[key] = value;
   }
 }

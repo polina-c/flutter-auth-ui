@@ -1,6 +1,6 @@
 import 'dart:core';
+import "package:test/test.dart";
 
-import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 import '../lib/FauiExceptionAnalyser.dart';
@@ -13,7 +13,7 @@ final apiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 void main() {
   test('Register, sign-in, send reset, delete and delete', () async {
     final String id = uuid.v4();
-    final String email = "_test_${id}@fakedomain.com";
+    final String email = "_test_$id@fakedomain.com";
 
     await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
 
@@ -51,7 +51,7 @@ void main() {
 
   test('Registration fails if user exists', () async {
     final String id = uuid.v4();
-    final String email = "_test_${id}@fakedomain.com";
+    final String email = "_test_$id@fakedomain.com";
 
     await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
 
@@ -72,7 +72,7 @@ void main() {
 
   test('Token validation', () async {
     final String id = uuid.v4();
-    final String email = "_test_${id}@fakedomain.com";
+    final String email = "_test_$id@fakedomain.com";
 
     await FbConnector.RegisterUser(apiKey: apiKey, email: email, password: id);
     FauiUser user1 = await FbConnector.SignInUser(

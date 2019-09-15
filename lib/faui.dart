@@ -1,9 +1,8 @@
-import 'package:flutter_for_web/material.dart';
-
 import 'FauiAuthScreen.dart';
 import 'FauiAuthState.dart';
 import 'FauiLocalStorage.dart';
 import 'faui_model.dart';
+import 'package:flutter/material.dart';
 
 class faui {
   static FauiUser get User {
