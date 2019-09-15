@@ -88,9 +88,9 @@ faui.SignOut()
 Silent sign-in:
 ```
 
-// Before start:
-FauiUser user =
-      await faui.TrySignInSilently(firebaseApiKey: XfConfig.FirebaseApiKey);
+// Before runApp:
+WidgetsFlutterBinding.ensureInitialized();
+await faui.TrySignInSilently(firebaseApiKey: '...');
 ...
 
 // After sign in with dialog:
