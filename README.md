@@ -12,7 +12,7 @@ as soon as flutter for web gets released.
 Explore UX [here](http://teeny-tiny-stranger.surge.sh/#/).
 
 Source code: [flutter-auth-ui-demo](https://github.com/polina-c/flutter-auth-ui-demo).
-f
+
 ## Getting Started
 
 
