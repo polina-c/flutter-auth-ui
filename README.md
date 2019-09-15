@@ -1,5 +1,5 @@
 # flutter-auth-ui (faui)
-**faui** is an authentication library for flutter web, iOS, Android. 
+**faui** is an authentication UI for Flutter. 
 It registers users with email and password using Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
 The library provides UI to register user, validate email, sign in, sign out and restore password.
