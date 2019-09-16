@@ -1,5 +1,5 @@
 import 'package:flutter/gestures.dart';
-import 'package:faui/faui.dart';
+import 'package:faui/Faui.dart';
 import 'package:flutter/material.dart';
 
 var firebaseApiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
