@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'FauiAuthState.dart';
 import 'FauiUtil.dart';
-import 'faui_model.dart';
+import 'FauiUser.dart';
 
 import 'FbConnector.dart';
 

@@ -1,7 +1,7 @@
 import 'FauiAuthScreen.dart';
 import 'FauiAuthState.dart';
 import 'FauiLocalStorage.dart';
-import 'faui_model.dart';
+import 'FauiUser.dart';
 import 'package:flutter/material.dart';
 
 class Faui {

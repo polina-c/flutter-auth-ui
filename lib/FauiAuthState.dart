@@ -1,4 +1,4 @@
-import 'faui_model.dart';
+import 'FauiUser.dart';
 
 class FauiAuthState {
   static FauiUser user;

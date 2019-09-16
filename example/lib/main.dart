@@ -32,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (faui.User == null && !_wantToSignIn) {
+    if (Faui.User == null && !_wantToSignIn) {
       return Column(
         children: <Widget>[
           buildDescription(),
