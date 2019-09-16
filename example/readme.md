@@ -1,3 +1,4 @@
 # flutter-auth-ui-demo
 
-This is demo app for [flutter-auth-ui](https://github.com/polina-c/flutter-auth-ui)
+This is demo app for [flutter-auth-ui](https://github.com/polina-c/flutter-auth-ui).
+Demo is hosted [here](http://teeny-tiny-stranger.surge.sh/#/).
