@@ -2,21 +2,22 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:faui/FbException.dart';
 import 'package:http/http.dart';
-import 'package:flutter/material.dart';
+
+import 'package:faui/FauiUser.dart';
 import 'package:uuid/uuid.dart';
 
-import 'FauiUtil.dart';
-import 'FbException.dart';
-import 'FauiUser.dart';
+import 'package:faui/FauiUtil.dart';
 
 var uuid = Uuid();
 
 // https://firebase.google.com/docs/reference/rest/auth
+
 class FbConnector {
   static Future<void> deleteUserIfExists({
-    @required String apiKey,
-    @required String idToken,
+    String apiKey,
+    String idToken,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: idToken, name: "idToken");
@@ -32,8 +33,8 @@ class FbConnector {
   }
 
   static Future<void> sendResetLink({
-    @required String apiKey,
-    @required String email,
+    String apiKey,
+    String email,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
@@ -48,9 +49,7 @@ class FbConnector {
   }
 
   static Future registerUser(
-      {@required String apiKey,
-      @required String email,
-      String password}) async {
+      {String apiKey, String email, String password}) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
 
@@ -67,9 +66,9 @@ class FbConnector {
   }
 
   static Future<FauiUser> signInUser({
-    @required String apiKey,
-    @required String email,
-    @required String password,
+    String apiKey,
+    String email,
+    String password,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
@@ -98,8 +97,8 @@ class FbConnector {
   }
 
   static Future<FauiUser> verifyToken({
-    @required String apiKey,
-    @required String token,
+    String apiKey,
+    String token,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: token, name: "token");
@@ -146,9 +145,9 @@ class FbConnector {
   }
 
   static Future<Map<String, dynamic>> _sendFbApiRequest({
-    @required String apiKey,
-    @required String action,
-    @required Map<String, dynamic> params,
+    String apiKey,
+    String action,
+    Map<String, dynamic> params,
     HashSet<String> acceptableErrors,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
@@ -176,8 +175,7 @@ class FbConnector {
     return null;
   }
 
-  static Future<FauiUser> refreshToken(
-      {@required FauiUser user, @required String apiKey}) async {
+  static Future<FauiUser> refreshToken({FauiUser user, String apiKey}) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
 

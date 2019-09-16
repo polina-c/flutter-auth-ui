@@ -1,6 +1,6 @@
 name: faui
 description: Authentication UI for Flutter. Uses Firebase auth as security provider. The library provides UI to register user, validate email, sign in, sign out, restore password.
-version: 1.0.3
+version: 1.0.4
 author: Polina Cherkasova <polina.c@live.com>
 homepage: https://github.com/polina-c/flutter-auth-ui
 
@@ -15,8 +15,6 @@ dependencies:
   crypted_preferences: ^0.0.2
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   test: any
 
 flutter:

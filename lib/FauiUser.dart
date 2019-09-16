@@ -1,16 +1,10 @@
-import 'package:flutter/material.dart';
-
 class FauiUser {
   final String email;
   final String userId;
   final String token;
   final String refreshToken;
 
-  FauiUser(
-      {@required this.email,
-      @required this.userId,
-      @required this.token,
-      @required this.refreshToken});
+  FauiUser({this.email, this.userId, this.token, this.refreshToken});
 
   FauiUser.fromJson(Map<String, dynamic> json)
       : email = json['email'],

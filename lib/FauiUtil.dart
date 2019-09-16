@@ -1,10 +1,7 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-
 class FauiUtil {
-  static void throwIfNullOrEmpty(
-      {@required String value, @required String name}) {
+  static void throwIfNullOrEmpty({String value, String name}) {
     if (value == null) {
       throw "$name should not be null";
     }
