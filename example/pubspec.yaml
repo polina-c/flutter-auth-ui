@@ -6,7 +6,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  faui: ^1.0.3
+  faui: ^1.0.6
   http: ^0.12.0+2
   crypted_preferences: ^0.0.2
   uuid: ^2.0.1

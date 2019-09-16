@@ -17,3 +17,11 @@
 ## [1.0.4] - Sep 16, 2019
 
 * Fixed package format.
+
+## [1.0.5] - Sep 16, 2019
+
+* Updated documentation.
+
+## [1.0.6] - Sep 16, 2019
+
+* Updated documentation.
