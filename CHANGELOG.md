@@ -13,3 +13,7 @@
 ## [1.0.3] - Sep 15, 2019
 
 * Fixed package format.
+
+## [1.0.4] - Sep 16, 2019
+
+* Fixed package format.

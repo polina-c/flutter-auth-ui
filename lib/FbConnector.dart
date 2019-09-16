@@ -155,7 +155,7 @@ class FbConnector {
     FauiUtil.throwIfNullOrEmpty(value: action, name: "action");
 
     Response response = await post(
-      "https://identitytoolkit.googleapis.com/v1/accounts:${action}?key=$apiKey",
+      "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey",
       body: jsonEncode(params),
       headers: {'Content-Type': 'application/json'},
     );
