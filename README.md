@@ -6,9 +6,9 @@ The library provides UI to register user, validate email, sign in, sign out and 
 Also it supports silent sign in.
 
 ## Demo
-Explore UX [here](http://teeny-tiny-stranger.surge.sh/#/).
+See demo [here](http://teeny-tiny-stranger.surge.sh/#/).
 
-Source code: [flutter-auth-ui-demo](https://github.com/polina-c/flutter-auth-ui-demo).
+Source code is [here](https://github.com/polina-c/flutter-auth-ui/tree/master/example).
 
 ## Getting Started
 
@@ -32,7 +32,7 @@ Then you will want to create your project:
 ```
 dependencies:
   ...
-  faui: ^0.0.1
+  faui: [<latest version>](https://pub.dev/packages/faui)
 ```
 
 ### Update Code
@@ -49,10 +49,9 @@ if (faui.User == null) {
 ```
 
 
-Packages to import:
+Import:
 ```
 import 'package:faui/faui.dart';
-import 'package:faui/faui_model.dart';
 ```
 
 
@@ -65,7 +64,7 @@ faui.User.email
 
 Sign out: 
 ```
-faui.SignOut()
+faui.signOut()
 ```
 
 
@@ -74,11 +73,11 @@ Silent sign-in:
 
 // Before runApp:
 WidgetsFlutterBinding.ensureInitialized();
-await faui.TrySignInSilently(firebaseApiKey: '...');
+await faui.trySignInSilently(firebaseApiKey: '...');
 ...
 
 // After sign in with dialog:
-faui.SaveUserLocallyForSilentSignIn();
+faui.saveUserLocallyForSilentSignIn();
 ``` 
 
 
