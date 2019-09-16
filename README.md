@@ -5,10 +5,16 @@ It registers users with email and password using Firebase security as a service
 The library provides UI to register user, validate email, sign in, sign out and restore password.
 Also it supports silent sign in.
 
-## Demo
-See demo [here](http://teeny-tiny-stranger.surge.sh/#/).
+## Links
 
-Source code is [here](https://github.com/polina-c/flutter-auth-ui/tree/master/example).
+[Pub pakage](https://pub.dev/packages/faui)
+
+[Package source code](https://github.com/polina-c/flutter-auth-ui)
+
+[Demo](http://teeny-tiny-stranger.surge.sh/#/)
+
+[Demo source code](https://github.com/polina-c/flutter-auth-ui/tree/master/example)
+
 
 ## Getting Started
 
@@ -32,7 +38,7 @@ Then you will want to create your project:
 ```
 dependencies:
   ...
-  faui: [<latest version>](https://pub.dev/packages/faui)
+  faui: <latest version>
 ```
 
 ### Update Code
