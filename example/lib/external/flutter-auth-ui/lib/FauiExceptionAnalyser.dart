@@ -3,7 +3,7 @@ import 'package:http/http.dart';
 import 'FbException.dart';
 
 class FauiExceptionAnalyser {
-  static String toUiMessage(dynamic exception) {
+  static String ToUiMessage(dynamic exception) {
     if (exception is String) return exception;
 
     if (exception is FbException) {

@@ -11,12 +11,12 @@ class FauiLocalStorage {
   static Preferences _prefs;
   static const String _LocalKey = "user";
 
-  static void _thowIfNotInitialized() {
+  static void _ThowIfNotInitialized() {
     if (_prefs == null)
       throw "To use local storage call faui.TrySignInSilently() before app start in order to initialize local storage.";
   }
 
-  static Future _initialize() async {
+  static Future _Initialize() async {
     try {
       _prefs = await Preferences.preferences(path: 'pathToPrefs');
     } catch (ex) {
@@ -25,22 +25,22 @@ class FauiLocalStorage {
     }
   }
 
-  static void saveUserLocallyForSilentSignIn() {
-    _storeLocally(_LocalKey, jsonEncode(FauiAuthState.user));
+  static void SaveUserLocallyForSilentSignIn() {
+    _StoreLocally(_LocalKey, jsonEncode(FauiAuthState.User));
     print("sso: saved locally");
   }
 
-  static void deleteUserLocally() {
-    _deleteLocally(_LocalKey);
+  static void DeleteUserLocally() {
+    _DeleteLocally(_LocalKey);
     print("sso: deleted locally");
   }
 
-  static Future trySignInSilently(String apiKey) async {
+  static Future TrySignInSilently(String apiKey) async {
     print("sso: started silent sign-in");
     try {
-      await _initialize();
-      FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-      String v = _getLocalValue(_LocalKey);
+      await _Initialize();
+      FauiUtil.ThrowIfNullOrEmpty(value: apiKey, name: "apiKey");
+      String v = _GetLocalValue(_LocalKey);
       if (v == null || v == "null") {
         print("sso: no user stored");
         return;
@@ -51,9 +51,9 @@ class FauiLocalStorage {
         print("sso: no refresh token found");
         return;
       }
-      user = await FbConnector.refreshToken(user: user, apiKey: apiKey);
-      _storeLocally(_LocalKey, jsonEncode(user));
-      FauiAuthState.user = user;
+      user = await FbConnector.RefreshToken(user: user, apiKey: apiKey);
+      _StoreLocally(_LocalKey, jsonEncode(user));
+      FauiAuthState.User = user;
       print("sso: succeeded silent sign-in");
       return;
     } catch (ex) {
@@ -63,18 +63,18 @@ class FauiLocalStorage {
     }
   }
 
-  static void _deleteLocally(String key) {
-    _thowIfNotInitialized();
+  static void _DeleteLocally(String key) {
+    _ThowIfNotInitialized();
     _prefs.remove(key);
   }
 
-  static String _getLocalValue(String key) {
-    _thowIfNotInitialized();
+  static String _GetLocalValue(String key) {
+    _ThowIfNotInitialized();
     return _prefs.getString(key);
   }
 
-  static void _storeLocally(String key, String value) {
-    _thowIfNotInitialized();
+  static void _StoreLocally(String key, String value) {
+    _ThowIfNotInitialized();
     _prefs.setString(key, value);
   }
 }

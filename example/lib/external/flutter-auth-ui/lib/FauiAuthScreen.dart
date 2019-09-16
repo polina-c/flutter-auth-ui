@@ -72,7 +72,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   }
 
   void afterAuthorized(BuildContext context, FauiUser user) {
-    FauiAuthState.user = user;
+    FauiAuthState.User = user;
     this.widget.onExit();
   }
 
@@ -173,12 +173,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         child: Text('Create Account'),
         onPressed: () async {
           try {
-            await FbConnector.registerUser(
+            await FbConnector.RegisterUser(
               apiKey: this.widget.firebaseApiKey,
               email: emailController.text,
             );
 
-            await FbConnector.sendResetLink(
+            await FbConnector.SendResetLink(
               apiKey: this.widget.firebaseApiKey,
               email: emailController.text,
             );
@@ -186,7 +186,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             this.switchScreen(AuthScreen.verifyEmail, emailController.text);
           } catch (e) {
             this.setState(() {
-              this._error = FauiExceptionAnalyser.toUiMessage(e);
+              this._error = FauiExceptionAnalyser.ToUiMessage(e);
               this._email = emailController.text;
             });
           }
@@ -247,7 +247,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text('Sign In'),
           onPressed: () async {
             try {
-              FauiUser user = await FbConnector.signInUser(
+              FauiUser user = await FbConnector.SignInUser(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
                 password: passwordController.text,
@@ -255,7 +255,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               this.afterAuthorized(context, user);
             } catch (e) {
               this.setState(() {
-                this._error = FauiExceptionAnalyser.toUiMessage(e);
+                this._error = FauiExceptionAnalyser.ToUiMessage(e);
                 this._email = emailController.text;
               });
             }
@@ -332,14 +332,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text('Send Password Reset Link'),
           onPressed: () async {
             try {
-              await FbConnector.sendResetLink(
+              await FbConnector.SendResetLink(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
               );
               this.switchScreen(AuthScreen.resetPassword, emailController.text);
             } catch (e) {
               this.setState(() {
-                this._error = FauiExceptionAnalyser.toUiMessage(e);
+                this._error = FauiExceptionAnalyser.ToUiMessage(e);
                 this._email = emailController.text;
               });
             }

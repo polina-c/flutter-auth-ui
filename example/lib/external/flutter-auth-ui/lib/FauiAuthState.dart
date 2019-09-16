@@ -1,5 +1,5 @@
 import 'faui_model.dart';
 
 class FauiAuthState {
-  static FauiUser user;
+  static FauiUser User = null;
 }

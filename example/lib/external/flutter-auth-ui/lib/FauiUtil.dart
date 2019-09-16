@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class FauiUtil {
-  static void throwIfNullOrEmpty(
+  static void ThrowIfNullOrEmpty(
       {@required String value, @required String name}) {
     if (value == null) {
       throw "$name should not be null";
@@ -13,7 +13,7 @@ class FauiUtil {
     }
   }
 
-  static Map<String, dynamic> parseJwt(String token) {
+  static Map<String, dynamic> ParseJwt(String token) {
     final parts = token.split('.');
     if (parts.length != 3) {
       throw Exception('invalid token');
