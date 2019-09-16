@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
-import 'package:faui/Faui.dart';
+import 'package:faui/faui.dart';
 import 'package:flutter/material.dart';
 
 var firebaseApiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await faui.TrySignInSilently(firebaseApiKey: firebaseApiKey);
+  await Faui.TrySignInSilently(firebaseApiKey: firebaseApiKey);
   runApp(FlutterAuthUiDemo());
 }
 

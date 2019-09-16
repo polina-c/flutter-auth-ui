@@ -4,7 +4,7 @@ import 'package:uuid/uuid.dart';
 import 'FauiAuthState.dart';
 import 'FauiExceptionAnalyser.dart';
 import 'FbConnector.dart';
-import 'faui_model.dart';
+import 'FauiUser.dart';
 
 var uuid = new Uuid();
 
