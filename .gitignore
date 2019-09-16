@@ -59,3 +59,5 @@
 **/ios/ServiceDefinitions.json
 **/ios/Runner/GeneratedPluginRegistrant.*
 *.lock
+
+**/build/
