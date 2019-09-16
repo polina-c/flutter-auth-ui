@@ -7,7 +7,7 @@ Also it supports silent sign in.
 
 ## Links
 
-[Pub pakage](https://pub.dev/packages/faui)
+[Pub package](https://pub.dev/packages/faui)
 
 [Package source code](https://github.com/polina-c/flutter-auth-ui)
 
