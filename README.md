@@ -40,7 +40,7 @@ dependencies:
   ...
   faui: <latest version>
 ```
-
+Check `<latest version>` [here](https://pub.dev/packages/faui).
 ### Update Code
 
 In the beginning of the method `build` of the widget that requires 
