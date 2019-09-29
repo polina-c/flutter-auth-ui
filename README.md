@@ -7,13 +7,13 @@ Also it supports silent sign in.
 
 ## Links
 
+[Demo](https://flatter-auth-ui.codemagic.app/#/)
+
 [Pub package](https://pub.dev/packages/faui)
 
-[Package source code](https://github.com/polina-c/flutter-auth-ui)
-
-[Demo](http://teeny-tiny-stranger.surge.sh/#/)
-
 [Demo source code](https://github.com/polina-c/flutter-auth-ui/tree/master/example)
+
+[Package source code](https://github.com/polina-c/flutter-auth-ui)
 
 
 ## Getting Started
