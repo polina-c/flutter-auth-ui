@@ -5,6 +5,11 @@ It registers users with email and password using Firebase security as a service
 The library provides UI to register user, validate email, sign in, sign out and restore password.
 Also it supports silent sign in.
 
+
+**faui** is regularly tested for Web by [polina-c](https://github.com/polina-c).
+
+If you regularly test the library for one of the platforms, say this here, please.
+
 ## Links
 
 [Demo](https://flatter-auth-ui.codemagic.app/#/)

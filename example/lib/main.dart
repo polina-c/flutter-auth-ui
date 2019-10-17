@@ -103,10 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return new TextSpan(
       text: text + "($url)",
       style: new TextStyle(color: Colors.blue),
-      recognizer: new TapGestureRecognizer()
-        ..onTap = () {
-          //TODO: open url when flutter for web adds support for it
-        },
+      recognizer: new TapGestureRecognizer()..onTap = () {},
     );
   }
 }

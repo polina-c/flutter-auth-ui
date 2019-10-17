@@ -40,9 +40,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   String _error;
   String _email;
 
-  FocusNode _passwordFocus;
-  FocusNode _emailFocus;
-
   @override
   void initState() {
     super.initState();
@@ -50,17 +47,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     if (this.widget.startWithRegistration) {
       this._authScreen = AuthScreen.createAccount;
     }
-
-    _emailFocus = FocusNode();
-    _passwordFocus = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    _emailFocus.dispose();
-    _passwordFocus.dispose();
-
-    super.dispose();
   }
 
   void switchScreen(AuthScreen authScreen, String email) {
@@ -170,6 +156,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         style: TextStyle(color: Colors.red),
       ),
       RaisedButton(
+        autofocus: true,
         child: Text('Create Account'),
         onPressed: () async {
           try {
@@ -207,34 +194,18 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
         new TextEditingController();
 
-    // TODO: find other way to prevent default
-    // document.addEventListener('keydown', (dynamic event) {
-    //   if (event.code == 'Tab') {
-    //     event.preventDefault();
-    //   }
-    // });
-
     return Column(
       children: <Widget>[
-        RawKeyboardListener(
-          child: TextField(
-            autofocus: true,
-            controller: emailController,
-            decoration: InputDecoration(
-              labelText: "EMail",
-            ),
+        TextField(
+          autofocus: true,
+          controller: emailController,
+          decoration: InputDecoration(
+            labelText: "EMail",
           ),
-          onKey: (dynamic key) {
-            if (key.data.keyCode == 9) {
-              FocusScope.of(context).requestFocus(_passwordFocus);
-            }
-          },
-          focusNode: _emailFocus,
         ),
         TextField(
           controller: passwordController,
           obscureText: true,
-          focusNode: _passwordFocus,
           decoration: InputDecoration(
             labelText: "Password",
           ),

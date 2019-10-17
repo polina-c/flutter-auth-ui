@@ -25,3 +25,8 @@
 ## [1.0.6] - Sep 16, 2019
 
 * Updated documentation.
+
+## [1.0.8] - Oct 16, 2019
+
+* Fixed bug with tab stop
+* Documented API
