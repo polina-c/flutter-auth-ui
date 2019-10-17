@@ -30,3 +30,7 @@
 
 * Fixed bug with tab stop
 * Documented API
+
+## [1.0.9] - Oct 16, 2019
+
+* Updated link to demo
