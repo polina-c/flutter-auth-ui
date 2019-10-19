@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
 import '../FauiUser.dart';
+import '../FbConnector.dart';
 import 'FauiAuthState.dart';
 import 'FauiExceptionAnalyser.dart';
-import 'FbConnector.dart';
 
 var uuid = new Uuid();
 

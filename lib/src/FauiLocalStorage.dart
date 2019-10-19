@@ -1,9 +1,8 @@
 import 'dart:convert';
 import '../FauiUser.dart';
+import '../FbConnector.dart';
 import 'FauiAuthState.dart';
 import 'FauiUtil.dart';
-
-import 'FbConnector.dart';
 
 import 'package:crypted_preferences/crypted_preferences.dart';
 

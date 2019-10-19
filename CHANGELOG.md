@@ -43,3 +43,7 @@
 ## [1.0.11] - Oct 19, 2019
 
 * Made class FauiUser public
+
+## [1.0.12] - Oct 19, 2019
+
+* Made class FbConnector public to enable integration testing

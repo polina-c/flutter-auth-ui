@@ -1,6 +1,6 @@
 import 'package:faui/FauiUser.dart';
+import 'package:faui/FbConnector.dart';
 import 'package:faui/src/FauiExceptionAnalyser.dart';
-import 'package:faui/src/FbConnector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
