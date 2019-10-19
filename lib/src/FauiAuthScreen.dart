@@ -83,7 +83,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       child: Center(
         child: Column(
           children: <Widget>[
-            Text(_getScreenTitle()),
+            Text(
+              _getScreenTitle(),
+              style: Theme.of(context).textTheme.title,
+            ),
             _getScreen(context),
           ],
         ),
