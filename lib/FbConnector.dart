@@ -14,6 +14,7 @@ var uuid = Uuid();
 
 // https://firebase.google.com/docs/reference/rest/auth
 
+/// The class performs operations with Firebase
 class FbConnector {
   static Future<void> deleteUserIfExists({
     String apiKey,

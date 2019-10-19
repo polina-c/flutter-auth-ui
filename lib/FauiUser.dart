@@ -1,3 +1,4 @@
+/// The class represents a registered user
 class FauiUser {
   final String email;
   final String userId;
