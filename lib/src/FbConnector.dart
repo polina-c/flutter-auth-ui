@@ -2,12 +2,12 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:faui/src/FauiUser.dart';
 import 'package:faui/src/FbException.dart';
 import 'package:http/http.dart';
 
 import 'package:uuid/uuid.dart';
 
+import '../FauiUser.dart';
 import 'FauiUtil.dart';
 
 var uuid = Uuid();

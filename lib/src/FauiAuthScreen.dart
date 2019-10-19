@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
+import '../FauiUser.dart';
 import 'FauiAuthState.dart';
 import 'FauiExceptionAnalyser.dart';
 import 'FbConnector.dart';
-import 'FauiUser.dart';
 
 var uuid = new Uuid();
 

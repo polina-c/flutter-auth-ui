@@ -1,8 +1,9 @@
 import 'package:faui/src/FauiAuthScreen.dart';
 import 'package:faui/src/FauiAuthState.dart';
 import 'package:faui/src/FauiLocalStorage.dart';
-import 'package:faui/src/FauiUser.dart';
 import 'package:flutter/material.dart';
+
+import 'FauiUser.dart';
 
 ///Facade class for the library 'faui'
 class Faui {

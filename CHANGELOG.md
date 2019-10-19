@@ -39,3 +39,7 @@
 
 * Stopped using scaffold to prevent Android issues
 * Started using default theme color for error messages
+
+## [1.0.11] - Oct 19, 2019
+
+* Made class FauiUser public
