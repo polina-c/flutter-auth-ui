@@ -51,3 +51,7 @@
 ## [1.0.14] - Oct 19, 2019
 
 * Applied default title style to the header
+
+## [1.0.15] - Oct 20, 2019
+
+* Added button 'Close'

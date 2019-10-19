@@ -62,15 +62,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     this.widget.onExit();
   }
 
-  List<Widget> getActions() {
-    return <Widget>[
-      IconButton(
-        icon: Icon(Icons.close),
-        onPressed: this.widget.onExit,
-      )
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -83,6 +74,18 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       child: Center(
         child: Column(
           children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    size: Theme.of(context).textTheme.title.fontSize,
+                  ),
+                  onPressed: this.widget.onExit,
+                )
+              ],
+            ),
             Text(
               _getScreenTitle(),
               style: Theme.of(context).textTheme.title,
