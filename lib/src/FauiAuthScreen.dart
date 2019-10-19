@@ -34,7 +34,7 @@ enum AuthScreen {
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
   static const double _boxWidth = 200;
-  static const double _boxHeight = 380;
+  static const double _boxHeight = 400;
 
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
@@ -68,30 +68,33 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     double vInsets = max(5, (screenHeight - _boxHeight) / 2);
     double hInsets = max(5, (screenWidth - _boxWidth) / 2);
-
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
-      child: Center(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    size: Theme.of(context).textTheme.title.fontSize,
+    return Card(
+      elevation: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      size: Theme.of(context).textTheme.title.fontSize,
+                    ),
+                    onPressed: this.widget.onExit,
                   ),
-                  onPressed: this.widget.onExit,
-                )
-              ],
-            ),
-            Text(
-              _getScreenTitle(),
-              style: Theme.of(context).textTheme.title,
-            ),
-            _getScreen(context),
-          ],
+                ],
+              ),
+              Text(
+                _getScreenTitle(),
+                style: Theme.of(context).textTheme.title,
+              ),
+              _getScreen(context),
+            ],
+          ),
         ),
       ),
     );

@@ -55,3 +55,7 @@
 ## [1.0.15] - Oct 20, 2019
 
 * Added button 'Close'
+
+## [1.0.16] - Oct 20, 2019
+
+* Fixed background color
