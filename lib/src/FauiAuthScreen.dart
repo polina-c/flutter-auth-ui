@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -31,10 +33,8 @@ enum AuthScreen {
 }
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
-  static const double _BoxWidth = 350;
-  static const double _BoxHeight = 380;
-  static const double _MinMargin = 25;
-  static const double _Padding = 25;
+  static const double _boxWidth = 200;
+  static const double _boxHeight = 380;
 
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
@@ -75,32 +75,17 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    bool isSmall = (screenWidth < _BoxWidth + _MinMargin) ||
-        (screenHeight < _BoxHeight + _MinMargin);
+    double vInsets = max(5, (screenHeight - _boxHeight) / 2);
+    double hInsets = max(5, (screenWidth - _boxWidth) / 2);
 
     return Container(
-      color: Colors.black87,
-      padding: isSmall
-          ? null
-          : EdgeInsets.symmetric(
-              vertical: (screenHeight - _BoxHeight) / 2,
-              horizontal: (screenWidth - _BoxWidth) / 2),
-      child: ClipRRect(
-        borderRadius: isSmall
-            ? BorderRadius.all(Radius.circular(0))
-            : BorderRadius.all(Radius.circular(3)),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text(_getScreenTitle()),
-            actions: this.getActions(),
-          ),
-          body: Center(
-            child: Container(
-              padding: EdgeInsets.only(top: _Padding),
-              width: _BoxWidth - _Padding * 2,
-              child: _getScreen(context),
-            ),
-          ),
+      padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
+      child: Center(
+        child: Column(
+          children: <Widget>[
+            Text(_getScreenTitle()),
+            _getScreen(context),
+          ],
         ),
       ),
     );
@@ -140,6 +125,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     }
   }
 
+  static Widget _buildError(BuildContext context, String error) {
+    return Text(
+      error ?? "",
+      style: TextStyle(color: Theme.of(context).errorColor),
+    );
+  }
+
   Widget _buildCreateAccountScreen(BuildContext context) {
     final TextEditingController emailController =
         new TextEditingController(text: this._email);
@@ -151,10 +143,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           labelText: "EMail",
         ),
       ),
-      Text(
-        this._error ?? "",
-        style: TextStyle(color: Colors.red),
-      ),
+      _buildError(context, _error),
       RaisedButton(
         autofocus: true,
         child: Text('Create Account'),
@@ -210,10 +199,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             labelText: "Password",
           ),
         ),
-        Text(
-          this._error ?? "",
-          style: TextStyle(color: Colors.red),
-        ),
+        _buildError(context, _error),
         RaisedButton(
           child: Text('Sign In'),
           onPressed: () async {
@@ -295,10 +281,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             labelText: "EMail",
           ),
         ),
-        Text(
-          this._error ?? "",
-          style: TextStyle(color: Colors.red),
-        ),
+        _buildError(context, _error),
         RaisedButton(
           child: Text('Send Password Reset Link'),
           onPressed: () async {

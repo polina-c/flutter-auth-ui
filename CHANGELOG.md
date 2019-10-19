@@ -34,3 +34,8 @@
 ## [1.0.9] - Oct 16, 2019
 
 * Updated link to demo
+
+## [1.0.10] - Oct 19, 2019
+
+* Stopped using scaffold to prevent Android issues
+* Started using default theme color for error messages

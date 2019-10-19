@@ -6,8 +6,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # after copying this example out of 'faui' 
+  # replace 'path' with latest version
+  # see latest version here: https://pub.dev/packages/faui 
   faui:
     path: ..
+
   http: ^0.12.0+2
   crypted_preferences: ^0.0.2
   uuid: ^2.0.1
