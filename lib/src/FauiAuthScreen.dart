@@ -14,12 +14,21 @@ class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
   final String firebaseApiKey;
   final bool startWithRegistration;
+  final Widget Function(BuildContext context, String title, Widget content,
+      VoidCallback close) builder;
 
   FauiAuthScreen(
       {@required this.onExit,
       @required this.firebaseApiKey,
-      this.startWithRegistration});
+      this.startWithRegistration})
+      : this.builder = null;
 
+  FauiAuthScreen.custom({
+    this.onExit,
+    this.firebaseApiKey,
+    this.builder,
+    this.startWithRegistration,
+  });
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
 }

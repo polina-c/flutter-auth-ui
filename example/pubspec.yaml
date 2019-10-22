@@ -7,9 +7,12 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # after copying this example out of 'faui' 
-  # replace 'path' with latest version
-  # see latest version here: https://pub.dev/packages/faui 
+  # After copying this example out of 'faui', update path
+  # or reference pub.dev:
+  #
+  # faui: <latest version>
+  #
+  # You can find latest version here: https://pub.dev/packages/faui 
   faui:
     path: ..
 
