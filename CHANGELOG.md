@@ -64,3 +64,7 @@
 
 * Layout customization
 * Language customization
+
+## [1.0.18] - Oct 24, 2019
+
+* Added readme.md to 'example'
