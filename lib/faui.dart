@@ -72,6 +72,7 @@ class Faui {
       onExit: onExit,
       firebaseApiKey: firebaseApiKey,
       startWithRegistration: startWithRegistration,
+      phrases: phrases,
       builder: builder,
     );
   }

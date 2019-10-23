@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:faui/FauiPhrases.dart';
+import 'package:faui/src/DefaultScreenBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,6 +16,7 @@ class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
   final String firebaseApiKey;
   final bool startWithRegistration;
+  final Map<FauiPhrases, String> phrases;
   final Widget Function(BuildContext context, String title, Widget content,
       VoidCallback close) builder;
 
@@ -21,14 +24,17 @@ class FauiAuthScreen extends StatefulWidget {
       {@required this.onExit,
       @required this.firebaseApiKey,
       this.startWithRegistration})
-      : this.builder = null;
+      : this.builder = DefaultScreenBuilder.builder,
+        this.phrases = Map<FauiPhrases, String>();
 
   FauiAuthScreen.custom({
-    this.onExit,
-    this.firebaseApiKey,
-    this.builder,
+    @required this.onExit,
+    @required this.firebaseApiKey,
+    @required this.builder,
+    @required this.phrases,
     this.startWithRegistration,
   });
+
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
 }
