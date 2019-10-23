@@ -1,5 +1,5 @@
 import 'package:faui/FauiPhrases.dart';
-import 'package:faui/src/DefaultScreenBuilder.dart';
+import 'package:faui/DefaultScreenBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 

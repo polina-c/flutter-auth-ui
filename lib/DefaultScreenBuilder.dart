@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+/// Provides default layout for authentication screen
 class DefaultScreenBuilder {
   static const double _boxWidth = 200;
   static const double _boxHeight = 400;

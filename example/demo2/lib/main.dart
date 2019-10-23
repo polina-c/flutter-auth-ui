@@ -77,6 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static Widget buildDescription() {
-    return Text('demo1 for flatter-auth-ui: default layout and language');
+    return Text('demo2 for flatter-auth-ui: custom layout and language');
   }
 }
