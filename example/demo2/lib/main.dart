@@ -61,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
         firebaseApiKey: firebaseApiKey,
         builder: authScreenBuilder,
-        phrases: Map<FauiPhrases, String>(),
+        phrases: {FauiPhrases.SignInTitle: "Please, Sign In"},
       );
     }
 
