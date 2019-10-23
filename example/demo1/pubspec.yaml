@@ -14,7 +14,7 @@ dependencies:
   #
   # You can find latest version here: https://pub.dev/packages/faui 
   faui:
-    path: ..
+    path: ./../..
 
   http: ^0.12.0+2
   crypted_preferences: ^0.0.2
