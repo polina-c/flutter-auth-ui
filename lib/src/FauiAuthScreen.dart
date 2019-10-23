@@ -219,7 +219,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         FlatButton(
-          child: Text('Create Account'),
+          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+              'Create Account'),
           onPressed: () {
             this.switchScreen(AuthScreen.createAccount, emailController.text);
           },

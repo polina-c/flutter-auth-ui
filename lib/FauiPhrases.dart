@@ -10,4 +10,5 @@ enum FauiPhrases {
   HaveAccountLink,
   PasswordTextField,
   SignInButton,
+  CreateAccountLink,
 }
