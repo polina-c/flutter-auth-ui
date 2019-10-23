@@ -11,4 +11,8 @@ enum FauiPhrases {
   PasswordTextField,
   SignInButton,
   CreateAccountLink,
+  SignInLink,
+  SendPasswordResetLinkButton,
+  WeSentVerificationEmailMessage,
+  ForgotPassordLink,
 }

@@ -226,7 +226,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         FlatButton(
-          child: Text('Forgot Password?'),
+          child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
+              'Forgot Password?'),
           onPressed: () {
             this.switchScreen(AuthScreen.forgotPassword, emailController.text);
           },
@@ -240,10 +241,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: 50.0),
-          child: Text("We sent verification link to $email"),
+          child: Text(
+              widget.phrases[FauiPhrases.WeSentVerificationEmailMessage] ??
+                  "We sent verification link to $email"),
         ),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
@@ -260,7 +263,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text("We sent the link to reset your password to $email"),
         ),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
@@ -279,12 +282,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
-            labelText: "EMail",
+            labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
           ),
         ),
         _buildError(context, _error),
         RaisedButton(
-          child: Text('Send Password Reset Link'),
+          child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
+              'Send Password Reset Link'),
           onPressed: () async {
             try {
               await FbConnector.sendResetLink(
@@ -301,13 +305,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         FlatButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
         ),
         FlatButton(
-          child: Text('Create Account'),
+          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+              'Create Account'),
           onPressed: () {
             this.switchScreen(AuthScreen.createAccount, email);
           },

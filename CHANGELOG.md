@@ -59,3 +59,8 @@
 ## [1.0.16] - Oct 20, 2019
 
 * Fixed background color
+
+## [1.0.17] - Oct 23, 2019
+
+* Layout customization
+* Language customization
