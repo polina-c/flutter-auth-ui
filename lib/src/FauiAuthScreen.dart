@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:faui/FauiPhrases.dart';
 import 'package:faui/src/DefaultScreenBuilder.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +15,12 @@ class FauiAuthScreen extends StatefulWidget {
   final String firebaseApiKey;
   final bool startWithRegistration;
   final Map<FauiPhrases, String> phrases;
-  final Widget Function(BuildContext context, String title, Widget content,
-      VoidCallback close) builder;
+  final Widget Function({
+    @required BuildContext context,
+    @required String title,
+    @required Widget content,
+    @required VoidCallback close,
+  }) builder;
 
   FauiAuthScreen(
       {@required this.onExit,
@@ -48,8 +50,8 @@ enum AuthScreen {
 }
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
-  static const double _boxWidth = 200;
-  static const double _boxHeight = 400;
+  // static const double _boxWidth = 200;
+  // static const double _boxHeight = 400;
 
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
@@ -79,40 +81,46 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double vInsets = max(5, (screenHeight - _boxHeight) / 2);
-    double hInsets = max(5, (screenWidth - _boxWidth) / 2);
-    return Card(
-      elevation: 0,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: Theme.of(context).textTheme.title.fontSize,
-                    ),
-                    onPressed: this.widget.onExit,
-                  ),
-                ],
-              ),
-              Text(
-                _getScreenTitle(),
-                style: Theme.of(context).textTheme.title,
-              ),
-              _getScreen(context),
-            ],
-          ),
-        ),
-      ),
-    );
+    return this.widget.builder(
+        context: context,
+        title: _getScreenTitle(),
+        content: _getScreen(context),
+        close: this.widget.onExit);
+
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // double screenHeight = MediaQuery.of(context).size.height;
+    // double vInsets = max(5, (screenHeight - _boxHeight) / 2);
+    // double hInsets = max(5, (screenWidth - _boxWidth) / 2);
+    // return Card(
+    //   elevation: 0,
+    //   child: Container(
+    //     padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
+    //     child: Center(
+    //       child: Column(
+    //         mainAxisAlignment: MainAxisAlignment.start,
+    //         children: <Widget>[
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.end,
+    //             children: <Widget>[
+    //               IconButton(
+    //                 icon: Icon(
+    //                   Icons.close,
+    //                   size: Theme.of(context).textTheme.title.fontSize,
+    //                 ),
+    //                 onPressed: this.widget.onExit,
+    //               ),
+    //             ],
+    //           ),
+    //           Text(
+    //             _getScreenTitle(),
+    //             style: Theme.of(context).textTheme.title,
+    //           ),
+    //           _getScreen(context),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   String _getScreenTitle() {

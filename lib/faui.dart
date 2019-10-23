@@ -61,12 +61,12 @@ class Faui {
       @required
           Map<FauiPhrases, String> phrases,
       @required
-          Widget builder(
-        BuildContext context,
-        String title,
-        Widget content,
-        VoidCallback close,
-      ),
+          Widget builder({
+        @required BuildContext context,
+        @required String title,
+        @required Widget content,
+        @required VoidCallback close,
+      }),
       bool startWithRegistration = false}) {
     return FauiAuthScreen.custom(
       onExit: onExit,
