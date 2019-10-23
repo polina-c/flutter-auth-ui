@@ -90,55 +90,33 @@ class _HomeScreenState extends State<HomeScreen> {
     @required Widget content,
     @required VoidCallback close,
   }) {
-    const double _boxWidth = 200;
-    const double _boxHeight = 400;
+    const double _boxWidth = 270;
+    const double _boxHeight = 380;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double vInsets = max(5, (screenHeight - _boxHeight) / 2);
     double hInsets = max(5, (screenWidth - _boxWidth) / 2);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: close,
-          )
-        ],
+    return Container(
+      color: Colors.black87,
+      padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
+      child: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(3)),
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text(title),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.close),
+                  onPressed: close,
+                )
+              ],
+            ),
+            body: Container(
+              child: content,
+              padding: EdgeInsets.all(20),
+            )),
       ),
-      body: content,
     );
-
-    // return Card(
-    //   elevation: 0,
-    //   child: Container(
-    //     padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
-    //     child: Center(
-    //       child: Column(
-    //         mainAxisAlignment: MainAxisAlignment.start,
-    //         children: <Widget>[
-    //           Row(
-    //             mainAxisAlignment: MainAxisAlignment.end,
-    //             children: <Widget>[
-    //               IconButton(
-    //                 icon: Icon(
-    //                   Icons.close,
-    //                   size: Theme.of(context).textTheme.title.fontSize,
-    //                 ),
-    //                 onPressed: close,
-    //               ),
-    //             ],
-    //           ),
-    //           Text(
-    //             title,
-    //             style: Theme.of(context).textTheme.title,
-    //           ),
-    //           content,
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
