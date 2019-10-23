@@ -12,7 +12,10 @@ If you regularly test the library for one of the platforms, say this here, pleas
 
 ## Links
 
-[Demo](https://flatter-auth-ui.codemagic.app/#/)
+
+[Demo1](https://flatter-auth-ui-demo1.codemagic.app/#/) - default layout and phrasing
+
+[Demo2](https://flatter-auth-ui-demo2.codemagic.app/#/) - custom layout and phrasing
 
 [Pub package](https://pub.dev/packages/faui)
 
@@ -46,13 +49,14 @@ dependencies:
   faui: <latest version>
 ```
 Check `<latest version>` [here](https://pub.dev/packages/faui).
+
 ### Update Code
 
 In the beginning of the method `build` of the widget that requires 
 authentication (it should be stateful), add the code:
 ```
 if (faui.User == null) {
-  return faui.BuildAuthScreen(
+  return faui.buildAuthScreen(
     onExit: this.setState((){...}),
     firebaseApiKey: "...",
   );
@@ -69,7 +73,7 @@ import 'package:faui/faui.dart';
 Get user email:
 
 ```
-faui.User.email
+faui.user.email
 ```
 
 
@@ -91,5 +95,7 @@ await faui.trySignInSilently(firebaseApiKey: '...');
 faui.saveUserLocallyForSilentSignIn();
 ``` 
 
+# Custom Layout and Language
 
-
+To customize UI and/or language, invoke buildCustomAuthScreen instead of buildAuthScreen.
+See [demo2](https://github.com/polina-c/flutter-auth-ui/tree/master/example/demo2) for details.
