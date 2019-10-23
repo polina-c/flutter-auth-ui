@@ -1,3 +1,4 @@
+import 'package:faui/FauiPhrases.dart';
 import 'package:faui/src/FauiAuthScreen.dart';
 import 'package:faui/src/FauiAuthState.dart';
 import 'package:faui/src/FauiLocalStorage.dart';
@@ -46,6 +47,33 @@ class Faui {
       onExit: onExit,
       firebaseApiKey: firebaseApiKey,
       startWithRegistration: startWithRegistration,
+    );
+  }
+
+  /// Builds custome sign-in dialog. If startWithRegistration is true, the dialog
+  /// first suggests user to create account with option to sign-in, otherwize
+  /// it suggests user to sign-in with option to create account.
+  static Widget buildCustomAuthScreen(
+      {@required
+          VoidCallback onExit,
+      @required
+          String firebaseApiKey,
+      @required
+          Map<FauiPhrases, String> phrases,
+      @required
+          Widget builder({
+        @required BuildContext context,
+        @required String title,
+        @required Widget content,
+        @required VoidCallback close,
+      }),
+      bool startWithRegistration = false}) {
+    return FauiAuthScreen.custom(
+      onExit: onExit,
+      firebaseApiKey: firebaseApiKey,
+      startWithRegistration: startWithRegistration,
+      phrases: phrases,
+      builder: builder,
     );
   }
 }

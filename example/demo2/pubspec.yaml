@@ -7,16 +7,18 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # after copying this example out of 'faui' 
-  # replace 'path' with latest version
-  # see latest version here: https://pub.dev/packages/faui 
+  # After copying this example out of 'faui', update path
+  # or reference pub.dev:
+  #
+  # faui: <latest version>
+  #
+  # You can find latest version here: https://pub.dev/packages/faui 
   faui:
-    path: ..
+    path: ./../..
 
   http: ^0.12.0+2
   crypted_preferences: ^0.0.2
   uuid: ^2.0.1
-  url_launcher: ^5.1.3
 
 dev_dependencies:
   flutter_test:

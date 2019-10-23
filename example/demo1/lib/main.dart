@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:faui/faui.dart';
 import 'package:flutter/material.dart';
 
@@ -78,32 +77,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static Widget buildDescription() {
-    return new RichText(
-      text: new TextSpan(
-        children: [
-          buildText('This is demo for '),
-          buildLink(
-              'flatter-auth-ui', 'https://github.com/polina-c/flutter-auth-ui'),
-          buildText('. Find source code '),
-          buildLink('here', 'https://github.com/polina-c/flutter-auth-ui-demo'),
-          buildText('.'),
-        ],
-      ),
-    );
-  }
-
-  static TextSpan buildText(String text) {
-    return new TextSpan(
-      text: text,
-      style: new TextStyle(color: Colors.black),
-    );
-  }
-
-  static TextSpan buildLink(String text, String url) {
-    return new TextSpan(
-      text: text + "($url)",
-      style: new TextStyle(color: Colors.blue),
-      recognizer: new TapGestureRecognizer()..onTap = () {},
-    );
+    return Text('demo1 for flatter-auth-ui: default layout and language');
   }
 }

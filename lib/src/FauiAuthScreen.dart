@@ -1,5 +1,5 @@
-import 'dart:math';
-
+import 'package:faui/FauiPhrases.dart';
+import 'package:faui/DefaultScreenBuilder.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
@@ -14,11 +14,28 @@ class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
   final String firebaseApiKey;
   final bool startWithRegistration;
+  final Map<FauiPhrases, String> phrases;
+  final Widget Function({
+    @required BuildContext context,
+    @required String title,
+    @required Widget content,
+    @required VoidCallback close,
+  }) builder;
 
   FauiAuthScreen(
       {@required this.onExit,
       @required this.firebaseApiKey,
-      this.startWithRegistration});
+      this.startWithRegistration})
+      : this.builder = DefaultScreenBuilder.builder,
+        this.phrases = Map<FauiPhrases, String>();
+
+  FauiAuthScreen.custom({
+    @required this.onExit,
+    @required this.firebaseApiKey,
+    @required this.builder,
+    @required this.phrases,
+    this.startWithRegistration,
+  });
 
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
@@ -33,9 +50,6 @@ enum AuthScreen {
 }
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
-  static const double _boxWidth = 200;
-  static const double _boxHeight = 400;
-
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
@@ -64,54 +78,28 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double vInsets = max(5, (screenHeight - _boxHeight) / 2);
-    double hInsets = max(5, (screenWidth - _boxWidth) / 2);
-    return Card(
-      elevation: 0,
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: vInsets, horizontal: hInsets),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      size: Theme.of(context).textTheme.title.fontSize,
-                    ),
-                    onPressed: this.widget.onExit,
-                  ),
-                ],
-              ),
-              Text(
-                _getScreenTitle(),
-                style: Theme.of(context).textTheme.title,
-              ),
-              _getScreen(context),
-            ],
-          ),
-        ),
-      ),
-    );
+    return this.widget.builder(
+        context: context,
+        title: _getScreenTitle(),
+        content: _getScreen(context),
+        close: this.widget.onExit);
   }
 
   String _getScreenTitle() {
     switch (this._authScreen) {
       case AuthScreen.signIn:
-        return 'Sign In';
+        return widget.phrases[FauiPhrases.SignInTitle] ?? 'Sign In';
       case AuthScreen.createAccount:
-        return 'Create Account';
+        return widget.phrases[FauiPhrases.CreateAccountTitle] ??
+            'Create Account';
       case AuthScreen.forgotPassword:
-        return 'Forgot Password';
+        return widget.phrases[FauiPhrases.ForgotPassordTitle] ??
+            'Forgot Password';
       case AuthScreen.verifyEmail:
-        return 'Verify Email';
+        return widget.phrases[FauiPhrases.VerifyEmailTitle] ?? 'Verify Email';
       case AuthScreen.resetPassword:
-        return 'Reset Password';
+        return widget.phrases[FauiPhrases.ResetPasswordTitle] ??
+            'Reset Password';
       default:
         throw "Unexpected screen $_authScreen";
     }
@@ -149,13 +137,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         autofocus: true,
         controller: emailController,
         decoration: InputDecoration(
-          labelText: "EMail",
+          labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
         ),
       ),
       _buildError(context, _error),
       RaisedButton(
         autofocus: true,
-        child: Text('Create Account'),
+        child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
+            'Create Account'),
         onPressed: () async {
           try {
             await FbConnector.registerUser(
@@ -178,7 +167,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         },
       ),
       FlatButton(
-        child: Text('Have account? Sign in.'),
+        child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
+            'Have account? Sign in.'),
         onPressed: () {
           this.switchScreen(AuthScreen.signIn, emailController.text);
         },
@@ -198,19 +188,20 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
-            labelText: "EMail",
+            labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
           ),
         ),
         TextField(
           controller: passwordController,
           obscureText: true,
           decoration: InputDecoration(
-            labelText: "Password",
+            labelText:
+                widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
           ),
         ),
         _buildError(context, _error),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () async {
             try {
               FauiUser user = await FbConnector.signInUser(
@@ -228,13 +219,15 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         FlatButton(
-          child: Text('Create Account'),
+          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+              'Create Account'),
           onPressed: () {
             this.switchScreen(AuthScreen.createAccount, emailController.text);
           },
         ),
         FlatButton(
-          child: Text('Forgot Password?'),
+          child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
+              'Forgot Password?'),
           onPressed: () {
             this.switchScreen(AuthScreen.forgotPassword, emailController.text);
           },
@@ -248,10 +241,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.symmetric(vertical: 50.0),
-          child: Text("We sent verification link to $email"),
+          child: Text(
+              widget.phrases[FauiPhrases.WeSentVerificationEmailMessage] ??
+                  "We sent verification link to $email"),
         ),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
@@ -268,7 +263,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text("We sent the link to reset your password to $email"),
         ),
         RaisedButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
@@ -287,12 +282,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
-            labelText: "EMail",
+            labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
           ),
         ),
         _buildError(context, _error),
         RaisedButton(
-          child: Text('Send Password Reset Link'),
+          child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
+              'Send Password Reset Link'),
           onPressed: () async {
             try {
               await FbConnector.sendResetLink(
@@ -309,13 +305,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         FlatButton(
-          child: Text('Sign In'),
+          child: Text(widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
         ),
         FlatButton(
-          child: Text('Create Account'),
+          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+              'Create Account'),
           onPressed: () {
             this.switchScreen(AuthScreen.createAccount, email);
           },
