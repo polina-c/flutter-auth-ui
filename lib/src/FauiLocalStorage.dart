@@ -2,27 +2,10 @@ import 'dart:convert';
 import '../FauiUser.dart';
 import '../FbConnector.dart';
 import 'FauiAuthState.dart';
-import 'FauiUtil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:crypted_preferences/crypted_preferences.dart';
-
-class FauiLocalStorage {
-  static Preferences _prefs;
+class FauiLocalStorage {  
   static const String _LocalKey = "user";
-
-  static void _thowIfNotInitialized() {
-    if (_prefs == null)
-      throw "To use local storage call faui.TrySignInSilently() before app start in order to initialize local storage.";
-  }
-
-  static Future _initialize() async {
-    try {
-      _prefs = await Preferences.preferences(path: 'pathToPrefs');
-    } catch (ex) {
-      print('error initializing:');
-      print(ex);
-    }
-  }
 
   static void saveUserLocallyForSilentSignIn() {
     _storeLocally(_LocalKey, jsonEncode(FauiAuthState.user));
@@ -34,27 +17,29 @@ class FauiLocalStorage {
     print("sso: deleted locally");
   }
 
-  static Future trySignInSilently(String apiKey) async {
+  static trySignInSilently(String apiKey) async {
     print("sso: started silent sign-in");
     try {
-      await _initialize();
-      FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-      String v = _getLocalValue(_LocalKey);
-      if (v == null || v == "null") {
-        print("sso: no user stored");
-        return;
-      }
+        await _getLocalValue(_LocalKey).then((String v) async {
+        if (v == null || v == "null") {
+          print("sso: no user stored");
+          return;
+        }
 
-      FauiUser user = FauiUser.fromJson(jsonDecode(v));
-      if (user == null || user.refreshToken == null) {
-        print("sso: no refresh token found");
-        return;
-      }
-      user = await FbConnector.refreshToken(user: user, apiKey: apiKey);
-      _storeLocally(_LocalKey, jsonEncode(user));
-      FauiAuthState.user = user;
-      print("sso: succeeded silent sign-in");
-      return;
+        FauiUser user = FauiUser.fromJson(jsonDecode(v));
+        if (user == null || user.refreshToken == null) {
+          print("sso: no refresh token found");
+          return;
+        }
+
+        user = await FbConnector.refreshToken(user: user, apiKey: apiKey).then((FauiUser user) {
+          _storeLocally(_LocalKey, jsonEncode(user));
+          FauiAuthState.user = user;
+          print("sso: succeeded silent sign-in");
+          return;
+        });
+      });
+      
     } catch (ex) {
       print("sso: error during silent sign-in:");
       print(ex.toString());
@@ -62,18 +47,38 @@ class FauiLocalStorage {
     }
   }
 
-  static void _deleteLocally(String key) {
-    _thowIfNotInitialized();
-    _prefs.remove(key);
+  static _deleteLocally(String key) async {
+    SharedPreferences prefs;
+    try {
+      prefs = await SharedPreferences.getInstance();
+      prefs.remove(key);
+    } catch (ex) {
+      print("sso: Error deleting from SharedPreferences Instance");
+    }
   }
 
-  static String _getLocalValue(String key) {
-    _thowIfNotInitialized();
-    return _prefs.getString(key);
+  static Future<String> _getLocalValue(String key) async {
+    SharedPreferences prefs;
+    try {
+      prefs = await SharedPreferences.getInstance();
+      return prefs.getString(key);
+    } catch (ex) {
+      print("sso: Error retrieving from SharedPreferences Instance");
+      return null;
+    }
   }
 
-  static void _storeLocally(String key, String value) {
-    _thowIfNotInitialized();
-    _prefs.setString(key, value);
+  static _storeLocally(String key, String value) async {
+    SharedPreferences prefs;
+    try {
+      if(key == null) throw("sso: Error - Key is null");
+      if(value == null) throw("sso: Error - User Value is null");
+      prefs = await SharedPreferences.getInstance();
+      if(prefs == null) throw("sso: Error - Cannot retrieve Shared Preferences Instance");
+      prefs.setString(key, value);
+      if(prefs.getString(key) != value) throw("sso: Error - Unable to verify data stored correctly");
+    } catch (ex) {
+      print(ex);
+    }
   }
 }
