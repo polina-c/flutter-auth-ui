@@ -238,12 +238,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildVerifyEmailScreen(BuildContext context, String email) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
-          child: Text(
-              widget.phrases[FauiPhrases.WeSentVerificationEmailMessage] ??
-                  "We sent verification link to $email"),
+        Text(
+          widget.phrases[FauiPhrases.WeSentVerificationEmailMessage] ??
+              "We sent verification link to $email",
+          textAlign: TextAlign.center,
         ),
         RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
@@ -257,10 +258,13 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildResetPasswordScreen(BuildContext context, String email) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 50.0),
-          child: Text("We sent the link to reset your password to $email"),
+        Text(
+          widget.phrases[FauiPhrases.WeSentLinkToResetPasswordMEssage] ??
+              "We sent the link to reset your password to $email",
+          textAlign: TextAlign.center,
         ),
         RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
