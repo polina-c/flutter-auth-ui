@@ -68,3 +68,7 @@
 ## [1.0.18] - Oct 24, 2019
 
 * Added readme.md to 'example'
+
+## [1.0.19] - Nov 3, 2019
+
+* Removed sizes
