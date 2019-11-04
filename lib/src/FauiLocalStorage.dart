@@ -20,26 +20,23 @@ class FauiLocalStorage {
   static trySignInSilently(String apiKey) async {
     print("sso: started silent sign-in");
     try {
-        await _getLocalValue(_LocalKey).then((String v) async {
-        if (v == null || v == "null") {
-          print("sso: no user stored");
-          return;
-        }
+      String V = await _getLocalValue(_LocalKey);
+      if (v == null || v == "null") {
+        print("sso: no user stored");
+        return;
+      }
 
-        FauiUser user = FauiUser.fromJson(jsonDecode(v));
-        if (user == null || user.refreshToken == null) {
-          print("sso: no refresh token found");
-          return;
-        }
+      FauiUser user = FauiUser.fromJson(jsonDecode(v));
+      if (user == null || user.refreshToken == null) {
+        print("sso: no refresh token found");
+        return;
+      }
 
-        user = await FbConnector.refreshToken(user: user, apiKey: apiKey).then((FauiUser user) {
-          _storeLocally(_LocalKey, jsonEncode(user));
-          FauiAuthState.user = user;
-          print("sso: succeeded silent sign-in");
-          return;
-        });
-      });
-      
+      user = await FbConnector.refreshToken(user: user, apiKey: apiKey)
+      _storeLocally(_LocalKey, jsonEncode(user));
+      FauiAuthState.user = user;
+      print("sso: succeeded silent sign-in");
+      return;
     } catch (ex) {
       print("sso: error during silent sign-in:");
       print(ex.toString());
@@ -59,11 +56,12 @@ class FauiLocalStorage {
 
   static Future<String> _getLocalValue(String key) async {
     SharedPreferences prefs;
+    print("_getLocalValue key = " + key);
     try {
       prefs = await SharedPreferences.getInstance();
       return prefs.getString(key);
     } catch (ex) {
-      print("sso: Error retrieving from SharedPreferences Instance");
+      print("sso: Error retrieving from SharedPreferences Instance : " + ex);
       return null;
     }
   }
