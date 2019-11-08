@@ -4,7 +4,7 @@ import '../FbConnector.dart';
 import 'FauiAuthState.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class FauiLocalStorage {  
+class FauiLocalStorage {
   static const String _LocalKey = "user";
 
   static void saveUserLocallyForSilentSignIn() {
@@ -20,7 +20,7 @@ class FauiLocalStorage {
   static trySignInSilently(String apiKey) async {
     print("sso: started silent sign-in");
     try {
-      String V = await _getLocalValue(_LocalKey);
+      String v = await _getLocalValue(_LocalKey);
       if (v == null || v == "null") {
         print("sso: no user stored");
         return;
@@ -32,7 +32,7 @@ class FauiLocalStorage {
         return;
       }
 
-      user = await FbConnector.refreshToken(user: user, apiKey: apiKey)
+      user = await FbConnector.refreshToken(user: user, apiKey: apiKey);
       _storeLocally(_LocalKey, jsonEncode(user));
       FauiAuthState.user = user;
       print("sso: succeeded silent sign-in");
@@ -69,12 +69,14 @@ class FauiLocalStorage {
   static _storeLocally(String key, String value) async {
     SharedPreferences prefs;
     try {
-      if(key == null) throw("sso: Error - Key is null");
-      if(value == null) throw("sso: Error - User Value is null");
+      if (key == null) throw ("sso: Error - Key is null");
+      if (value == null) throw ("sso: Error - User Value is null");
       prefs = await SharedPreferences.getInstance();
-      if(prefs == null) throw("sso: Error - Cannot retrieve Shared Preferences Instance");
+      if (prefs == null)
+        throw ("sso: Error - Cannot retrieve Shared Preferences Instance");
       prefs.setString(key, value);
-      if(prefs.getString(key) != value) throw("sso: Error - Unable to verify data stored correctly");
+      if (prefs.getString(key) != value)
+        throw ("sso: Error - Unable to verify data stored correctly");
     } catch (ex) {
       print(ex);
     }
