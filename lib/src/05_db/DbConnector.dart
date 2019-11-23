@@ -4,18 +4,20 @@ import 'dart:core';
 import 'package:faui/src/06_auth/FbException.dart';
 import 'package:http/http.dart';
 
+// https://firebase.google.com/docs/firestore/use-rest-api
 class DbConnector {
-  static Future<void> upsert(
+  static Future<void> upsert({String apiKey, String idToken}
       // String projectId,
       // String idToken,
       // String collection,
       // String key,
       // String value,
       ) async {
-    await _sendFbApiRequest();
+    await _sendFbApiRequest(apiKey: apiKey, idToken: idToken);
   }
 
   static Future<Map<String, dynamic>> _sendFbApiRequest(
+      {String apiKey, String idToken}
       //{
       // String idToken,
       // String projectId,
@@ -34,18 +36,21 @@ class DbConnector {
     // String url = "$baseUrl/$projectId/databases/$db/documents/$collection/$key";
 
     String url =
-        "https://firestore.googleapis.com/v1beta1/projects/flutterauth-c3973/databases/(default)/documents/test?&key=AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
+        "https://firestore.googleapis.com/v1/projects/flutterauth-c3973/databases/(default)/documents/test?&key=AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 
     Response response = await post(
       url,
       body: jsonEncode({
         "fields": {
-          "Field1": {"stringValue": "var1"},
-          "Field2": {"stringValue": "var2"},
-          "Field3": {"stringValue": "var3"}
+          "Field1": {"stringValue": '1'},
+          "Field2": {"stringValue": '2'},
+          //"Field3": {"stringValue": "var3"}
         }
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $idToken',
+      },
     );
 
     if (response.statusCode == 200) {
