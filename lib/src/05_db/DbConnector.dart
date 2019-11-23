@@ -36,7 +36,7 @@ class DbConnector {
     // String url = "$baseUrl/$projectId/databases/$db/documents/$collection/$key";
 
     String url =
-        "https://firestore.googleapis.com/v1/projects/flutterauth-c3973/databases/(default)/documents/test?&key=AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
+        "https://firestore.googleapis.com/v1/projects/flutterauth-c3973/databases/(default)/documents/test?documentId=abc&key=AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 
     Response response = await post(
       url,
