@@ -1,7 +1,7 @@
 import 'package:faui/FauiPhrases.dart';
-import 'package:faui/src/FauiAuthScreen.dart';
-import 'package:faui/src/FauiAuthState.dart';
-import 'package:faui/src/FauiLocalStorage.dart';
+import 'package:faui/src/06_auth/FauiAuthScreen.dart';
+import 'package:faui/src/06_auth/FauiAuthState.dart';
+import 'package:faui/src/06_auth/FauiLocalStorage.dart';
 import 'package:flutter/material.dart';
 
 import 'FauiUser.dart';

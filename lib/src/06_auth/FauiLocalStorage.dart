@@ -1,8 +1,8 @@
 import 'dart:convert';
-import '../FauiUser.dart';
-import '../FbConnector.dart';
-import 'FauiAuthState.dart';
-import 'FauiUtil.dart';
+import 'package:faui/FauiUser.dart';
+import 'package:faui/src/06_auth/AuthConnector.dart';
+import 'package:faui/src/06_auth/FauiAuthState.dart';
+import 'package:faui/src/09_utility/FauiUtil.dart';
 
 import 'package:crypted_preferences/crypted_preferences.dart';
 
@@ -50,7 +50,7 @@ class FauiLocalStorage {
         print("sso: no refresh token found");
         return;
       }
-      user = await FbConnector.refreshToken(user: user, apiKey: apiKey);
+      user = await AuthConnector.refreshToken(user: user, apiKey: apiKey);
       _storeLocally(_LocalKey, jsonEncode(user));
       FauiAuthState.user = user;
       print("sso: succeeded silent sign-in");

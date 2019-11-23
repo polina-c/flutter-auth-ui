@@ -2,8 +2,8 @@ import 'dart:collection';
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:faui/src/FauiUtil.dart';
-import 'package:faui/src/FbException.dart';
+import 'package:faui/src/09_utility/FauiUtil.dart';
+import 'package:faui/src/06_auth/FbException.dart';
 import 'package:http/http.dart';
 
 import 'package:uuid/uuid.dart';
@@ -15,7 +15,7 @@ var uuid = Uuid();
 // https://firebase.google.com/docs/reference/rest/auth
 
 /// The class performs operations with Firebase
-class FbConnector {
+class AuthConnector {
   static Future<void> deleteUserIfExists({
     String apiKey,
     String idToken,

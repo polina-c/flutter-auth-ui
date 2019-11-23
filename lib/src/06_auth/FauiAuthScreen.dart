@@ -1,10 +1,10 @@
 import 'package:faui/FauiPhrases.dart';
 import 'package:faui/DefaultScreenBuilder.dart';
+import 'package:faui/FauiUser.dart';
+import 'package:faui/src/06_auth/AuthConnector.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../FauiUser.dart';
-import '../FbConnector.dart';
 import 'FauiAuthState.dart';
 import 'FauiExceptionAnalyser.dart';
 
@@ -147,12 +147,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             'Create Account'),
         onPressed: () async {
           try {
-            await FbConnector.registerUser(
+            await AuthConnector.registerUser(
               apiKey: this.widget.firebaseApiKey,
               email: emailController.text,
             );
 
-            await FbConnector.sendResetLink(
+            await AuthConnector.sendResetLink(
               apiKey: this.widget.firebaseApiKey,
               email: emailController.text,
             );
@@ -204,7 +204,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () async {
             try {
-              FauiUser user = await FbConnector.signInUser(
+              FauiUser user = await AuthConnector.signInUser(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
                 password: passwordController.text,
@@ -295,7 +295,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               'Send Password Reset Link'),
           onPressed: () async {
             try {
-              await FbConnector.sendResetLink(
+              await AuthConnector.sendResetLink(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
               );

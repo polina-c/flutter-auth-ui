@@ -99,3 +99,9 @@ faui.saveUserLocallyForSilentSignIn();
 
 To customize UI and/or language, invoke buildCustomAuthScreen instead of buildAuthScreen.
 See [demo2](https://github.com/polina-c/flutter-auth-ui/tree/master/example/demo2) for details.
+
+# Run Tests
+
+```
+flutter pub run test
+```

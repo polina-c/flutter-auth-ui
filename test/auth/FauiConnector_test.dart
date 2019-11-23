@@ -1,6 +1,6 @@
 import 'package:faui/FauiUser.dart';
-import 'package:faui/FbConnector.dart';
-import 'package:faui/src/FauiExceptionAnalyser.dart';
+import 'package:faui/src/06_auth/FauiExceptionAnalyser.dart';
+import 'package:faui/src/06_auth/AuthConnector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,26 +12,28 @@ void main() {
     final String id = uuid.v4();
     final String email = "_test_$id@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+    await AuthConnector.registerUser(
+        apiKey: apiKey, email: email, password: id);
 
-    FauiUser user = await FbConnector.signInUser(
+    FauiUser user = await AuthConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
 
     expect(user.userId == null, false);
     expect(user.email, email);
     expect(user.token == null, false);
-    await FbConnector.sendResetLink(apiKey: apiKey, email: email);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await AuthConnector.sendResetLink(apiKey: apiKey, email: email);
+    await AuthConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await AuthConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 
   test('Refresh token', () async {
     final String id = uuid.v4();
     final String email = "_test_$id@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+    await AuthConnector.registerUser(
+        apiKey: apiKey, email: email, password: id);
 
-    FauiUser user1 = await FbConnector.signInUser(
+    FauiUser user1 = await AuthConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
 
     expect(user1.userId == null, false);
@@ -39,7 +41,7 @@ void main() {
     expect(user1.token == null, false);
 
     FauiUser user2 =
-        await FbConnector.refreshToken(apiKey: apiKey, user: user1);
+        await AuthConnector.refreshToken(apiKey: apiKey, user: user1);
 
     expect(user2.userId, user1.userId);
     expect(user2.email, user1.email);
@@ -50,10 +52,11 @@ void main() {
     final String id = uuid.v4();
     final String email = "_test_$id@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
+    await AuthConnector.registerUser(
+        apiKey: apiKey, email: email, password: id);
 
     try {
-      await FbConnector.registerUser(apiKey: apiKey, email: email);
+      await AuthConnector.registerUser(apiKey: apiKey, email: email);
       expect(true, false);
     } on Exception catch (exception) {
       expect(
@@ -62,24 +65,26 @@ void main() {
           true);
     }
 
-    FauiUser user = await FbConnector.signInUser(
+    FauiUser user = await AuthConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
+    await AuthConnector.deleteUserIfExists(apiKey: apiKey, idToken: user.token);
   });
 
   test('Token validation', () async {
     final String id = uuid.v4();
     final String email = "_test_$id@fakedomain.com";
 
-    await FbConnector.registerUser(apiKey: apiKey, email: email, password: id);
-    FauiUser user1 = await FbConnector.signInUser(
+    await AuthConnector.registerUser(
+        apiKey: apiKey, email: email, password: id);
+    FauiUser user1 = await AuthConnector.signInUser(
         apiKey: apiKey, email: email, password: id);
     FauiUser user2 =
-        await FbConnector.verifyToken(apiKey: apiKey, token: user1.token);
+        await AuthConnector.verifyToken(apiKey: apiKey, token: user1.token);
 
     expect(user2.email, email);
     expect(user2.userId, user1.userId);
 
-    await FbConnector.deleteUserIfExists(apiKey: apiKey, idToken: user1.token);
+    await AuthConnector.deleteUserIfExists(
+        apiKey: apiKey, idToken: user1.token);
   });
 }

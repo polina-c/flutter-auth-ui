@@ -46,7 +46,7 @@
 
 ## [1.0.12] - Oct 19, 2019
 
-* Made class FbConnector public to enable integration testing
+* Made class AuthConnector public to enable integration testing
 
 ## [1.0.14] - Oct 19, 2019
 
