@@ -1,12 +1,14 @@
+import 'dart:convert';
 import 'dart:core';
 
+import 'package:faui/src/09_utility/FauiUtil.dart';
 import 'package:faui/src/09_utility/HttpMethod.dart';
 import 'package:meta/meta.dart';
 import 'package:faui/FauiDb.dart';
 
 // https://firebase.google.com/docs/firestore/use-rest-api
 class DbConnector {
-  static Future<void> upsert({
+  static Future<void> patch({
     @required FauiDb db,
     @required String idToken,
     @required String collection,
@@ -23,7 +25,7 @@ class DbConnector {
     );
   }
 
-  static Future<Object> get({
+  static Future<Map<String, dynamic>> get({
     @required FauiDb db,
     @required String idToken,
     @required String collection,
@@ -39,7 +41,7 @@ class DbConnector {
     );
   }
 
-  static Future<Object> _invoke({
+  static Future<Map<String, dynamic>> _invoke({
     @required FauiDb db,
     @required String idToken,
     @required String collection,
@@ -54,5 +56,9 @@ class DbConnector {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $idToken',
     };
+
+    Map<String, dynamic> map =
+        await FauiUtil.http(operation, headers, url, content);
+    return map;
   }
 }

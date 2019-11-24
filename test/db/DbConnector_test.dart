@@ -4,30 +4,54 @@ import 'package:faui/src/06_auth/AuthConnector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
+import '../testUtil/AuthUtil.dart';
 import '../testUtil/Config.dart';
 
 final uuid = new Uuid();
 
 void main() {
-  test('Create document', () async {
-    final String id = uuid.v4();
-    final String email = "_test_$id@fakedomain.com";
+  FauiUser user;
+  setUp(() async {
+    user = await AuthUtil.signIn();
+  });
 
-    await AuthConnector.registerUser(
-        apiKey: Config.Db.apiKey, email: email, password: id);
+  tearDown(() async {
+    await AuthUtil.deleteUser(user);
+  });
 
-    FauiUser user = await AuthConnector.signInUser(
-        apiKey: Config.Db.apiKey, email: email, password: id);
+  test('Write and read', () async {
+    String doc = 'doc1';
+    String key = 'profile.name';
+    String value1 = 'value of the field';
 
     await DbAccess.save(
       db: Config.Db,
       user: user,
-      docId: "doc1",
-      elementId: 'profile.name',
-      value: 'Polina',
+      docId: doc,
+      key: key,
+      value: value1,
     );
 
-    await AuthConnector.deleteUserIfExists(
-        apiKey: Config.Db.apiKey, idToken: user.token);
+    String value2 = await DbAccess.get(
+      db: Config.Db,
+      user: user,
+      docId: doc,
+      key: key,
+    );
+
+    expect(value2, value1);
+  });
+
+  test('Get non-existing key', () async {
+    String doc = 'doc1';
+    String key = 'profile.name';
+    String value = 'value of the field';
+    await DbAccess.save(
+      db: Config.Db,
+      user: user,
+      docId: doc,
+      key: key,
+      value: value,
+    );
   });
 }

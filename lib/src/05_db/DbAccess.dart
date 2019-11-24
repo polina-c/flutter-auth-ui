@@ -7,12 +7,12 @@ class DbAccess {
   static Future<void> save({
     @required FauiDb db,
     @required String docId,
-    @required String elementId,
+    @required String key,
     @required String value,
     @required FauiUser user,
   }) async {
-    await DbConnector.upsert(
-      collection: elementId,
+    await DbConnector.patch(
+      collection: key,
       content: {
         "fields": {
           "value": {"stringValue": value},
@@ -23,5 +23,21 @@ class DbAccess {
       docId: docId,
       idToken: user.token,
     );
+  }
+
+  static Future<String> get({
+    @required FauiDb db,
+    @required String docId,
+    @required String key,
+    @required FauiUser user,
+  }) async {
+    dynamic record = await DbConnector.get(
+      collection: key,
+      db: db,
+      docId: docId,
+      idToken: user.token,
+    );
+
+    return record["fields"]["value"]["stringValue"];
   }
 }
