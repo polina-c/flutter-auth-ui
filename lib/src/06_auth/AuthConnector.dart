@@ -29,7 +29,7 @@ class AuthConnector {
       params: {
         "idToken": idToken,
       },
-      acceptableErrors: HashSet.from({FbException.UserNotFoundCode}),
+      acceptableWordsInErrorBody: HashSet.from({FbException.UserNotFoundCode}),
     );
   }
 
@@ -149,7 +149,7 @@ class AuthConnector {
     String apiKey,
     String action,
     Map<String, dynamic> params,
-    HashSet<String> acceptableErrors,
+    HashSet<String> acceptableWordsInErrorBody,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: action, name: "action");
@@ -165,8 +165,8 @@ class AuthConnector {
       return map;
     }
 
-    if (acceptableErrors != null) {
-      for (String error in acceptableErrors) {
+    if (acceptableWordsInErrorBody != null) {
+      for (String error in acceptableWordsInErrorBody) {
         if (response.body.contains(error)) {
           return null;
         }

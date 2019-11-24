@@ -4,6 +4,7 @@ class FbException implements Exception {
   static const InvalidEmailCode = "INVALID_EMAIL";
   static const InvalidPasswordCode = "INVALID_PASSWORD";
   static const EmailExistsCode = "EMAIL_EXISTS";
+  static const DocumentNotFoundCode = "NOT_FOUND";
 
   final String message;
   FbException(this.message);

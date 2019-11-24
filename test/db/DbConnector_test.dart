@@ -1,6 +1,5 @@
 import 'package:faui/FauiUser.dart';
 import 'package:faui/src/05_db/DbAccess.dart';
-import 'package:faui/src/06_auth/AuthConnector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
@@ -44,14 +43,14 @@ void main() {
 
   test('Get non-existing key', () async {
     String doc = 'doc1';
-    String key = 'profile.name';
-    String value = 'value of the field';
-    await DbAccess.save(
+    String key = 'non-existing-key';
+    var value = await DbAccess.get(
       db: Config.Db,
       user: user,
       docId: doc,
       key: key,
-      value: value,
     );
+
+    expect(value, null);
   });
 }

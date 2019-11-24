@@ -38,6 +38,6 @@ class DbAccess {
       idToken: user.token,
     );
 
-    return record["fields"]["value"]["stringValue"];
+    return record == null ? null : record["fields"]["value"]["stringValue"];
   }
 }

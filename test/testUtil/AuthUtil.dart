@@ -1,5 +1,6 @@
 import 'package:faui/FauiUser.dart';
 import 'package:faui/src/06_auth/AuthConnector.dart';
+import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
 import '../testUtil/Config.dart';
@@ -14,8 +15,14 @@ class AuthUtil {
     await AuthConnector.registerUser(
         apiKey: Config.Db.apiKey, email: email, password: id);
 
-    return await AuthConnector.signInUser(
+    FauiUser user = await AuthConnector.signInUser(
         apiKey: Config.Db.apiKey, email: email, password: id);
+
+    expect(user.userId == null, false);
+    expect(user.email, email);
+    expect(user.token == null, false);
+
+    return user;
   }
 
   static Future<void> deleteUser(FauiUser u) async {
