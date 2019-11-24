@@ -14,14 +14,19 @@ void main() {
     final String email = "_test_$id@fakedomain.com";
 
     await AuthConnector.registerUser(
-        apiKey: Config.ApiKey, email: email, password: id);
+        apiKey: Config.Db.apiKey, email: email, password: id);
 
     FauiUser user = await AuthConnector.signInUser(
-        apiKey: Config.ApiKey, email: email, password: id);
+        apiKey: Config.Db.apiKey, email: email, password: id);
 
-    await DbConnector.upsert(apiKey: Config.ApiKey, idToken: user.token);
+    await DbConnector.upsert(
+      db: Config.Db,
+      idToken: user.token,
+      collection: "test2",
+      docId: "abcd",
+    );
 
     await AuthConnector.deleteUserIfExists(
-        apiKey: Config.ApiKey, idToken: user.token);
+        apiKey: Config.Db.apiKey, idToken: user.token);
   });
 }

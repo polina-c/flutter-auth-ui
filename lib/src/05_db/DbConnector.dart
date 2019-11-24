@@ -1,33 +1,29 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:meta/meta.dart';
+import 'package:faui/FauiDb.dart';
 import 'package:faui/src/06_auth/FbException.dart';
 import 'package:http/http.dart';
 
 // https://firebase.google.com/docs/firestore/use-rest-api
 class DbConnector {
-  static Future<void> upsert({String apiKey, String idToken}
-      // String projectId,
-      // String idToken,
-      // String collection,
-      // String key,
-      // String value,
-      ) async {
-    await _sendFbApiRequest(apiKey: apiKey, idToken: idToken);
+  static Future<void> upsert({
+    @required FauiDb db,
+    @required String idToken,
+    @required String collection,
+    @required String docId,
+  }) async {
+    await _sendFbApiRequest(
+        collection: collection, docId: docId, idToken: idToken, db: db);
   }
 
-  static Future<Map<String, dynamic>> _sendFbApiRequest(
-      {String apiKey, String idToken}
-      //{
-      // String idToken,
-      // String projectId,
-      // String db,
-      // String action,
-      // String collection,
-      // String key,
-      // dynamic value,
-      //}
-      ) async {
+  static Future<Map<String, dynamic>> _sendFbApiRequest({
+    @required FauiDb db,
+    @required String idToken,
+    @required String collection,
+    @required String docId,
+  }) async {
     // FauiUtil.throwIfNullOrEmpty(value: projectId, name: "projectId");
     // FauiUtil.throwIfNullOrEmpty(value: collection, name: "collection");
 
@@ -36,15 +32,15 @@ class DbConnector {
     // String url = "$baseUrl/$projectId/databases/$db/documents/$collection/$key";
 
     String url =
-        "https://firestore.googleapis.com/v1/projects/flutterauth-c3973/databases/(default)/documents/test?documentId=abc&key=AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
+        "https://firestore.googleapis.com/v1beta1/projects/${db.projectId}/databases/${db.db}/documents/$collection/$docId/?key=${db.apiKey}";
 
-    Response response = await post(
+    Response response = await patch(
       url,
       body: jsonEncode({
         "fields": {
           "Field1": {"stringValue": '1'},
           "Field2": {"stringValue": '2'},
-          //"Field3": {"stringValue": "var3"}
+          "Field3": {"stringValue": "var3"}
         }
       }),
       headers: {
