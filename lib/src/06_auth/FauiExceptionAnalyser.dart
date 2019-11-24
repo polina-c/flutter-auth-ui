@@ -1,6 +1,5 @@
+import 'package:faui/src/09_utility/FbException.dart';
 import 'package:http/http.dart';
-
-import 'FbException.dart';
 
 class FauiExceptionAnalyser {
   static String toUiMessage(dynamic exception) {

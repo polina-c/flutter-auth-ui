@@ -1,0 +1,4 @@
+enum HttpMethod {
+  patch,
+  get,
+}

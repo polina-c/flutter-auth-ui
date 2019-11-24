@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:core';
 
 import 'package:faui/src/09_utility/FauiUtil.dart';
-import 'package:faui/src/06_auth/FbException.dart';
+import 'package:faui/src/09_utility/FbException.dart';
 import 'package:http/http.dart';
 
 import 'package:uuid/uuid.dart';

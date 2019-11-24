@@ -1,5 +1,9 @@
 import 'dart:convert';
 
+import 'package:faui/src/09_utility/FbException.dart';
+import 'package:faui/src/09_utility/HttpMethod.dart';
+import 'package:http/http.dart';
+
 class FauiUtil {
   static void throwIfNullOrEmpty({String value, String name}) {
     if (value == null) {
@@ -42,5 +46,58 @@ class FauiUtil {
     }
 
     return utf8.decode(base64Url.decode(output));
+  }
+
+  static Future<Object> http(
+    HttpMethod method,
+    Object headers,
+    String url,
+    Object content,
+  ) async {
+    Response response;
+    switch (method) {
+      case HttpMethod.get:
+        response = await get(
+          url,
+          headers: headers,
+        );
+        break;
+      case HttpMethod.patch:
+        response = await patch(
+          url,
+          body: jsonEncode(content),
+          headers: headers,
+        );
+        break;
+      default:
+        throw ("unexpected method ${method.toString()}");
+    }
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = json.decode(response.body);
+      return map;
+    }
+    String action = "insert";
+
+    reportFailedRequest(action, response);
+    return null;
+  }
+
+  static void reportFailedRequest(String action, dynamic response) {
+    String message = "Error requesting firebase api $action.";
+    print(message);
+    printResponse(response);
+    throw FbException(message + response.body);
+  }
+
+  static void printResponse(dynamic response) {
+    if (response is Response) {
+      print("code: " + response.statusCode.toString());
+      print("response body: " + response.body);
+      print("reason: " + response.reasonPhrase);
+      return;
+    }
+    print(
+        "Could not print response of type ${response.runtimeType.toString()}");
   }
 }

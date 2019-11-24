@@ -1,5 +1,5 @@
 import 'package:faui/FauiUser.dart';
-import 'package:faui/src/05_db/DbConnector.dart';
+import 'package:faui/src/05_db/DbAccess.dart';
 import 'package:faui/src/06_auth/AuthConnector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
@@ -19,11 +19,12 @@ void main() {
     FauiUser user = await AuthConnector.signInUser(
         apiKey: Config.Db.apiKey, email: email, password: id);
 
-    await DbConnector.upsert(
+    await DbAccess.save(
       db: Config.Db,
-      idToken: user.token,
-      collection: "test2",
-      docId: "abcd",
+      user: user,
+      docId: "doc1",
+      elementId: 'profile.name',
+      value: 'Polina',
     );
 
     await AuthConnector.deleteUserIfExists(
