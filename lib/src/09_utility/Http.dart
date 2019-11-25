@@ -8,7 +8,7 @@ import 'package:http/http.dart';
 class Http {
   static Future<Map<String, dynamic>> send(
     HttpMethod method,
-    Map<String, dynamic> headers,
+    Map<String, String> headers,
     String url,
     Map<String, dynamic> content,
     HashSet<String> acceptableWordsInErrorBody,
@@ -29,6 +29,14 @@ class Http {
           headers: headers,
         );
         break;
+      case HttpMethod.post:
+        response = await post(
+          url,
+          body: jsonEncode(content),
+          headers: headers,
+        );
+        break;
+
       default:
         throw ("unexpected method ${method.toString()}");
     }
@@ -46,18 +54,13 @@ class Http {
       }
     }
 
-    reportFailedRequest(actionToLog, response);
-    return null;
-  }
-
-  static void reportFailedRequest(String action, dynamic response) {
-    String message = "Error requesting firebase api $action.";
+    String message = "Error requesting firebase api: $actionToLog.";
     print(message);
-    printResponse(response);
+    _printResponse(response);
     throw FbException(message + response.body);
   }
 
-  static void printResponse(dynamic response) {
+  static void _printResponse(dynamic response) {
     if (response is Response) {
       print("code: " + response.statusCode.toString());
       print("response body: " + response.body);

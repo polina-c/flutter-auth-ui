@@ -57,7 +57,7 @@ class DbConnector {
     String url = "https://firestore.googleapis.com/v1beta1/projects/" +
         "${db.projectId}/databases/${db.db}/documents/$collection/$docId/?key=${db.apiKey}";
 
-    var headers = {
+    Map<String, String> headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $idToken',
     };

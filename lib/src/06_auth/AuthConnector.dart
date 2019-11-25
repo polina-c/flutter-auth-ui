@@ -1,10 +1,10 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:faui/src/09_utility/FauiUtil.dart';
 import 'package:faui/src/09_utility/FbException.dart';
-import 'package:http/http.dart';
+import 'package:faui/src/09_utility/Http.dart';
+import 'package:faui/src/09_utility/HttpMethod.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -26,7 +26,7 @@ class AuthConnector {
     await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.DeleteAccount,
-      params: {
+      content: {
         "idToken": idToken,
       },
       acceptableWordsInErrorBody: HashSet.from({FbException.UserNotFoundCode}),
@@ -42,7 +42,7 @@ class AuthConnector {
     await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SendResetLink,
-      params: {
+      content: {
         "email": email,
         "requestType": "PASSWORD_RESET",
       },
@@ -57,7 +57,7 @@ class AuthConnector {
     await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.RegisterUser,
-      params: {
+      content: {
         "email": email,
         "password": password ?? uuid.v4(),
       },
@@ -78,7 +78,7 @@ class AuthConnector {
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SignIn,
-      params: {
+      content: {
         "email": email,
         "password": password,
         "returnSecureToken": true,
@@ -107,7 +107,7 @@ class AuthConnector {
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.Verify,
-      params: {
+      content: {
         "idToken": token,
         "returnSecureToken": true,
       },
@@ -148,73 +148,47 @@ class AuthConnector {
   static Future<Map<String, dynamic>> _sendFbApiRequest({
     String apiKey,
     String action,
-    Map<String, dynamic> params,
+    Map<String, dynamic> content,
     HashSet<String> acceptableWordsInErrorBody,
   }) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: action, name: "action");
 
-    Response response = await post(
-      "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey",
-      body: jsonEncode(params),
-      headers: {'Content-Type': 'application/json'},
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    String url =
+        "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey";
+
+    return await Http.send(
+      HttpMethod.post,
+      headers,
+      url,
+      content,
+      acceptableWordsInErrorBody,
+      action,
     );
-
-    if (response.statusCode == 200) {
-      Map<String, dynamic> map = json.decode(response.body);
-      return map;
-    }
-
-    if (acceptableWordsInErrorBody != null) {
-      for (String error in acceptableWordsInErrorBody) {
-        if (response.body.contains(error)) {
-          return null;
-        }
-      }
-    }
-    reportFailedRequest(action, response);
-    return null;
   }
 
   static Future<FauiUser> refreshToken({FauiUser user, String apiKey}) async {
     FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
     FauiUtil.throwIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
 
-    Response response = await post(
-      "https://securetoken.googleapis.com/v1/token?key=$apiKey",
-      body: jsonEncode({
-        "grant_type": "refresh_token",
-        "refresh_token": user.refreshToken,
-      }),
-      headers: {'Content-Type': 'application/json'},
+    Map<String, String> headers = {'Content-Type': 'application/json'};
+    String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";
+    Map<String, dynamic> content = {
+      "grant_type": "refresh_token",
+      "refresh_token": user.refreshToken,
+    };
+
+    Map<String, dynamic> response = await Http.send(
+      HttpMethod.post,
+      headers,
+      url,
+      content,
+      null,
+      "refresh_token",
     );
 
-    if (response.statusCode != 200) {
-      reportFailedRequest("refresh_token", response);
-      return null;
-    }
-
-    user = fbResponseToUser(jsonDecode(response.body));
-
-    return user;
-  }
-
-  static void reportFailedRequest(String action, dynamic response) {
-    String message = "Error requesting firebase api $action.";
-    print(message);
-    printResponse(response);
-    throw FbException(message + response.body);
-  }
-
-  static void printResponse(dynamic response) {
-    if (response is Response) {
-      print("code: " + response.statusCode.toString());
-      print("response body: " + response.body);
-      print("reason: " + response.reasonPhrase);
-      return;
-    }
-    print(
-        "Could not print response of type ${response.runtimeType.toString()}");
+    return fbResponseToUser(response);
   }
 }
 
