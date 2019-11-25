@@ -1,2 +1,3 @@
-* demo1 - dafault layout and language
-* demo2 - custom layout and language
+* demo1 - Default Layout and Language
+* demo2 - Custom Layout and Language
+* demo3 - Store Input as User Types

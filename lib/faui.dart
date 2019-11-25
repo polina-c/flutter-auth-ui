@@ -1,4 +1,7 @@
+import 'package:faui/FauiDb.dart';
 import 'package:faui/FauiPhrases.dart';
+import 'package:faui/src/05_db/DbAccess.dart';
+import 'package:faui/src/05_db/DbConnector.dart';
 import 'package:faui/src/06_auth/FauiAuthScreen.dart';
 import 'package:faui/src/06_auth/FauiAuthState.dart';
 import 'package:faui/src/06_auth/FauiLocalStorage.dart';
@@ -74,6 +77,36 @@ class Faui {
       startWithRegistration: startWithRegistration,
       phrases: phrases,
       builder: builder,
+    );
+  }
+
+  static Future<void> save({
+    FauiDb db,
+    String docId,
+    String key,
+    String value,
+    FauiUser user,
+  }) async {
+    await DbAccess.save(
+      db: db,
+      docId: docId,
+      key: key,
+      value: value,
+      user: user,
+    );
+  }
+
+  static Future<String> get({
+    FauiDb db,
+    String docId,
+    String key,
+    FauiUser user,
+  }) async {
+    await DbAccess.get(
+      db: db,
+      docId: docId,
+      key: key,
+      user: user,
     );
   }
 }

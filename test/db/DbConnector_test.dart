@@ -24,7 +24,7 @@ void main() {
     String value1 = 'value of the field';
 
     await DbAccess.save(
-      db: Config.Db,
+      db: Config.db,
       user: user,
       docId: doc,
       key: key,
@@ -32,7 +32,7 @@ void main() {
     );
 
     String value2 = await DbAccess.get(
-      db: Config.Db,
+      db: Config.db,
       user: user,
       docId: doc,
       key: key,
@@ -45,7 +45,7 @@ void main() {
     String doc = 'doc1';
     String key = 'non-existing-key';
     var value = await DbAccess.get(
-      db: Config.Db,
+      db: Config.db,
       user: user,
       docId: doc,
       key: key,
