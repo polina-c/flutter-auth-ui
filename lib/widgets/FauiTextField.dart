@@ -24,8 +24,22 @@ class _FauiTextFieldState extends State<FauiTextField> {
   @override
   void initState() {
     super.initState();
-
+    _loadValue();
     widget.controller.addListener(_saveValue);
+  }
+
+  _loadValue() async {
+    String value = await DbAccess.load(
+      db: widget.db,
+      docId: "doc1",
+      key: "key1",
+      user: widget.user,
+    );
+    print("loaded: $value");
+
+    this.setState(() {
+      widget.controller.text = value;
+    });
   }
 
   _saveValue() async {
@@ -36,7 +50,7 @@ class _FauiTextFieldState extends State<FauiTextField> {
       user: widget.user,
       value: widget.controller.text,
     );
-    print("text: ${widget.controller.text}");
+    print("saved: ${widget.controller.text}");
   }
 
   @override

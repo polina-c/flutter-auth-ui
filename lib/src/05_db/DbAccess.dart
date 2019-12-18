@@ -25,7 +25,7 @@ class DbAccess {
     );
   }
 
-  static Future<String> get({
+  static Future<String> load({
     @required FauiDb db,
     @required String docId,
     @required String key,

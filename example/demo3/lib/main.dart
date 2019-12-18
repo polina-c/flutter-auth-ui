@@ -31,23 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _wantToSignIn = false;
 
   @override
-  void initState() {
-    super.initState();
-    _loadValue();
-  }
-
-  _loadValue() async {
-    // CoachProfile profile = await XfData.select<CoachProfile>(
-    //   id: widget.profileId,
-    //   token: UiConfig.currentUserToken,
-    // );
-
-    // this.setState(() {
-    //   _profile = profile;
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
     if (Faui.user == null && !_wantToSignIn) {
       return Column(

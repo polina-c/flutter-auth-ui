@@ -31,7 +31,7 @@ void main() {
       value: value1,
     );
 
-    String value2 = await DbAccess.get(
+    String value2 = await DbAccess.load(
       db: Config.db,
       user: user,
       docId: doc,
@@ -44,7 +44,7 @@ void main() {
   test('Get non-existing key', () async {
     String doc = 'doc1';
     String key = 'non-existing-key';
-    var value = await DbAccess.get(
+    var value = await DbAccess.load(
       db: Config.db,
       user: user,
       docId: doc,

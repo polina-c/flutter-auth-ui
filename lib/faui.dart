@@ -102,7 +102,7 @@ class Faui {
     String key,
     FauiUser user,
   }) async {
-    await DbAccess.get(
+    await DbAccess.load(
       db: db,
       docId: docId,
       key: key,
