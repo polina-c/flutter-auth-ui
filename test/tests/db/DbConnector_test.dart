@@ -1,5 +1,5 @@
-import 'package:faui/FauiUser.dart';
-import 'package:faui/src/05_db/DbAccess.dart';
+import 'package:faui/src/90_model/faui_user.dart';
+import 'package:faui/src/05_db/db_access.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 

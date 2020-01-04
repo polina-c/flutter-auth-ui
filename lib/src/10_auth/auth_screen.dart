@@ -1,12 +1,12 @@
-import 'package:faui/FauiPhrases.dart';
-import 'package:faui/DefaultScreenBuilder.dart';
-import 'package:faui/FauiUser.dart';
-import 'package:faui/src/06_auth/AuthConnector.dart';
+import 'package:faui/src/90_infra/faui_exception.dart';
+import 'package:faui/src/90_model/faui_phrases.dart';
+import 'package:faui/src/90_model/faui_user.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import 'FauiAuthState.dart';
-import 'FauiExceptionAnalyser.dart';
+import 'auth_connector.dart';
+import 'auth_state.dart';
+import 'default_screen_builder.dart';
 
 var uuid = new Uuid();
 
@@ -15,27 +15,24 @@ class FauiAuthScreen extends StatefulWidget {
   final String firebaseApiKey;
   final bool startWithRegistration;
   final Map<FauiPhrases, String> phrases;
-  final Widget Function({
-    @required BuildContext context,
-    @required String title,
-    @required Widget content,
-    @required VoidCallback close,
-  }) builder;
+  final Widget Function(
+    BuildContext context,
+    String title,
+    Widget content,
+    VoidCallback close,
+  ) builder;
 
-  FauiAuthScreen(
-      {@required this.onExit,
-      @required this.firebaseApiKey,
-      this.startWithRegistration})
+  FauiAuthScreen(this.onExit, this.firebaseApiKey, this.startWithRegistration)
       : this.builder = DefaultScreenBuilder.builder,
         this.phrases = Map<FauiPhrases, String>();
 
-  FauiAuthScreen.custom({
-    @required this.onExit,
-    @required this.firebaseApiKey,
-    @required this.builder,
-    @required this.phrases,
+  FauiAuthScreen.custom(
+    this.onExit,
+    this.firebaseApiKey,
+    this.builder,
+    this.phrases,
     this.startWithRegistration,
-  });
+  );
 
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
@@ -79,10 +76,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   @override
   Widget build(BuildContext context) {
     return this.widget.builder(
-        context: context,
-        title: _getScreenTitle(),
-        content: _getScreen(context),
-        close: this.widget.onExit);
+        context, _getScreenTitle(), _getScreen(context), this.widget.onExit);
   }
 
   String _getScreenTitle() {
@@ -160,7 +154,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             this.switchScreen(AuthScreen.verifyEmail, emailController.text);
           } catch (e) {
             this.setState(() {
-              this._error = FauiExceptionAnalyser.toUiMessage(e);
+              this._error = FauiException.exceptionToUiMessage(e);
               this._email = emailController.text;
             });
           }
@@ -212,7 +206,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               this.afterAuthorized(context, user);
             } catch (e) {
               this.setState(() {
-                this._error = FauiExceptionAnalyser.toUiMessage(e);
+                this._error = FauiException.exceptionToUiMessage(e);
                 this._email = emailController.text;
               });
             }
@@ -302,7 +296,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               this.switchScreen(AuthScreen.resetPassword, emailController.text);
             } catch (e) {
               this.setState(() {
-                this._error = FauiExceptionAnalyser.toUiMessage(e);
+                this._error = FauiException.exceptionToUiMessage(e);
                 this._email = emailController.text;
               });
             }

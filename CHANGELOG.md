@@ -72,3 +72,9 @@
 ## [1.0.19] - Nov 3, 2019
 
 * Removed sizes
+
+## [2.0.0] - Jan 4, 2020
+
+* Refactored library to meet Dart coding standards
+
+* Added Firebase data access

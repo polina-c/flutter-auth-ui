@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:faui/FauiUser.dart';
-import 'package:faui/src/06_auth/AuthConnector.dart';
-import 'package:faui/src/06_auth/FauiAuthState.dart';
-import 'package:faui/src/09_utility/FauiUtil.dart';
+import 'package:faui/src/90_infra/faui_exception.dart';
+import 'package:faui/src/90_model/faui_user.dart';
 
 import 'package:crypted_preferences/crypted_preferences.dart';
+
+import 'auth_connector.dart';
+import 'auth_state.dart';
 
 class FauiLocalStorage {
   static Preferences _prefs;
@@ -12,7 +13,7 @@ class FauiLocalStorage {
 
   static void _thowIfNotInitialized() {
     if (_prefs == null)
-      throw "To use local storage call faui.TrySignInSilently() before app start in order to initialize local storage.";
+      throw "To use local storage call fauiTrySignInSilently() before app start in order to initialize local storage.";
   }
 
   static Future _initialize() async {
@@ -38,7 +39,7 @@ class FauiLocalStorage {
     print("sso: started silent sign-in");
     try {
       await _initialize();
-      FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+      throwIfNullOrEmpty(value: apiKey, name: "apiKey");
       String v = _getLocalValue(_LocalKey);
       if (v == null || v == "null") {
         print("sso: no user stored");

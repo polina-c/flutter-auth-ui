@@ -1,5 +1,4 @@
 import 'dart:core';
-import 'package:meta/meta.dart';
 
 class FauiDb {
   final String apiKey;
@@ -7,8 +6,8 @@ class FauiDb {
   final String projectId;
 
   FauiDb({
-    @required this.apiKey,
-    @required this.db,
-    @required this.projectId,
+    this.apiKey,
+    this.db,
+    this.projectId,
   });
 }

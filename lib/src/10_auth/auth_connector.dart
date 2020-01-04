@@ -1,14 +1,11 @@
 import 'dart:collection';
 import 'dart:core';
 
-import 'package:faui/src/09_utility/FauiUtil.dart';
-import 'package:faui/src/09_utility/FbException.dart';
-import 'package:faui/src/09_utility/Http.dart';
-import 'package:faui/src/09_utility/HttpMethod.dart';
-
 import 'package:uuid/uuid.dart';
-
-import 'package:faui/FauiUser.dart';
+import '../90_infra/faui_http.dart';
+import '../90_utility/util.dart';
+import '../90_infra/faui_exception.dart';
+import '../90_model/faui_user.dart';
 
 var uuid = Uuid();
 
@@ -20,8 +17,8 @@ class AuthConnector {
     String apiKey,
     String idToken,
   }) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: idToken, name: "idToken");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: idToken, name: "idToken");
 
     await _sendFbApiRequest(
       apiKey: apiKey,
@@ -29,7 +26,7 @@ class AuthConnector {
       content: {
         "idToken": idToken,
       },
-      acceptableWordsInErrorBody: HashSet.from({FbException.UserNotFoundCode}),
+      acceptableWordsInErrorBody: HashSet.from({FbCodes.UserNotFoundCode}),
     );
   }
 
@@ -37,8 +34,8 @@ class AuthConnector {
     String apiKey,
     String email,
   }) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: email, name: "email");
     await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SendResetLink,
@@ -51,8 +48,8 @@ class AuthConnector {
 
   static Future registerUser(
       {String apiKey, String email, String password}) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: email, name: "email");
 
     await _sendFbApiRequest(
       apiKey: apiKey,
@@ -71,9 +68,9 @@ class AuthConnector {
     String email,
     String password,
   }) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: email, name: "email");
-    FauiUtil.throwIfNullOrEmpty(value: password, name: "password");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: email, name: "email");
+    throwIfNullOrEmpty(value: password, name: "password");
 
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
@@ -101,8 +98,8 @@ class AuthConnector {
     String apiKey,
     String token,
   }) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: token, name: "token");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: token, name: "token");
 
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
@@ -133,7 +130,7 @@ class AuthConnector {
   static FauiUser fbResponseToUser(Map<String, dynamic> response) {
     String idToken = response['idToken'] ?? response['id_token'];
 
-    Map<String, dynamic> parsedToken = FauiUtil.parseJwt(idToken);
+    Map<String, dynamic> parsedToken = parseJwt(idToken);
 
     var user = FauiUser(
       email: response['email'] ?? parsedToken['email'],
@@ -151,15 +148,15 @@ class AuthConnector {
     Map<String, dynamic> content,
     HashSet<String> acceptableWordsInErrorBody,
   }) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: action, name: "action");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: action, name: "action");
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String url =
         "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey";
 
-    return await Http.send(
-      HttpMethod.post,
+    return await sendFauiHttp(
+      FauiHttpMethod.post,
       headers,
       url,
       content,
@@ -169,8 +166,8 @@ class AuthConnector {
   }
 
   static Future<FauiUser> refreshToken({FauiUser user, String apiKey}) async {
-    FauiUtil.throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    FauiUtil.throwIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
+    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+    throwIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";
@@ -179,8 +176,8 @@ class AuthConnector {
       "refresh_token": user.refreshToken,
     };
 
-    Map<String, dynamic> response = await Http.send(
-      HttpMethod.post,
+    Map<String, dynamic> response = await sendFauiHttp(
+      FauiHttpMethod.post,
       headers,
       url,
       content,

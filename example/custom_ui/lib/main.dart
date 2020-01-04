@@ -1,5 +1,5 @@
 import 'package:faui/faui.dart';
-import 'package:faui/FauiPhrases.dart';
+import 'package:faui/src/90_model/faui_phrases.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 

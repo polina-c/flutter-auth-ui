@@ -1,5 +1,3 @@
-import 'package:meta/meta.dart';
-
 /// The class represents a registered user
 class FauiUser {
   final String email;
@@ -8,10 +6,10 @@ class FauiUser {
   final String refreshToken;
 
   FauiUser({
-    @required this.email,
-    @required this.userId,
-    @required this.token,
-    @required this.refreshToken,
+    this.email,
+    this.userId,
+    this.token,
+    this.refreshToken,
   });
 
   FauiUser.fromJson(Map<String, dynamic> json)

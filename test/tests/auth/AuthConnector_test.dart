@@ -1,6 +1,6 @@
-import 'package:faui/FauiUser.dart';
-import 'package:faui/src/06_auth/FauiExceptionAnalyser.dart';
-import 'package:faui/src/06_auth/AuthConnector.dart';
+import 'package:faui/src/90_model/faui_user.dart';
+import 'package:faui/src/08_infra/faui_exception.dart';
+import 'package:faui/src/06_auth/auth_connector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 

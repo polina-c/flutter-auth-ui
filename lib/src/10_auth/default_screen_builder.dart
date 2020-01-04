@@ -7,12 +7,12 @@ class DefaultScreenBuilder {
   static const double _boxWidth = 200;
   static const double _boxHeight = 400;
 
-  static Widget builder({
-    @required BuildContext context,
-    @required String title,
-    @required Widget content,
-    @required VoidCallback close,
-  }) {
+  static Widget builder(
+    BuildContext context,
+    String title,
+    Widget content,
+    VoidCallback close,
+  ) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     double vInsets = max(5, (screenHeight - _boxHeight) / 2);

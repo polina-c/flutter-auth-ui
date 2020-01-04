@@ -1,3 +1,3 @@
-* demo1 - Default Layout and Language
-* demo2 - Custom Layout and Language
-* demo3 - Store Input as User Types
+* standard_ui - Default Layout and Language
+* custom_ui - Custom Layout and Language
+* access_data - Store Data to Firebase
