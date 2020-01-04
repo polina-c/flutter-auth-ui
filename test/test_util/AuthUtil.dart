@@ -1,9 +1,9 @@
+import 'package:faui/src/10_auth/auth_connector.dart';
 import 'package:faui/src/90_model/faui_user.dart';
-import 'package:faui/src/06_auth/auth_connector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
-import '../testUtil/Config.dart';
+import 'Config.dart';
 
 final uuid = new Uuid();
 

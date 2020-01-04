@@ -1,4 +1,4 @@
-import 'package:faui/FauiDb.dart';
+import '../../lib/faui.dart';
 
 class Config {
   static FauiDb db = FauiDb(

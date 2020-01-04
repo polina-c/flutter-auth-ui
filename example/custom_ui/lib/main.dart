@@ -1,5 +1,4 @@
 import 'package:faui/faui.dart';
-import 'package:faui/src/90_model/faui_phrases.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
 
@@ -7,7 +6,7 @@ var firebaseApiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Faui.trySignInSilently(firebaseApiKey: firebaseApiKey);
+  await fauiTrySignInSilently(firebaseApiKey: firebaseApiKey);
   runApp(FlutterAuthUiDemo());
 }
 
@@ -33,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (Faui.user == null && !_wantToSignIn) {
+    if (fauiUser == null && !_wantToSignIn) {
       return Column(
         children: <Widget>[
           buildDescription(),
@@ -49,30 +48,30 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    if (Faui.user == null && _wantToSignIn) {
-      return Faui.buildCustomAuthScreen(
-        onExit: () {
+    if (fauiUser == null && _wantToSignIn) {
+      return fauiBuildCustomAuthScreen(
+        () {
           this.setState(() {
             _wantToSignIn = false;
           });
-          if (Faui.user != null) {
-            Faui.saveUserLocallyForSilentSignIn();
+          if (fauiUser != null) {
+            fauiSaveUserLocallyForSilentSignIn();
           }
         },
-        firebaseApiKey: firebaseApiKey,
-        builder: authScreenBuilder,
-        phrases: {FauiPhrases.SignInTitle: "Please, Sign In"},
+        firebaseApiKey,
+        {FauiPhrases.SignInTitle: "Please, Sign In"},
+        authScreenBuilder,
       );
     }
 
     return Column(
       children: <Widget>[
         buildDescription(),
-        Text("Hello, ${Faui.user.email}"),
+        Text("Hello, ${fauiUser.email}"),
         RaisedButton(
           child: Text("Sign Out"),
           onPressed: () {
-            Faui.signOut();
+            fauiSignOut();
             this.setState(() {});
           },
         )
@@ -84,12 +83,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return Text('demo2 for flatter-auth-ui: custom layout and language');
   }
 
-  static Widget authScreenBuilder({
-    @required BuildContext context,
-    @required String title,
-    @required Widget content,
-    @required VoidCallback close,
-  }) {
+  static Widget authScreenBuilder(
+    BuildContext context,
+    String title,
+    Widget content,
+    VoidCallback close,
+  ) {
     const double _boxWidth = 270;
     const double _boxHeight = 380;
     double screenWidth = MediaQuery.of(context).size.width;

@@ -5,7 +5,7 @@ var firebaseApiKey = "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4";
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Faui.trySignInSilently(firebaseApiKey: firebaseApiKey);
+  await fauiTrySignInSilently(firebaseApiKey: firebaseApiKey);
   runApp(FlutterAuthUiDemo());
 }
 
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (Faui.user == null && !_wantToSignIn) {
+    if (fauiUser == null && !_wantToSignIn) {
       return Column(
         children: <Widget>[
           buildDescription(),
@@ -47,28 +47,28 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    if (Faui.user == null && _wantToSignIn) {
-      return Faui.buildAuthScreen(
-        onExit: () {
+    if (fauiUser == null && _wantToSignIn) {
+      return fauiBuildAuthScreen(
+        () {
           this.setState(() {
             _wantToSignIn = false;
           });
-          if (Faui.user != null) {
-            Faui.saveUserLocallyForSilentSignIn();
+          if (fauiUser != null) {
+            fauiSaveUserLocallyForSilentSignIn();
           }
         },
-        firebaseApiKey: firebaseApiKey,
+        firebaseApiKey,
       );
     }
 
     return Column(
       children: <Widget>[
         buildDescription(),
-        Text("Hello, ${Faui.user.email}"),
+        Text("Hello, ${fauiUser.email}"),
         RaisedButton(
           child: Text("Sign Out"),
           onPressed: () {
-            Faui.signOut();
+            fauiSignOut();
             this.setState(() {});
           },
         )

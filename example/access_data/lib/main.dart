@@ -1,6 +1,4 @@
-import 'package:faui/FauiDb.dart';
 import 'package:faui/faui.dart';
-import 'package:faui/widgets/FauiTextField.dart';
 import 'package:flutter/material.dart';
 
 FauiDb db = FauiDb(
@@ -11,7 +9,7 @@ FauiDb db = FauiDb(
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Faui.trySignInSilently(firebaseApiKey: db.apiKey);
+  await fauiTrySignInSilently(firebaseApiKey: db.apiKey);
   runApp(FlutterAuthUiDemo());
 }
 
@@ -32,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (Faui.user == null && !_wantToSignIn) {
+    if (fauiUser == null && !_wantToSignIn) {
       return Column(
         children: <Widget>[
           buildDescription(),
@@ -48,37 +46,28 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    if (Faui.user == null && _wantToSignIn) {
-      return Faui.buildAuthScreen(
-        onExit: () {
+    if (fauiUser == null && _wantToSignIn) {
+      return fauiBuildAuthScreen(
+        () {
           this.setState(() {
             _wantToSignIn = false;
           });
-          if (Faui.user != null) {
-            Faui.saveUserLocallyForSilentSignIn();
+          if (fauiUser != null) {
+            fauiSaveUserLocallyForSilentSignIn();
           }
         },
-        firebaseApiKey: db.apiKey,
+        db.apiKey,
       );
     }
 
     return Column(
       children: <Widget>[
         buildDescription(),
-        Text("Hello, ${Faui.user.email}!"),
-        Text(
-            "Faui widgets can store data as you type, securely, and without server:"),
-        FauiTextField(
-          db,
-          Faui.user,
-          decoration: InputDecoration(
-            labelText: "FauiTextField",
-          ),
-        ),
+        Text("Hello, ${fauiUser.email}!"),
         RaisedButton(
           child: Text("Sign Out"),
           onPressed: () {
-            Faui.signOut();
+            fauiSignOut();
             this.setState(() {});
           },
         )

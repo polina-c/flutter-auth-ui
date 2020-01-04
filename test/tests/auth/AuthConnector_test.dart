@@ -1,11 +1,11 @@
+import 'package:faui/src/10_auth/auth_connector.dart';
+import 'package:faui/src/90_infra/faui_exception.dart';
 import 'package:faui/src/90_model/faui_user.dart';
-import 'package:faui/src/08_infra/faui_exception.dart';
-import 'package:faui/src/06_auth/auth_connector.dart';
 import 'package:test/test.dart';
 import 'package:uuid/uuid.dart';
 
-import '../testUtil/AuthUtil.dart';
-import '../testUtil/Config.dart';
+import '../../test_util/AuthUtil.dart';
+import '../../test_util/Config.dart';
 
 final uuid = new Uuid();
 
@@ -44,7 +44,7 @@ void main() {
       expect(true, false);
     } on Exception catch (exception) {
       expect(
-          FauiExceptionAnalyser.toUiMessage(exception)
+          FauiException.exceptionToUiMessage(exception)
               .contains("already registered"),
           true);
     }

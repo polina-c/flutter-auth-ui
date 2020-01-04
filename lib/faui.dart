@@ -1,12 +1,15 @@
-import 'package:faui/src/90_model/faui_phrases.dart';
-import 'package:faui/src/05_db/db.dart';
-import 'package:faui/src/05_db/db_connector.dart';
-import 'package:faui/src/06_auth/auth_screen.dart';
-import 'package:faui/src/06_auth/auth_state.dart';
-import 'package:faui/src/06_auth/local_storage.dart';
 import 'package:flutter/material.dart';
 
-import 'package:faui/src/90_model/faui_user.dart';
+import 'src/10_auth/auth_state.dart';
+import 'src/10_auth/local_storage.dart';
+import 'src/10_auth/auth_screen.dart';
+import 'src/90_model/faui_db.dart';
+import 'src/90_model/faui_phrases.dart';
+import 'src/90_model/faui_user.dart';
+
+export 'src/90_model/faui_user.dart';
+export 'src/90_model/faui_db.dart';
+export 'src/90_model/faui_phrases.dart';
 
 /// Returns the signed-in user or null
 FauiUser get fauiUser {
@@ -18,7 +21,7 @@ set fauiUser(FauiUser v) {
   FauiAuthState.user = v;
 }
 
-/// Signes out the user
+/// Signs out the user
 void fauiSignOut() {
   FauiAuthState.user = null;
   FauiLocalStorage.deleteUserLocally();
@@ -40,40 +43,37 @@ Future fauiTrySignInSilently({
 /// first suggests user to create account with option to sign-in, otherwize
 /// it suggests user to sign-in with option to create account.
 Widget fauiBuildAuthScreen(
-    {VoidCallback onExit,
-    String firebaseApiKey,
-    bool startWithRegistration = false}) {
+  VoidCallback onExit,
+  String firebaseApiKey, {
+  bool startWithRegistration = false,
+}) {
   return FauiAuthScreen(
-    onExit: onExit,
-    firebaseApiKey: firebaseApiKey,
-    startWithRegistration: startWithRegistration,
+    onExit,
+    firebaseApiKey,
+    startWithRegistration,
   );
 }
 
-/// Builds custome sign-in dialog. If startWithRegistration is true, the dialog
+/// Builds custom sign-in dialog. If startWithRegistration is true, the dialog
 /// first suggests user to create account with option to sign-in, otherwize
 /// it suggests user to sign-in with option to create account.
 Widget fauiBuildCustomAuthScreen(
-    {@required
-        VoidCallback onExit,
-    @required
-        String firebaseApiKey,
-    @required
-        Map<FauiPhrases, String> phrases,
-    @required
-        Widget builder({
-      BuildContext context,
-      String title,
-      Widget content,
-      VoidCallback close,
-    }),
-    bool startWithRegistration = false}) {
+    VoidCallback onExit,
+    String firebaseApiKey,
+    Map<FauiPhrases, String> phrases,
+    Widget builder(
+  BuildContext context,
+  String title,
+  Widget content,
+  VoidCallback close,
+),
+    {bool startWithRegistration = false}) {
   return FauiAuthScreen.custom(
-    onExit: onExit,
-    firebaseApiKey: firebaseApiKey,
-    startWithRegistration: startWithRegistration,
-    phrases: phrases,
-    builder: builder,
+    onExit,
+    firebaseApiKey,
+    builder,
+    phrases,
+    startWithRegistration,
   );
 }
 
