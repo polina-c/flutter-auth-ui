@@ -32,36 +32,10 @@ void main() {
 
     await dbAccess.saveDoc(collection, docId, content1);
 
-    var content2 = dbAccess.loadDoc(collection, docId);
+    var content2 = await dbAccess.loadDoc(collection, docId);
 
-//      (
-//      Config.db,
-//      docId: doc,
-//      key: key,
-//      value: value1,
-//      user: user,
-//    );
-
-//    String value2 = await DbAccess.load(
-//      db: Config.db,
-//      user: user,
-//      docId: doc,
-//      key: key,
-//    );
-//
-//    expect(value2, value1);
+    for (var key in content1.keys) {
+      expect(content1[key], content2[key]);
+    }
   });
-
-//  test('Get non-existing key', () async {
-//    String doc = 'doc1';
-//    String key = 'non-existing-key';
-//    var value = await DbAccess.load(
-//      db: Config.db,
-//      user: user,
-//      docId: doc,
-//      key: key,
-//    );
-//
-//    expect(value, null);
-//  });
 }
