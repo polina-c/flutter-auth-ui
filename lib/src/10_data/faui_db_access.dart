@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' show utf8, base64, jsonEncode;
 
 import '../90_model/faui_user.dart';
 import '../90_model/faui_db.dart';
@@ -22,20 +22,15 @@ class FauiDbAccess {
       }
     };
 
-//      "fields": {
-//        "name": {"stringValue": "Tom"},
-//        "isEducated": {"booleanValue": true},
-//      }
-
     await DbConnector.patch(db, idToken, collection, docId, fbDoc);
   }
 
-  String _fbValue(dynamic value) {
+  dynamic _fbValue(dynamic value) {
     if (_fbType(value) != "bytesValue") {
       return value;
     }
 
-    return jsonEncode(value);
+    return base64.encode(utf8.encode(jsonEncode(value)));
   }
 
   String _fbType(dynamic value) {

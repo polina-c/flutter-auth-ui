@@ -22,6 +22,9 @@ class FauiException {
   final String message;
   FauiException(this.message);
 
+  @override
+  String toString() => '$runtimeType(this). $message';
+
   static String exceptionToUiMessage(dynamic exception) {
     if (exception is String) return exception;
 

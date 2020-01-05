@@ -15,7 +15,7 @@ void main() {
     await AuthUtil.deleteUser(user);
   });
 
-  test('Write and read', () async {
+  test('Write and read doc', () async {
     var docId = 'doc1';
     var collection = 'test';
 
