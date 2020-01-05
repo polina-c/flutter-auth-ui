@@ -15,6 +15,7 @@ dependencies:
   crypted_preferences: ^0.0.2
 
 dev_dependencies:
+  test: any
   flutter_test:
     sdk: flutter
 
