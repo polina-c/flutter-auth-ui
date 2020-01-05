@@ -1,5 +1,4 @@
 import 'package:faui/src/90_model/faui_user.dart';
-import 'db_connector.dart';
 import 'package:faui/src/90_model/faui_db.dart';
 
 class DbAccess {

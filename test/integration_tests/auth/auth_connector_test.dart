@@ -1,10 +1,9 @@
 import '../../../lib/src/10_auth/auth_connector.dart';
 import '../../../lib/src/90_infra/faui_exception.dart';
 import '../../../lib/src/90_model/faui_user.dart';
-import 'package:test/test.dart';
-//
-import '../../test_util/auth_util.dart';
-import '../../test_util/config.dart';
+import 'package:flutter_test/flutter_test.dart';
+import '../../util/auth_util.dart';
+import '../../util/config.dart';
 
 void main() {
   FauiUser user;

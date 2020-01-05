@@ -33,3 +33,7 @@ String _decodeBase64(String str) {
 
   return utf8.decode(base64Url.decode(output));
 }
+
+isEmpty(dynamic v) {
+  return ["", null, false, 0].contains(v);
+}

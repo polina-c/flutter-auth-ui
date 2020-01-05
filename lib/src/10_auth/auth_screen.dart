@@ -1,6 +1,6 @@
-import 'package:faui/src/90_infra/faui_exception.dart';
-import 'package:faui/src/90_model/faui_phrases.dart';
-import 'package:faui/src/90_model/faui_user.dart';
+import '../90_infra/faui_exception.dart';
+import '../90_model/faui_phrases.dart';
+import '../90_model/faui_user.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 

@@ -1,8 +1,9 @@
 import '../../../lib/src/90_model/faui_user.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:uuid/uuid.dart';
 
-import '../../test_util/auth_util.dart';
+import '../../util/auth_util.dart';
 
 final uuid = new Uuid();
 
@@ -17,9 +18,9 @@ void main() {
   });
 
   test('Write and read', () async {
-    String doc = 'doc1';
-    String key = 'profile.name';
-    String value1 = 'value of the field';
+//    String doc = 'doc1';
+//    String key = 'profile.name';
+//    String value1 = 'value of the field';
 
 //    await DbAccess.save(
 //      Config.db,

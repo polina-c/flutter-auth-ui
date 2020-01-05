@@ -1,9 +1,10 @@
+library faui;
+
 import 'package:flutter/material.dart';
 
 import 'src/10_auth/auth_state.dart';
 import 'src/10_auth/local_storage.dart';
 import 'src/10_auth/auth_screen.dart';
-import 'src/90_model/faui_db.dart';
 import 'src/90_model/faui_phrases.dart';
 import 'src/90_model/faui_user.dart';
 
@@ -77,31 +78,31 @@ Widget fauiBuildCustomAuthScreen(
   );
 }
 
-Future<void> saveDoc({
-  FauiDb db,
-  FauiUser user,
-  String docId,
-  Map<String, dynamic> content,
-}) async {
-//  await DbAccess.save(
-//    db: db,
-//    docId: docId,
-//    key: key,
-//    value: value,
-//    user: user,
-//  );
-}
-
-Future<Map<String, dynamic>> loadDoc({
-  FauiDb db,
-  String docId,
-  String key,
-  FauiUser user,
-}) async {
-//  await DbAccess.load(
-//    db: db,
-//    docId: docId,
-//    key: key,
-//    user: user,
-//  );
-}
+//Future<void> saveDoc({
+//  FauiDb db,
+//  FauiUser user,
+//  String docId,
+//  Map<String, dynamic> content,
+//}) async {
+////  await DbAccess.save(
+////    db: db,
+////    docId: docId,
+////    key: key,
+////    value: value,
+////    user: user,
+////  );
+//}
+//
+//Future<Map<String, dynamic>> loadDoc({
+//  FauiDb db,
+//  String docId,
+//  String key,
+//  FauiUser user,
+//}) async {
+////  await DbAccess.load(
+////    db: db,
+////    docId: docId,
+////    key: key,
+////    user: user,
+////  );
+//}

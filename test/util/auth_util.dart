@@ -1,6 +1,7 @@
 import '../../lib/src/10_auth/auth_connector.dart';
 import '../../lib/src/90_model/faui_user.dart';
-import 'package:test/test.dart';
+import 'package:flutter_test/flutter_test.dart';
+
 import 'package:uuid/uuid.dart';
 
 import 'config.dart';

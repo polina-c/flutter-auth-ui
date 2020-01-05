@@ -23,37 +23,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _wantToSignIn = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (fauiUser == null && !_wantToSignIn) {
-      return Column(
-        children: <Widget>[
-          buildDescription(),
-          RaisedButton(
-            child: Text("Sign In"),
-            onPressed: () {
-              this.setState(() {
-                _wantToSignIn = true;
-              });
-            },
-          )
-        ],
-      );
-    }
-
-    if (fauiUser == null && _wantToSignIn) {
+    if (fauiUser == null) {
       return fauiBuildCustomAuthScreen(
         () {
-          this.setState(() {
-            _wantToSignIn = false;
-          });
           if (fauiUser != null) {
             fauiSaveUserLocallyForSilentSignIn();
           }
@@ -66,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Column(
       children: <Widget>[
-        buildDescription(),
         Text("Hello, ${fauiUser.email}"),
         RaisedButton(
           child: Text("Sign Out"),
@@ -77,10 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
-  }
-
-  static Widget buildDescription() {
-    return Text('demo2 for flatter-auth-ui: custom layout and language');
   }
 
   static Widget authScreenBuilder(
