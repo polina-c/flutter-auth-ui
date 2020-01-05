@@ -1,5 +1,4 @@
-import 'dart:core';
-
+/// The class represents a firebase storage.
 class FauiDb {
   final String apiKey;
   final String db;

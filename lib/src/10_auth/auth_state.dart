@@ -1,4 +1,4 @@
-import 'package:faui/src/90_model/faui_user.dart';
+import '../90_model/faui_user.dart';
 
 class FauiAuthState {
   static FauiUser user;

@@ -7,7 +7,7 @@ import '../90_utility/util.dart';
 import '../90_infra/faui_exception.dart';
 import '../90_model/faui_user.dart';
 
-var uuid = Uuid();
+var _uuid = Uuid();
 
 // https://firebase.google.com/docs/reference/rest/auth
 
@@ -56,7 +56,7 @@ class AuthConnector {
       action: FirebaseActions.RegisterUser,
       content: {
         "email": email,
-        "password": password ?? uuid.v4(),
+        "password": password ?? _uuid.v4(),
       },
     );
 

@@ -1,3 +1,4 @@
+/// The enum itemizes customizable phrases.
 enum FauiPhrases {
   SignInTitle,
   CreateAccountTitle,

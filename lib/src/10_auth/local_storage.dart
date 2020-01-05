@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:faui/src/90_infra/faui_exception.dart';
-import 'package:faui/src/90_model/faui_user.dart';
+import '../90_infra/faui_exception.dart';
+import '../90_model/faui_user.dart';
 
 import 'package:crypted_preferences/crypted_preferences.dart';
 
