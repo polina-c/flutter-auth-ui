@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:uuid/uuid.dart';
+
+final _uuid = new Uuid();
 
 Map<String, dynamic> parseJwt(String token) {
   final parts = token.split('.');
@@ -32,6 +35,10 @@ String _decodeBase64(String str) {
   }
 
   return utf8.decode(base64Url.decode(output));
+}
+
+String newId() {
+  return _uuid.v4();
 }
 
 isEmpty(dynamic v) {

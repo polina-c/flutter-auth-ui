@@ -19,7 +19,9 @@ void main() {
     var docId = 'doc1';
     var collection = 'test';
 
-    var content = {
+    var dbAccess = FauiDbAccess(testDb, user.token);
+
+    var content1 = {
       "bool": true,
       "int": 12,
       "double": 1.2,
@@ -28,7 +30,9 @@ void main() {
       "null": null,
     };
 
-    await FauiDbAccess(testDb, user.token).saveDoc(collection, docId, content);
+    await dbAccess.saveDoc(collection, docId, content1);
+
+    var content2 = dbAccess.loadDoc(collection, docId);
 
 //      (
 //      Config.db,

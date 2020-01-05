@@ -18,22 +18,22 @@ class FauiDbAccess {
     var fbDoc = {
       "fields": {
         for (var key in content.keys)
-          key: {_fbType(content[key]): _fbValue(content[key])}
+          key: {_toFbType(content[key]): _toFbValue(content[key])}
       }
     };
 
     await DbConnector.patch(db, idToken, collection, docId, fbDoc);
   }
 
-  dynamic _fbValue(dynamic value) {
-    if (_fbType(value) != "bytesValue") {
+  dynamic _toFbValue(dynamic value) {
+    if (_toFbType(value) != "bytesValue") {
       return value;
     }
 
     return base64.encode(utf8.encode(jsonEncode(value)));
   }
 
-  String _fbType(dynamic value) {
+  String _toFbType(dynamic value) {
     // https://firebase.google.com/docs/firestore/reference/rest/v1beta1/Value
     return value == null
         ? "nullValue"
@@ -46,11 +46,9 @@ class FauiDbAccess {
                     : value is double ? "doubleValue" : "bytesValue";
   }
 
-  static Future<String> load(
-    FauiDb db,
+  Future<Map<String, dynamic>> loadDoc(
+    String collection,
     String docId,
-    String key,
-    FauiUser user,
   ) async {
 //    dynamic record = await DbConnector.get(
 //      collection: key,

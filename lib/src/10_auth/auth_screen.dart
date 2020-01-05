@@ -2,13 +2,10 @@ import '../90_infra/faui_exception.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
 import 'package:flutter/material.dart';
-import 'package:uuid/uuid.dart';
 
 import 'auth_connector.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
-
-var uuid = new Uuid();
 
 class FauiAuthScreen extends StatefulWidget {
   final VoidCallback onExit;
