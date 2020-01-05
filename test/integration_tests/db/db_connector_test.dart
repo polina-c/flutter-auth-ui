@@ -21,7 +21,7 @@ void main() {
 
     var dbAccess = FauiDbAccess(testDb, user.token);
 
-    var content1 = {
+    Map<String, dynamic> content1 = {
       "bool": true,
       "int": 12,
       "double": 1.2,
@@ -32,7 +32,7 @@ void main() {
 
     await dbAccess.saveDoc(collection, docId, content1);
 
-    var content2 = await dbAccess.loadDoc(collection, docId);
+    Map<String, dynamic> content2 = await dbAccess.loadDoc(collection, docId);
 
     for (var key in content1.keys) {
       expect(content1[key], content2[key]);

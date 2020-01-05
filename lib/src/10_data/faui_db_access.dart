@@ -1,4 +1,7 @@
-import 'dart:convert' show utf8, base64, jsonEncode;
+import 'dart:convert' show utf8, base64, jsonEncode, jsonDecode;
+
+import '../90_infra/faui_exception.dart';
+
 import '../90_model/faui_db.dart';
 import 'db_connector.dart';
 
@@ -37,23 +40,41 @@ class FauiDbAccess {
     String collection,
     String docId,
   ) async {
-    dynamic record = await DbConnector.get(db, idToken, collection, docId);
+    var record = await DbConnector.get(db, idToken, collection, docId);
     if (record == null) {
       return null;
     }
 
-    for (var f in record["fields"])
-      return record["fields"]["value"]["stringValue"];
-
-    return null;
+    try {
+      var result = Map<String, dynamic>();
+      for (String key in record["fields"].keys) {
+        String type = record["fields"][key].keys.first;
+        result[key] = _fromFbValue(record["fields"][key][type], type);
+      }
+      return result;
+    } catch (ex, trace) {
+      throw FauiException(
+          "Firebase returned unexpected data format for collection "
+          "$collection, docId $docId, with message '$ex', and trace: \n$trace",
+          FauiFailures.data);
+    }
   }
 
   dynamic _toFbValue(dynamic value) {
-    if (_toFbType(value) != _FbTypes.bytes) {
-      return value;
+    if (_toFbType(value) == _FbTypes.bytes) {
+      return base64.encode(utf8.encode(jsonEncode(value)));
     }
+    return value;
+  }
 
-    return base64.encode(utf8.encode(jsonEncode(value)));
+  dynamic _fromFbValue(dynamic value, String type) {
+    if (type == _FbTypes.bytes) {
+      return jsonDecode(utf8.decode(base64.decode(value)));
+    }
+    if (type == _FbTypes.int) {
+      return int.parse(value);
+    }
+    return value;
   }
 
   String _toFbType(dynamic value) {
