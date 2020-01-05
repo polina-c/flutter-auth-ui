@@ -39,7 +39,7 @@ class FauiLocalStorage {
     print("sso: started silent sign-in");
     try {
       await _initialize();
-      throwIfNullOrEmpty(value: apiKey, name: "apiKey");
+      throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
       String v = _getLocalValue(_LocalKey);
       if (v == null || v == "null") {
         print("sso: no user stored");

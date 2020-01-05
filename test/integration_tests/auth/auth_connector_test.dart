@@ -3,7 +3,7 @@ import '../../../lib/src/90_infra/faui_exception.dart';
 import '../../../lib/src/90_model/faui_user.dart';
 import 'package:test/test.dart';
 import '../../util/auth_util.dart';
-import '../../util/config.dart';
+import '../../util/test_db.dart';
 
 void main() {
   FauiUser user;

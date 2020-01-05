@@ -4,7 +4,7 @@ import '../../lib/src/10_auth/auth_connector.dart';
 import '../../lib/src/90_model/faui_user.dart';
 import 'package:test/test.dart';
 
-import 'config.dart';
+import 'test_db.dart';
 
 class AuthUtil {
   static Future<FauiUser> signIn() async {

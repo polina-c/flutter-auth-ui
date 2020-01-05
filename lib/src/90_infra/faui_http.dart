@@ -61,7 +61,7 @@ Future<Map<String, dynamic>> sendFauiHttp(
   String message = "Error requesting firebase api: $actionToLog.";
   print(message);
   _printResponse(response);
-  throw FauiException(message + response.body);
+  throw FauiException(message + response.body, FauiFailures.dependency);
 }
 
 void _printResponse(dynamic response) {

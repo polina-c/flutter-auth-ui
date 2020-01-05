@@ -1,8 +1,16 @@
 import 'dart:convert' show utf8, base64, jsonEncode;
-
-import '../90_model/faui_user.dart';
 import '../90_model/faui_db.dart';
 import 'db_connector.dart';
+
+class _FbTypes {
+  // https://firebase.google.com/docs/firestore/reference/rest/v1beta1/Value
+  static const String nullV = "nullValue";
+  static const String string = "stringValue";
+  static const String bool = "booleanValue";
+  static const String int = "integerValue";
+  static const String double = "doubleValue";
+  static const String bytes = "bytesValue";
+}
 
 class FauiDbAccess {
   final FauiDb db;
@@ -25,8 +33,23 @@ class FauiDbAccess {
     await DbConnector.patch(db, idToken, collection, docId, fbDoc);
   }
 
+  Future<Map<String, dynamic>> loadDoc(
+    String collection,
+    String docId,
+  ) async {
+    dynamic record = await DbConnector.get(db, idToken, collection, docId);
+    if (record == null) {
+      return null;
+    }
+
+    for (var f in record["fields"])
+      return record["fields"]["value"]["stringValue"];
+
+    return null;
+  }
+
   dynamic _toFbValue(dynamic value) {
-    if (_toFbType(value) != "bytesValue") {
+    if (_toFbType(value) != _FbTypes.bytes) {
       return value;
     }
 
@@ -34,31 +57,14 @@ class FauiDbAccess {
   }
 
   String _toFbType(dynamic value) {
-    // https://firebase.google.com/docs/firestore/reference/rest/v1beta1/Value
     return value == null
-        ? "nullValue"
+        ? _FbTypes.nullV
         : value is String
-            ? "stringValue"
+            ? _FbTypes.string
             : value is bool
-                ? "booleanValue"
+                ? _FbTypes.bool
                 : value is int
-                    ? "integerValue"
-                    : value is double ? "doubleValue" : "bytesValue";
-  }
-
-  Future<Map<String, dynamic>> loadDoc(
-    String collection,
-    String docId,
-  ) async {
-//    dynamic record = await DbConnector.get(
-//      collection: key,
-//      db: db,
-//      docId: docId,
-//      idToken: user.token,
-//    );
-//
-//    return record == null ? null : record["fields"]["value"]["stringValue"];
-
-    return null;
+                    ? _FbTypes.int
+                    : value is double ? _FbTypes.double : _FbTypes.bytes;
   }
 }

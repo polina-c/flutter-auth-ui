@@ -14,8 +14,8 @@ class AuthConnector {
     String apiKey,
     String idToken,
   }) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: idToken, name: "idToken");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(idToken, "idToken", FauiFailures.arg);
 
     await _sendFbApiRequest(
       apiKey: apiKey,
@@ -31,8 +31,8 @@ class AuthConnector {
     String apiKey,
     String email,
   }) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: email, name: "email");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(email, "email", FauiFailures.user);
     await _sendFbApiRequest(
       apiKey: apiKey,
       action: FirebaseActions.SendResetLink,
@@ -45,8 +45,8 @@ class AuthConnector {
 
   static Future registerUser(
       {String apiKey, String email, String password}) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: email, name: "email");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(email, "email", FauiFailures.user);
 
     await _sendFbApiRequest(
       apiKey: apiKey,
@@ -65,9 +65,9 @@ class AuthConnector {
     String email,
     String password,
   }) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: email, name: "email");
-    throwIfNullOrEmpty(value: password, name: "password");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(email, "email", FauiFailures.user);
+    throwIfEmpty(password, "password", FauiFailures.user);
 
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
@@ -95,8 +95,8 @@ class AuthConnector {
     String apiKey,
     String token,
   }) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: token, name: "token");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(token, "token", FauiFailures.arg);
 
     Map<String, dynamic> response = await _sendFbApiRequest(
       apiKey: apiKey,
@@ -145,8 +145,8 @@ class AuthConnector {
     Map<String, dynamic> content,
     HashSet<String> acceptableWordsInErrorBody,
   }) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: action, name: "action");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(action, "action", FauiFailures.arg);
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String url =
@@ -163,8 +163,8 @@ class AuthConnector {
   }
 
   static Future<FauiUser> refreshToken({FauiUser user, String apiKey}) async {
-    throwIfNullOrEmpty(value: apiKey, name: "apiKey");
-    throwIfNullOrEmpty(value: user.refreshToken, name: "apiKey");
+    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+    throwIfEmpty(user.refreshToken, "apiKey", FauiFailures.arg);
 
     Map<String, String> headers = {'Content-Type': 'application/json'};
     String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";

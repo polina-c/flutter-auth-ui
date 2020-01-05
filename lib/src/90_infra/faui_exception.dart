@@ -1,3 +1,4 @@
+import '../90_utility/util.dart';
 import 'package:http/http.dart';
 
 class FbCodes {
@@ -9,24 +10,39 @@ class FbCodes {
   static const DocumentNotFoundCode = "NOT_FOUND";
 }
 
-void throwIfNullOrEmpty({String value, String name}) {
-  if (value == null) {
-    throw ArgumentError("$name should not be null");
-  }
-  if (value.isEmpty) {
-    throw ArgumentError("$name should not be empty");
-  }
+enum FauiFailures {
+  arg,
+  data,
+  user,
+  config,
+  dependency,
 }
 
-class FauiException {
+void throwIfEmpty(dynamic value, String name, FauiFailures failure) {
+  if (!isEmpty(value)) {
+    return;
+  }
+
+  if (failure == FauiFailures.user) {
+    throw FauiException("$name should not be empty", FauiFailures.user);
+  }
+  throw FauiException("$name should not be empty, but it is $value", failure);
+}
+
+class FauiException extends Error {
+  final FauiFailures type;
   final String message;
-  FauiException(this.message);
+  FauiException(this.message, this.type);
 
   @override
-  String toString() => '$runtimeType(this). $message';
+  String toString() => '$runtimeType(this). $type. $message';
 
   static String exceptionToUiMessage(dynamic exception) {
     if (exception is String) return exception;
+
+    if (exception is FauiException && exception.type == FauiFailures.user) {
+      return exception.message;
+    }
 
     if (exception is FauiException) {
       if (exception.message.contains(FbCodes.UserNotFoundCode))
@@ -42,9 +58,7 @@ class FauiException {
     }
 
     if (exception is ClientException) {
-      ClientException clientException = exception;
-
-      if (clientException.message.contains("HttpRequest error"))
+      if (exception.message.contains("HttpRequest error"))
         return "Issues with internet connection.";
     }
 
