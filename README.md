@@ -13,7 +13,7 @@ Also it supports silent sign in.
 
 [Custom layout and phrasing](https://flatter-auth-ui-demo2.codemagic.app/#/)
 
-[Use token to access Firestore](https://flatter-auth-ui-demo2.codemagic.app/#/)
+[Use token to access Firestore](https://flatter-auth-ui-demo3.codemagic.app/#/)
 
 Find the source code [here](https://github.com/polina-c/flutter-auth-ui/tree/master/example)
 

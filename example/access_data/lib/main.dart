@@ -18,7 +18,15 @@ Future main() async {
 class FlutterAuthUiDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: HomeScreen()));
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          width: 600,
+          padding: EdgeInsets.all(60),
+          child: HomeScreen(),
+        ),
+      ),
+    );
   }
 }
 
