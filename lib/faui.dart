@@ -1,79 +1,109 @@
-import 'package:faui/FauiPhrases.dart';
-import 'package:faui/src/FauiAuthScreen.dart';
-import 'package:faui/src/FauiAuthState.dart';
-import 'package:faui/src/FauiLocalStorage.dart';
+library faui;
+
 import 'package:flutter/material.dart';
 
-import 'FauiUser.dart';
+import 'src/10_auth/auth_state.dart';
+import 'src/10_auth/local_storage.dart';
+import 'src/10_auth/auth_screen.dart';
+import 'src/90_model/faui_phrases.dart';
+import 'src/90_model/faui_user.dart';
 
-///Facade class for the library 'faui'
-class Faui {
-  /// Returns the signed-in user or null
-  static FauiUser get user {
-    return FauiAuthState.user;
-  }
+export 'src/90_model/faui_user.dart';
+export 'src/90_model/faui_db.dart';
+export 'src/90_model/faui_phrases.dart';
+export 'src/10_data/faui_db_access.dart';
 
-  /// Sets currently signed-in user
-  static set user(FauiUser v) {
-    FauiAuthState.user = v;
-  }
-
-  /// Signes out the user
-  static void signOut() {
-    FauiAuthState.user = null;
-    FauiLocalStorage.deleteUserLocally();
-  }
-
-  /// Saves user locally to enable silent sign-in
-  static void saveUserLocallyForSilentSignIn() {
-    FauiLocalStorage.saveUserLocallyForSilentSignIn();
-  }
-
-  /// Tries to sign-in silently
-  static Future trySignInSilently({
-    @required String firebaseApiKey,
-  }) async {
-    return await FauiLocalStorage.trySignInSilently(firebaseApiKey);
-  }
-
-  /// Builds sign-in dialog. If startWithRegistration is true, the dialog
-  /// first suggests user to create account with option to sign-in, otherwize
-  /// it suggests user to sign-in with option to create account.
-  static Widget buildAuthScreen(
-      {@required VoidCallback onExit,
-      @required String firebaseApiKey,
-      bool startWithRegistration = false}) {
-    return FauiAuthScreen(
-      onExit: onExit,
-      firebaseApiKey: firebaseApiKey,
-      startWithRegistration: startWithRegistration,
-    );
-  }
-
-  /// Builds custome sign-in dialog. If startWithRegistration is true, the dialog
-  /// first suggests user to create account with option to sign-in, otherwize
-  /// it suggests user to sign-in with option to create account.
-  static Widget buildCustomAuthScreen(
-      {@required
-          VoidCallback onExit,
-      @required
-          String firebaseApiKey,
-      @required
-          Map<FauiPhrases, String> phrases,
-      @required
-          Widget builder({
-        @required BuildContext context,
-        @required String title,
-        @required Widget content,
-        @required VoidCallback close,
-      }),
-      bool startWithRegistration = false}) {
-    return FauiAuthScreen.custom(
-      onExit: onExit,
-      firebaseApiKey: firebaseApiKey,
-      startWithRegistration: startWithRegistration,
-      phrases: phrases,
-      builder: builder,
-    );
-  }
+/// Returns the signed-in user or null
+FauiUser get fauiUser {
+  return FauiAuthState.user;
 }
+
+/// Sets currently signed-in user
+set fauiUser(FauiUser v) {
+  FauiAuthState.user = v;
+}
+
+/// Signs out the user
+void fauiSignOut() {
+  FauiAuthState.user = null;
+  FauiLocalStorage.deleteUserLocally();
+}
+
+/// Saves user locally to enable silent sign-in
+void fauiSaveUserLocallyForSilentSignIn() {
+  FauiLocalStorage.saveUserLocallyForSilentSignIn();
+}
+
+/// Tries to sign-in silently
+Future fauiTrySignInSilently({
+  String firebaseApiKey,
+}) async {
+  return await FauiLocalStorage.trySignInSilently(firebaseApiKey);
+}
+
+/// Builds sign-in dialog. If startWithRegistration is true, the dialog
+/// first suggests user to create account with option to sign-in, otherwize
+/// it suggests user to sign-in with option to create account.
+Widget fauiBuildAuthScreen(
+  VoidCallback onExit,
+  String firebaseApiKey, {
+  bool startWithRegistration = false,
+}) {
+  return FauiAuthScreen(
+    onExit,
+    firebaseApiKey,
+    startWithRegistration,
+  );
+}
+
+/// Builds custom sign-in dialog. If startWithRegistration is true, the dialog
+/// first suggests user to create account with option to sign-in, otherwize
+/// it suggests user to sign-in with option to create account.
+Widget fauiBuildCustomAuthScreen(
+    VoidCallback onExit,
+    String firebaseApiKey,
+    Map<FauiPhrases, String> phrases,
+    Widget builder(
+  BuildContext context,
+  String title,
+  Widget content,
+  VoidCallback close,
+),
+    {bool startWithRegistration = false}) {
+  return FauiAuthScreen.custom(
+    onExit,
+    firebaseApiKey,
+    builder,
+    phrases,
+    startWithRegistration,
+  );
+}
+
+//Future<void> saveDoc({
+//  FauiDb db,
+//  FauiUser user,
+//  String docId,
+//  Map<String, dynamic> content,
+//}) async {
+////  await DbAccess.save(
+////    db: db,
+////    docId: docId,
+////    key: key,
+////    value: value,
+////    user: user,
+////  );
+//}
+//
+//Future<Map<String, dynamic>> loadDoc({
+//  FauiDb db,
+//  String docId,
+//  String key,
+//  FauiUser user,
+//}) async {
+////  await DbAccess.load(
+////    db: db,
+////    docId: docId,
+////    key: key,
+////    user: user,
+////  );
+//}

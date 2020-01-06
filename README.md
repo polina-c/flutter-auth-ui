@@ -5,17 +5,19 @@ It registers users with email and password using Firebase security as a service
 The library provides UI to register user, validate email, sign in, sign out and restore password.
 Also it supports silent sign in.
 
+## Demos
 
-**faui** is regularly tested for Web by [polina-c](https://github.com/polina-c).
+[Sign in on application load](https://flatter-auth-ui-demo0.codemagic.app/#/)
 
-If you regularly test the library for one of the platforms, say this here, please.
+[Sign in on button click](https://flatter-auth-ui-demo1.codemagic.app/#/)
+
+[Custom layout and phrasing](https://flatter-auth-ui-demo2.codemagic.app/#/)
+
+[Use token to access Firestore](https://flatter-auth-ui-demo2.codemagic.app/#/)
+
+Find the source code [here](https://github.com/polina-c/flutter-auth-ui/tree/master/example)
 
 ## Links
-
-
-[Demo1](https://flatter-auth-ui-demo1.codemagic.app/#/) - default layout and phrasing
-
-[Demo2](https://flatter-auth-ui-demo2.codemagic.app/#/) - custom layout and phrasing
 
 [Pub package](https://pub.dev/packages/faui)
 
@@ -24,15 +26,15 @@ If you regularly test the library for one of the platforms, say this here, pleas
 [Package source code](https://github.com/polina-c/flutter-auth-ui)
 
 
-## Getting Started
+## Usage
 
 
 ### Create Project in Firebase
-To test the library use demo project. 
+If you want to test the library, use the demo project:
   
 `apiKey: "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4"`
 
-Then you will want to create your project:
+To create your own Firebase project:
 
 1. Sign in to firebase console https://console.firebase.google.com/
 1. Add, configure and open project
@@ -42,7 +44,7 @@ Then you will want to create your project:
 1. Copy your "Web API Key"
 	
 ### Set Dependency
-2. Update pubspec.yaml to make sure your project references necessary packages:
+Update pubspec.yaml to make sure your project references necessary packages:
 ```
 dependencies:
   ...
@@ -55,8 +57,8 @@ Check `<latest version>` [here](https://pub.dev/packages/faui).
 In the beginning of the method `build` of the widget that requires 
 authentication (it should be stateful), add the code:
 ```
-if (faui.User == null) {
-  return faui.buildAuthScreen(
+if (fauiUser == null) {
+  return fauiBuildAuthScreen(
     onExit: this.setState((){...}),
     firebaseApiKey: "...",
   );
@@ -64,7 +66,7 @@ if (faui.User == null) {
 ```
 
 
-Import:
+Import you need:
 ```
 import 'package:faui/faui.dart';
 ```
@@ -73,13 +75,13 @@ import 'package:faui/faui.dart';
 Get user email:
 
 ```
-faui.user.email
+fauiUser.email
 ```
 
 
 Sign out: 
 ```
-faui.signOut()
+fauiSignOut()
 ```
 
 
@@ -88,14 +90,34 @@ Silent sign-in:
 
 // Before runApp:
 WidgetsFlutterBinding.ensureInitialized();
-await faui.trySignInSilently(firebaseApiKey: '...');
+await fauiTrySignInSilently(firebaseApiKey: '...');
 ...
 
 // After sign in with dialog:
-faui.saveUserLocallyForSilentSignIn();
+fauiSaveUserLocallyForSilentSignIn();
 ``` 
 
-# Custom Layout and Language
+## Custom Layout and Language
 
-To customize UI and/or language, invoke buildCustomAuthScreen instead of buildAuthScreen.
-See [demo2](https://github.com/polina-c/flutter-auth-ui/tree/master/example/demo2) for details.
+To customize UI and/or language, invoke fauiBuildCustomAuthScreen instead of fauiBuildAuthScreen.
+
+See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/custom_ui) for the details.
+
+## Use the Retrieved Token to Access Your Data to Database
+
+Utilize methods loadDoc and saveDoc of the class FauiDbAccess.
+
+See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/access_data) for the details.
+
+
+# Contribute
+
+## Run Tests
+
+```
+flutter pub run test
+```
+
+## Meet Coding Style
+
+We follow [dart styling](export).
