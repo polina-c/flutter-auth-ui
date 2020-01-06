@@ -51,7 +51,7 @@ class DbConnector {
     HashSet<String> acceptableWordsInErrorBody,
     Map<String, dynamic> content,
   }) async {
-    String url = "https://firestore.googleapis.com/v1beta1/projects/" +
+    String url = "https://firestore.googleapis.com/v1/projects/" +
         "${db.projectId}/databases/${db.db}/documents/$collection/$docId/?key=${db.apiKey}";
 
     Map<String, String> headers = {

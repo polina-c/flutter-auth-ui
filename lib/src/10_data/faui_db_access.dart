@@ -17,30 +17,34 @@ class _FbTypes {
 
 class FauiDbAccess {
   final FauiDb db;
-  final String idToken;
+  final String token;
 
-  FauiDbAccess(this.db, this.idToken);
+  FauiDbAccess(this.db, this.token);
 
   Future<void> saveDoc(
     String collection,
     String docId,
     Map<String, dynamic> content,
   ) async {
-    var fbDoc = {
+    // https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/patch
+
+    Map<String, dynamic> fbDoc = {
       "fields": {
         for (var key in content.keys)
           key: {_toFbType(content[key]): _toFbValue(content[key])}
       }
     };
 
-    await DbConnector.patch(db, idToken, collection, docId, fbDoc);
+    await DbConnector.patch(db, token, collection, docId, fbDoc);
   }
 
   Future<Map<String, dynamic>> loadDoc(
     String collection,
     String docId,
   ) async {
-    var record = await DbConnector.get(db, idToken, collection, docId);
+    // https: //cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/get
+
+    var record = await DbConnector.get(db, token, collection, docId);
     if (record == null) {
       return null;
     }

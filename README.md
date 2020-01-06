@@ -5,16 +5,17 @@ It registers users with email and password using Firebase security as a service
 The library provides UI to register user, validate email, sign in, sign out and restore password.
 Also it supports silent sign in.
 
-
-**faui** is regularly tested for Web by [polina-c](https://github.com/polina-c).
-
-If you regularly test the library for one of the platforms, say this here, please.
-
 ## Demos
 
-[Default layout and phrasing](https://flatter-auth-ui-demo1.codemagic.app/#/)
+[Sign in on application load](https://flatter-auth-ui-demo0.codemagic.app/#/)
+
+[Sign in on button click](https://flatter-auth-ui-demo1.codemagic.app/#/)
 
 [Custom layout and phrasing](https://flatter-auth-ui-demo2.codemagic.app/#/)
+
+[Use token to access Firestore](https://flatter-auth-ui-demo2.codemagic.app/#/)
+
+Find the source code [here](https://github.com/polina-c/flutter-auth-ui/tree/master/example)
 
 ## Links
 
@@ -25,7 +26,7 @@ If you regularly test the library for one of the platforms, say this here, pleas
 [Package source code](https://github.com/polina-c/flutter-auth-ui)
 
 
-## Getting Started
+## Usage
 
 
 ### Create Project in Firebase
@@ -99,7 +100,15 @@ fauiSaveUserLocallyForSilentSignIn();
 ## Custom Layout and Language
 
 To customize UI and/or language, invoke fauiBuildCustomAuthScreen instead of fauiBuildAuthScreen.
+
 See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/custom_ui) for the details.
+
+## Use the Retrieved Token to Access Your Data to Database
+
+Utilize methods loadDoc and saveDoc of the class FauiDbAccess.
+
+See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/access_data) for the details.
+
 
 # Contribute
 

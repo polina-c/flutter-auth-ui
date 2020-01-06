@@ -11,6 +11,7 @@ import 'src/90_model/faui_user.dart';
 export 'src/90_model/faui_user.dart';
 export 'src/90_model/faui_db.dart';
 export 'src/90_model/faui_phrases.dart';
+export 'src/10_data/faui_db_access.dart';
 
 /// Returns the signed-in user or null
 FauiUser get fauiUser {
