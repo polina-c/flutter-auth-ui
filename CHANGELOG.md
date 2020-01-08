@@ -82,3 +82,7 @@
 ## [2.0.1] - Jan 7, 2020
 
 * Use shared_preferences instead of crypted_preferences
+
+## [2.0.2] - Jan 7, 2020
+
+* Fixed demo
