@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           if (fauiUser != null) {
             fauiSaveUserLocallyForSilentSignIn();
           }
+          setState(() {});
         },
         firebaseApiKey,
         {FauiPhrases.SignInTitle: "Please, Sign In"},
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Text("Sign Out"),
           onPressed: () {
             fauiSignOut();
-            this.setState(() {});
+            setState(() {});
           },
         )
       ],
