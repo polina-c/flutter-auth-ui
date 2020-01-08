@@ -78,3 +78,7 @@
 * Refactored library to meet Dart coding standards
 
 * Added Firebase data access
+
+## [2.0.1] - Jan 7, 2020
+
+* Use shared_preferences instead of crypted_preferences

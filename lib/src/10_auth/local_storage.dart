@@ -56,7 +56,6 @@ class FauiLocalStorage {
 
   static Future<String> _getLocalValue(String key) async {
     SharedPreferences prefs;
-    print("_getLocalValue key = " + key);
     try {
       prefs = await SharedPreferences.getInstance();
       return prefs.getString(key);
