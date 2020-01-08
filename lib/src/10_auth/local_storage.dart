@@ -1,29 +1,12 @@
 import 'dart:convert';
-import '../90_infra/faui_exception.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../90_model/faui_user.dart';
-
-import 'package:crypted_preferences/crypted_preferences.dart';
 
 import 'auth_connector.dart';
 import 'auth_state.dart';
 
 class FauiLocalStorage {
-  static Preferences _prefs;
   static const String _LocalKey = "user";
-
-  static void _thowIfNotInitialized() {
-    if (_prefs == null)
-      throw "To use local storage call fauiTrySignInSilently() before app start in order to initialize local storage.";
-  }
-
-  static Future _initialize() async {
-    try {
-      _prefs = await Preferences.preferences(path: 'pathToPrefs');
-    } catch (ex) {
-      print('error initializing:');
-      print(ex);
-    }
-  }
 
   static void saveUserLocallyForSilentSignIn() {
     _storeLocally(_LocalKey, jsonEncode(FauiAuthState.user));
@@ -35,12 +18,10 @@ class FauiLocalStorage {
     print("sso: deleted locally");
   }
 
-  static Future trySignInSilently(String apiKey) async {
+  static trySignInSilently(String apiKey) async {
     print("sso: started silent sign-in");
     try {
-      await _initialize();
-      throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-      String v = _getLocalValue(_LocalKey);
+      String v = await _getLocalValue(_LocalKey);
       if (v == null || v == "null") {
         print("sso: no user stored");
         return;
@@ -63,18 +44,41 @@ class FauiLocalStorage {
     }
   }
 
-  static void _deleteLocally(String key) {
-    _thowIfNotInitialized();
-    _prefs.remove(key);
+  static _deleteLocally(String key) async {
+    SharedPreferences prefs;
+    try {
+      prefs = await SharedPreferences.getInstance();
+      prefs.remove(key);
+    } catch (ex) {
+      print("sso: Error deleting from SharedPreferences Instance");
+    }
   }
 
-  static String _getLocalValue(String key) {
-    _thowIfNotInitialized();
-    return _prefs.getString(key);
+  static Future<String> _getLocalValue(String key) async {
+    SharedPreferences prefs;
+    print("_getLocalValue key = " + key);
+    try {
+      prefs = await SharedPreferences.getInstance();
+      return prefs.getString(key);
+    } catch (ex) {
+      print("sso: Error retrieving from SharedPreferences Instance : " + ex);
+      return null;
+    }
   }
 
-  static void _storeLocally(String key, String value) {
-    _thowIfNotInitialized();
-    _prefs.setString(key, value);
+  static _storeLocally(String key, String value) async {
+    SharedPreferences prefs;
+    try {
+      if (key == null) throw ("sso: Error - Key is null");
+      if (value == null) throw ("sso: Error - User Value is null");
+      prefs = await SharedPreferences.getInstance();
+      if (prefs == null)
+        throw ("sso: Error - Cannot retrieve Shared Preferences Instance");
+      prefs.setString(key, value);
+      if (prefs.getString(key) != value)
+        throw ("sso: Error - Unable to verify data stored correctly");
+    } catch (ex) {
+      print(ex);
+    }
   }
 }
