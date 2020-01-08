@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
         () {
           if (fauiUser != null) {
             fauiSaveUserLocallyForSilentSignIn();
+            setState(() {});
           }
         },
         firebaseApiKey,
