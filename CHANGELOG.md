@@ -100,3 +100,7 @@
 ## [2.0.5] - Jan 11, 2020
 
 * Separated api methods to faui_api
+
+## [2.0.6] - Jan 12, 2020
+
+* Added method to delete doc
