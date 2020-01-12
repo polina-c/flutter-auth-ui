@@ -42,7 +42,7 @@ Future<Map<String, dynamic>> dbGet(
   );
 }
 
-Future<Map<String, dynamic>> dbDelete(
+Future<void> dbDelete(
   FauiDb db,
   String idToken,
   String collection,

@@ -3,6 +3,12 @@ import 'package:uuid/uuid.dart';
 
 final _uuid = new Uuid();
 
+void fauiAssert(bool expr, String message){
+  if (!expr){
+    throw Error.safeToString(message);
+  }
+}
+
 Map<String, dynamic> parseJwt(String token) {
   final parts = token.split('.');
   if (parts.length != 3) {
