@@ -96,3 +96,7 @@
 ## [2.0.4] - Jan 11, 2020
 
 * Removed debug logging
+
+## [2.0.5] - Jan 11, 2020
+
+* Separated api methods to faui_api
