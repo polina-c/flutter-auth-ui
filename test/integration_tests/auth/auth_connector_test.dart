@@ -16,16 +16,13 @@ void main() {
   });
 
   test('Register, sign-in, send reset, delete and delete', () async {
-    await AuthConnector.sendResetLink(apiKey: testDb.apiKey, email: user.email);
-    await AuthConnector.deleteUserIfExists(
-        apiKey: testDb.apiKey, idToken: user.token);
-    await AuthConnector.deleteUserIfExists(
-        apiKey: testDb.apiKey, idToken: user.token);
+    // await AuthConnector.sendResetLink(apiKey: testDb.apiKey, email: user.email);
+    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: user.token);
+    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: user.token);
   });
 
   test('Refresh token', () async {
-    var user2 =
-        await AuthConnector.refreshToken(apiKey: testDb.apiKey, user: user);
+    var user2 = await fauiRefreshToken(apiKey: testDb.apiKey, user: user);
 
     expect(user2.userId, user.userId);
     expect(user2.email, user.email);
@@ -34,8 +31,7 @@ void main() {
 
   test('Registration fails if user exists', () async {
     try {
-      await AuthConnector.registerUser(
-          apiKey: testDb.apiKey, email: user.email);
+      await fauiRegisterUser(apiKey: testDb.apiKey, email: user.email);
       expect(true, false);
     } on FauiException catch (exception) {
       expect(
@@ -46,13 +42,12 @@ void main() {
   });
 
   test('Token validation', () async {
-    FauiUser user2 = await AuthConnector.verifyToken(
-        apiKey: testDb.apiKey, token: user.token);
+    FauiUser user2 =
+        await fauiVerifyToken(apiKey: testDb.apiKey, token: user.token);
 
     expect(user2.email, user.email);
     expect(user2.userId, user.userId);
 
-    await AuthConnector.deleteUserIfExists(
-        apiKey: testDb.apiKey, idToken: user.token);
+    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: user.token);
   });
 }

@@ -125,7 +125,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         new TextEditingController(text: this._email);
     return Column(children: <Widget>[
       TextField(
-        autofocus: true,
         controller: emailController,
         decoration: InputDecoration(
           labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
@@ -133,17 +132,11 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
       ),
       _buildError(context, _error),
       RaisedButton(
-        autofocus: true,
         child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
             'Create Account'),
         onPressed: () async {
           try {
-            await AuthConnector.registerUser(
-              apiKey: this.widget.firebaseApiKey,
-              email: emailController.text,
-            );
-
-            await AuthConnector.sendResetLink(
+            await fauiRegisterUser(
               apiKey: this.widget.firebaseApiKey,
               email: emailController.text,
             );
@@ -176,7 +169,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     return Column(
       children: <Widget>[
         TextField(
-          autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
             labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
@@ -195,7 +187,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
           onPressed: () async {
             try {
-              FauiUser user = await AuthConnector.signInUser(
+              FauiUser user = await fauiSignInUser(
                 apiKey: this.widget.firebaseApiKey,
                 email: emailController.text,
                 password: passwordController.text,
@@ -274,7 +266,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     return Column(
       children: <Widget>[
         TextField(
-          autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
             labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
@@ -286,10 +277,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               'Send Password Reset Link'),
           onPressed: () async {
             try {
-              await AuthConnector.sendResetLink(
-                apiKey: this.widget.firebaseApiKey,
-                email: emailController.text,
-              );
+//              await fauiSendResetLink(
+////                apiKey: this.widget.firebaseApiKey,
+////                email: emailController.text,
+////              );
               this.switchScreen(AuthScreen.resetPassword, emailController.text);
             } catch (e) {
               this.setState(() {

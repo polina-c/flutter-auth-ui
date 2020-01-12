@@ -11,11 +11,10 @@ class AuthUtil {
     final String id = newId();
     final String email = "_test_$id@fakedomain.com";
 
-    await AuthConnector.registerUser(
-        apiKey: testDb.apiKey, email: email, password: id);
+    await fauiRegisterUser(apiKey: testDb.apiKey, email: email, password: id);
 
-    FauiUser user = await AuthConnector.signInUser(
-        apiKey: testDb.apiKey, email: email, password: id);
+    FauiUser user =
+        await fauiSignInUser(apiKey: testDb.apiKey, email: email, password: id);
 
     expect(user.userId == null, false);
     expect(user.email, email);
@@ -25,7 +24,6 @@ class AuthUtil {
   }
 
   static Future<void> deleteUser(FauiUser u) async {
-    await AuthConnector.deleteUserIfExists(
-        apiKey: testDb.apiKey, idToken: u.token);
+    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: u.token);
   }
 }

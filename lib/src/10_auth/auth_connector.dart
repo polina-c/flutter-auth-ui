@@ -8,182 +8,180 @@ import '../90_model/faui_user.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
 
-/// The class performs operations with Firebase
-class AuthConnector {
-  static Future<void> deleteUserIfExists({
-    String apiKey,
-    String idToken,
-  }) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(idToken, "idToken", FauiFailures.arg);
+Future<void> fauiDeleteUserIfExists({
+  String apiKey,
+  String idToken,
+}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(idToken, "idToken", FauiFailures.arg);
 
-    await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: FirebaseActions.DeleteAccount,
-      content: {
-        "idToken": idToken,
-      },
-      acceptableWordsInErrorBody: HashSet.from({FbCodes.UserNotFoundCode}),
-    );
+  await _sendFbApiRequest(
+    apiKey: apiKey,
+    action: _FirebaseActions.DeleteAccount,
+    content: {
+      "idToken": idToken,
+    },
+    acceptableWordsInErrorBody: HashSet.from({FbCodes.UserNotFoundCode}),
+  );
+}
+
+fauiRegisterUser({String apiKey, String email, String password}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(email, "email", FauiFailures.user);
+
+  await _sendFbApiRequest(
+    apiKey: apiKey,
+    action: _FirebaseActions.RegisterUser,
+    content: {
+      "email": email,
+      "password": password ?? newId(),
+    },
+  );
+
+  await _sendResetLink(apiKey: apiKey, email: email);
+}
+
+Future<FauiUser> fauiSignInUser({
+  String apiKey,
+  String email,
+  String password,
+}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(email, "email", FauiFailures.user);
+  throwIfEmpty(password, "password", FauiFailures.user);
+
+  Map<String, dynamic> response = await _sendFbApiRequest(
+    apiKey: apiKey,
+    action: _FirebaseActions.SignIn,
+    content: {
+      "email": email,
+      "password": password,
+      "returnSecureToken": true,
+    },
+  );
+
+  FauiUser user = _firebaseResponseToUser(response);
+
+  if (user.email == null)
+    throw Exception(
+        "Email is not expected to be null in Firebase response for sign in");
+  if (user.userId == null)
+    throw Exception(
+        "UserId is not expected to be null in Firebase response for sign in");
+
+  return user;
+}
+
+Future<FauiUser> fauiVerifyToken({
+  String apiKey,
+  String token,
+}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(token, "token", FauiFailures.arg);
+
+  Map<String, dynamic> response = await _sendFbApiRequest(
+    apiKey: apiKey,
+    action: _FirebaseActions.Verify,
+    content: {
+      "idToken": token,
+      "returnSecureToken": true,
+    },
+  );
+
+  List<dynamic> users = response['users'];
+  if (users == null || users.length != 1) {
+    return null;
   }
 
-  static Future<void> sendResetLink({
-    String apiKey,
-    String email,
-  }) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(email, "email", FauiFailures.user);
-    await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: FirebaseActions.SendResetLink,
-      content: {
-        "email": email,
-        "requestType": "PASSWORD_RESET",
-      },
-    );
-  }
+  Map<String, dynamic> fbUser = users[0];
 
-  static Future registerUser(
-      {String apiKey, String email, String password}) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(email, "email", FauiFailures.user);
+  FauiUser user = FauiUser(
+    email: fbUser['email'],
+    userId: fbUser["localId"],
+    token: token,
+    refreshToken: null,
+  );
 
-    await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: FirebaseActions.RegisterUser,
-      content: {
-        "email": email,
-        "password": password ?? newId(),
-      },
-    );
+  return user;
+}
 
-    await sendResetLink(apiKey: apiKey, email: email);
-  }
+Future<void> _sendResetLink({
+  String apiKey,
+  String email,
+}) async {
+  print('send reset link');
 
-  static Future<FauiUser> signInUser({
-    String apiKey,
-    String email,
-    String password,
-  }) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(email, "email", FauiFailures.user);
-    throwIfEmpty(password, "password", FauiFailures.user);
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(email, "email", FauiFailures.user);
+  await _sendFbApiRequest(
+    apiKey: apiKey,
+    action: _FirebaseActions.SendResetLink,
+    content: {
+      "email": email,
+      "requestType": "PASSWORD_RESET",
+    },
+  );
+}
 
-    Map<String, dynamic> response = await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: FirebaseActions.SignIn,
-      content: {
-        "email": email,
-        "password": password,
-        "returnSecureToken": true,
-      },
-    );
+FauiUser _firebaseResponseToUser(Map<String, dynamic> response) {
+  String idToken = response['idToken'] ?? response['id_token'];
 
-    FauiUser user = fbResponseToUser(response);
+  Map<String, dynamic> parsedToken = parseJwt(idToken);
 
-    if (user.email == null)
-      throw Exception(
-          "Email is not expected to be null in Firebase response for sign in");
-    if (user.userId == null)
-      throw Exception(
-          "UserId is not expected to be null in Firebase response for sign in");
+  var user = FauiUser(
+    email: response['email'] ?? parsedToken['email'],
+    userId: parsedToken["userId"] ?? parsedToken["user_id"],
+    token: idToken,
+    refreshToken: response['refreshToken'] ?? response['refresh_token'],
+  );
 
-    return user;
-  }
+  return user;
+}
 
-  static Future<FauiUser> verifyToken({
-    String apiKey,
-    String token,
-  }) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(token, "token", FauiFailures.arg);
+Future<Map<String, dynamic>> _sendFbApiRequest({
+  String apiKey,
+  String action,
+  Map<String, dynamic> content,
+  HashSet<String> acceptableWordsInErrorBody,
+}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(action, "action", FauiFailures.arg);
 
-    Map<String, dynamic> response = await _sendFbApiRequest(
-      apiKey: apiKey,
-      action: FirebaseActions.Verify,
-      content: {
-        "idToken": token,
-        "returnSecureToken": true,
-      },
-    );
+  Map<String, String> headers = {'Content-Type': 'application/json'};
+  String url =
+      "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey";
 
-    List<dynamic> users = response['users'];
-    if (users == null || users.length != 1) {
-      return null;
-    }
+  return await sendFauiHttp(
+    FauiHttpMethod.post,
+    headers,
+    url,
+    content,
+    acceptableWordsInErrorBody,
+    action,
+  );
+}
 
-    Map<String, dynamic> fbUser = users[0];
+Future<FauiUser> fauiRefreshToken({FauiUser user, String apiKey}) async {
+  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  throwIfEmpty(user.refreshToken, "apiKey", FauiFailures.arg);
 
-    FauiUser user = FauiUser(
-      email: fbUser['email'],
-      userId: fbUser["localId"],
-      token: token,
-      refreshToken: null,
-    );
+  Map<String, String> headers = {'Content-Type': 'application/json'};
+  String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";
+  Map<String, dynamic> content = {
+    "grant_type": "refresh_token",
+    "refresh_token": user.refreshToken,
+  };
 
-    return user;
-  }
+  Map<String, dynamic> response = await sendFauiHttp(
+    FauiHttpMethod.post,
+    headers,
+    url,
+    content,
+    null,
+    "refresh_token",
+  );
 
-  static FauiUser fbResponseToUser(Map<String, dynamic> response) {
-    String idToken = response['idToken'] ?? response['id_token'];
-
-    Map<String, dynamic> parsedToken = parseJwt(idToken);
-
-    var user = FauiUser(
-      email: response['email'] ?? parsedToken['email'],
-      userId: parsedToken["userId"] ?? parsedToken["user_id"],
-      token: idToken,
-      refreshToken: response['refreshToken'] ?? response['refresh_token'],
-    );
-
-    return user;
-  }
-
-  static Future<Map<String, dynamic>> _sendFbApiRequest({
-    String apiKey,
-    String action,
-    Map<String, dynamic> content,
-    HashSet<String> acceptableWordsInErrorBody,
-  }) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(action, "action", FauiFailures.arg);
-
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    String url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:$action?key=$apiKey";
-
-    return await sendFauiHttp(
-      FauiHttpMethod.post,
-      headers,
-      url,
-      content,
-      acceptableWordsInErrorBody,
-      action,
-    );
-  }
-
-  static Future<FauiUser> refreshToken({FauiUser user, String apiKey}) async {
-    throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-    throwIfEmpty(user.refreshToken, "apiKey", FauiFailures.arg);
-
-    Map<String, String> headers = {'Content-Type': 'application/json'};
-    String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";
-    Map<String, dynamic> content = {
-      "grant_type": "refresh_token",
-      "refresh_token": user.refreshToken,
-    };
-
-    Map<String, dynamic> response = await sendFauiHttp(
-      FauiHttpMethod.post,
-      headers,
-      url,
-      content,
-      null,
-      "refresh_token",
-    );
-
-    return fbResponseToUser(response);
-  }
+  return _firebaseResponseToUser(response);
 }
 
 //https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=[API_KEY]
@@ -191,7 +189,7 @@ class AuthConnector {
 //https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
 //https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=[API_KEY]
 //https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=[API_KEY]
-class FirebaseActions {
+class _FirebaseActions {
   static const SendResetLink = "sendOobCode";
   static const DeleteAccount = "delete";
   static const RegisterUser = "signUp";

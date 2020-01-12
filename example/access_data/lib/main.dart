@@ -15,27 +15,12 @@ Future main() async {
   runApp(FlutterAuthUiDemo());
 }
 
-class FlutterAuthUiDemo extends StatelessWidget {
+class FlutterAuthUiDemo extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Container(
-          width: 600,
-          padding: EdgeInsets.all(60),
-          child: HomeScreen(),
-        ),
-      ),
-    );
-  }
+  _FlutterAuthUiDemoState createState() => _FlutterAuthUiDemoState();
 }
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class _FlutterAuthUiDemoState extends State<FlutterAuthUiDemo> {
   TextEditingController _firstCtrl = TextEditingController();
   TextEditingController _lastCtrl = TextEditingController();
   Map<String, dynamic> _doc;
@@ -50,13 +35,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (fauiUser == null) {
-      return fauiBuildAuthScreen(
-        _processSignIn,
-        _fauiDb.apiKey,
-      );
-    }
+    return MaterialApp(
+      home: fauiUser == null
+          ? fauiBuildAuthScreen(
+              _processSignIn,
+              _fauiDb.apiKey,
+            )
+          : Scaffold(
+              body: Container(
+                width: 600,
+                height: 600,
+                padding: EdgeInsets.all(60),
+                child: _buildContent(),
+              ),
+            ),
+    );
+  }
 
+  Widget _buildContent() {
     if (_doc == null) {
       return Column(
         children: <Widget>[

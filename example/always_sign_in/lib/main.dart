@@ -9,44 +9,36 @@ Future main() async {
   runApp(FlutterAuthUiDemo());
 }
 
-class FlutterAuthUiDemo extends StatelessWidget {
+class FlutterAuthUiDemo extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: HomeScreen()));
-  }
+  _FlutterAuthUiDemoState createState() => _FlutterAuthUiDemoState();
 }
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class _FlutterAuthUiDemoState extends State<FlutterAuthUiDemo> {
   @override
   Widget build(BuildContext context) {
-    if (fauiUser == null) {
-      return fauiBuildAuthScreen(
-        () {
-          if (fauiUser != null) {
-            fauiSaveUserLocallyForSilentSignIn();
-            setState(() {});
-          }
-        },
-        firebaseApiKey,
-      );
-    }
-
-    return Column(
-      children: <Widget>[
-        Text("Hello, ${fauiUser.email}"),
-        RaisedButton(
-          child: Text("Sign Out"),
-          onPressed: () {
-            fauiSignOut();
-            this.setState(() {});
-          },
-        )
-      ],
+    return MaterialApp(
+      home: fauiUser == null
+          ? fauiBuildAuthScreen(
+              () {
+                setState(() {});
+              },
+              firebaseApiKey,
+            )
+          : Scaffold(
+              body: Column(
+                children: <Widget>[
+                  Text("Hello, ${fauiUser.email}"),
+                  RaisedButton(
+                    child: Text("Sign Out"),
+                    onPressed: () {
+                      fauiSignOut();
+                      this.setState(() {});
+                    },
+                  )
+                ],
+              ),
+            ),
     );
   }
 }

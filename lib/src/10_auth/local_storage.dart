@@ -32,7 +32,7 @@ class FauiLocalStorage {
         print("sso: no refresh token found");
         return;
       }
-      user = await AuthConnector.refreshToken(user: user, apiKey: apiKey);
+      user = await fauiRefreshToken(user: user, apiKey: apiKey);
       _storeLocally(_LocalKey, jsonEncode(user));
       FauiAuthState.user = user;
       print("sso: succeeded silent sign-in");

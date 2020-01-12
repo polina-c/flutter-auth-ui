@@ -86,3 +86,10 @@
 ## [2.0.2] - Jan 7, 2020
 
 * Fixed demo
+
+## [2.0.3] - Jan 7, 2020
+
+* Exposed more methods
+
+* Fixed double password reset email
+

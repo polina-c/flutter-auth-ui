@@ -12,6 +12,7 @@ export 'src/90_model/faui_user.dart';
 export 'src/90_model/faui_db.dart';
 export 'src/90_model/faui_phrases.dart';
 export 'src/10_data/faui_db_access.dart';
+export 'src/10_auth/auth_connector.dart';
 
 /// Returns the signed-in user or null
 FauiUser get fauiUser {
@@ -78,32 +79,3 @@ Widget fauiBuildCustomAuthScreen(
     startWithRegistration,
   );
 }
-
-//Future<void> saveDoc({
-//  FauiDb db,
-//  FauiUser user,
-//  String docId,
-//  Map<String, dynamic> content,
-//}) async {
-////  await DbAccess.save(
-////    db: db,
-////    docId: docId,
-////    key: key,
-////    value: value,
-////    user: user,
-////  );
-//}
-//
-//Future<Map<String, dynamic>> loadDoc({
-//  FauiDb db,
-//  String docId,
-//  String key,
-//  FauiUser user,
-//}) async {
-////  await DbAccess.load(
-////    db: db,
-////    docId: docId,
-////    key: key,
-////    user: user,
-////  );
-//}

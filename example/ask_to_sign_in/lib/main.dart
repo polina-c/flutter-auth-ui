@@ -9,28 +9,42 @@ Future main() async {
   runApp(FlutterAuthUiDemo());
 }
 
-class FlutterAuthUiDemo extends StatelessWidget {
+class FlutterAuthUiDemo extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(home: Scaffold(body: HomeScreen()));
-  }
+  _FlutterAuthUiDemoState createState() => _FlutterAuthUiDemoState();
 }
 
-class HomeScreen extends StatefulWidget {
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+class _FlutterAuthUiDemoState extends State<FlutterAuthUiDemo> {
   bool _wantToSignIn = false;
 
   @override
-  void initState() {
-    super.initState();
+  Widget build(BuildContext context) {
+    if (fauiUser == null && _wantToSignIn) {
+      return MaterialApp(
+          home: fauiBuildAuthScreen(
+        () {
+          this.setState(() {
+            _wantToSignIn = false;
+          });
+          if (fauiUser != null) {
+            fauiSaveUserLocallyForSilentSignIn();
+          }
+        },
+        firebaseApiKey,
+      ));
+    }
+
+    return MaterialApp(
+        home: Scaffold(
+      body: buildBody(context),
+    ));
   }
 
-  @override
-  Widget build(BuildContext context) {
+  static Widget buildDescription() {
+    return Text('demo for flatter-auth-ui: default layout and language');
+  }
+
+  buildBody(BuildContext context) {
     if (fauiUser == null && !_wantToSignIn) {
       return Column(
         children: <Widget>[
@@ -47,20 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
 
-    if (fauiUser == null && _wantToSignIn) {
-      return fauiBuildAuthScreen(
-        () {
-          this.setState(() {
-            _wantToSignIn = false;
-          });
-          if (fauiUser != null) {
-            fauiSaveUserLocallyForSilentSignIn();
-          }
-        },
-        firebaseApiKey,
-      );
-    }
-
     return Column(
       children: <Widget>[
         buildDescription(),
@@ -74,9 +74,5 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ],
     );
-  }
-
-  static Widget buildDescription() {
-    return Text('demo1 for flatter-auth-ui: default layout and language');
   }
 }
