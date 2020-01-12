@@ -35,7 +35,7 @@ class FauiDbAccess {
       }
     };
 
-    await DbConnector.patch(db, token, collection, docId, fbDoc);
+    await dbPatch(db, token, collection, docId, fbDoc);
   }
 
   Future<Map<String, dynamic>> loadDoc(
@@ -44,7 +44,7 @@ class FauiDbAccess {
   ) async {
     // https: //cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/get
 
-    var record = await DbConnector.get(db, token, collection, docId);
+    var record = await dbGet(db, token, collection, docId);
     if (record == null) {
       return null;
     }

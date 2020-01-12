@@ -8,6 +8,7 @@ enum FauiHttpMethod {
   patch,
   get,
   post,
+  delete,
 }
 
 Future<Map<String, dynamic>> sendFauiHttp(
