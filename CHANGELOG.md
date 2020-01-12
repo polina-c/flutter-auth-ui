@@ -87,9 +87,12 @@
 
 * Fixed demo
 
-## [2.0.3] - Jan 7, 2020
+## [2.0.3] - Jan 11, 2020
 
 * Exposed more methods
 
 * Fixed double password reset email
 
+## [2.0.4] - Jan 11, 2020
+
+* Removed debug logging

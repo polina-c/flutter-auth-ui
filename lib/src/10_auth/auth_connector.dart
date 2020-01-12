@@ -109,8 +109,6 @@ Future<void> _sendResetLink({
   String apiKey,
   String email,
 }) async {
-  print('send reset link');
-
   throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
   throwIfEmpty(email, "email", FauiFailures.user);
   await _sendFbApiRequest(
