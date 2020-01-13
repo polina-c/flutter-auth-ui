@@ -103,9 +103,12 @@ To customize UI and/or language, invoke fauiBuildCustomAuthScreen instead of fau
 
 See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/custom_ui) for the details.
 
-## Use the Retrieved Token to Access Your Data to Database
+## Use the Retrieved Token to Access Your Data to Firestore
 
-Utilize methods loadDoc and saveDoc of the class FauiDbAccess.
+
+Configure [basic security rules](https://firebase.google.com/docs/rules/basics?authuser=0) 
+for your Firestore database.
+Then utilize the class FauiDbAccess.
 
 See [the demo](https://github.com/polina-c/flutter-auth-ui/tree/master/example/access_data) for the details.
 
