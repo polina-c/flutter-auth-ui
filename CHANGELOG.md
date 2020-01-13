@@ -115,3 +115,7 @@
 
 * Update readme
 
+## [2.0.9] - Jan 12, 2020
+
+* Published FauiDb
+
