@@ -15,10 +15,10 @@ void main() {
     await AuthUtil.deleteUser(user);
   });
 
-  test('Write and read doc', () async {
+  test('Write, read and delete doc', () async {
+    // prepare
     var docId = 'doc1';
     var collection = 'test';
-
     var dbAccess = FauiDbAccess(testDb, user.token);
 
     Map<String, dynamic> content1 = {
@@ -30,12 +30,23 @@ void main() {
       "null": null,
     };
 
+    // write
     await dbAccess.saveDoc(collection, docId, content1);
 
+    // read
     Map<String, dynamic> content2 = await dbAccess.loadDoc(collection, docId);
 
+    // validate
     for (var key in content1.keys) {
       expect(content1[key], content2[key]);
     }
+
+    // delete
+    await dbAccess.deleteDoc(collection, docId);
+    await dbAccess.deleteDoc(collection, docId);
+
+    // validate
+    Map<String, dynamic> content3 = await dbAccess.loadDoc(collection, docId);
+    expect(content3, null);
   });
 }

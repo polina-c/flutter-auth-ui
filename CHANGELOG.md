@@ -101,8 +101,17 @@
 
 * Separated api methods to faui_api
 
-## [2.0.6] - Jan 11, 2020
+## [2.0.6] - Jan 12, 2020
+
+* Added method to delete doc
+
+## [2.0.7] - Jan 12, 2020
+
+* Modified db signature
+
+## [2.0.8] - Jan 12, 2020
 
 * Add DB access to faui_api
 
 * Update readme
+

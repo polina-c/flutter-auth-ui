@@ -4,9 +4,9 @@ class FauiDb {
   final String db;
   final String projectId;
 
-  FauiDb({
+  FauiDb(
     this.apiKey,
     this.db,
     this.projectId,
-  });
+  );
 }

@@ -2,9 +2,9 @@ import 'package:faui/faui.dart';
 import 'package:flutter/material.dart';
 
 FauiDb _fauiDb = FauiDb(
-  apiKey: "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4",
-  db: "(default)",
-  projectId: "flutterauth-c3973",
+  "AIzaSyA3hshWKqeogfYiklVCCtDaWJW8TfgWgB4",
+  "(default)",
+  "flutterauth-c3973",
 );
 
 const String _collection = 'access-data-demo-user';

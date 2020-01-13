@@ -3,7 +3,7 @@ import 'dart:convert' show utf8, base64, jsonEncode, jsonDecode;
 import '../90_infra/faui_exception.dart';
 
 import '../90_model/faui_db.dart';
-import 'db_connector.dart';
+import 'db_connector.dart' as db_connector;
 
 class _FbTypes {
   // https://firebase.google.com/docs/firestore/reference/rest/v1beta1/Value
@@ -35,7 +35,7 @@ class FauiDbAccess {
       }
     };
 
-    await DbConnector.patch(db, token, collection, docId, fbDoc);
+    await db_connector.dbPatch(db, token, collection, docId, fbDoc);
   }
 
   Future<Map<String, dynamic>> loadDoc(
@@ -44,7 +44,7 @@ class FauiDbAccess {
   ) async {
     // https: //cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/get
 
-    var record = await DbConnector.get(db, token, collection, docId);
+    var record = await db_connector.dbGet(db, token, collection, docId);
     if (record == null) {
       return null;
     }
@@ -62,6 +62,13 @@ class FauiDbAccess {
           "$collection, docId $docId, with message '$ex', and trace: \n$trace",
           FauiFailures.data);
     }
+  }
+
+  Future<void> deleteDoc(
+    String collection,
+    String docId,
+  ) async {
+    await db_connector.dbDelete(db, token, collection, docId);
   }
 
   dynamic _toFbValue(dynamic value) {

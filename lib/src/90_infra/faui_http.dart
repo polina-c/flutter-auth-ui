@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:faui/src/90_utility/util.dart';
 import 'package:http/http.dart';
 
 import 'faui_exception.dart';
@@ -8,6 +9,7 @@ enum FauiHttpMethod {
   patch,
   get,
   post,
+  delete,
 }
 
 Future<Map<String, dynamic>> sendFauiHttp(
@@ -21,6 +23,7 @@ Future<Map<String, dynamic>> sendFauiHttp(
   Response response;
   switch (method) {
     case FauiHttpMethod.get:
+      fauiAssert(content == null, "Content should be null fot http get.");
       response = await get(
         url,
         headers: headers,
@@ -40,9 +43,15 @@ Future<Map<String, dynamic>> sendFauiHttp(
         headers: headers,
       );
       break;
-
+    case FauiHttpMethod.delete:
+      fauiAssert(content == null, "Content should be null fot http delete.");
+      response = await delete(
+        url,
+        headers: headers,
+      );
+      break;
     default:
-      throw ("unexpected method ${method.toString()}");
+      throw Error.safeToString("unexpected method ${method.toString()}");
   }
 
   if (response.statusCode == 200) {
