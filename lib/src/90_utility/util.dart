@@ -3,8 +3,8 @@ import 'package:uuid/uuid.dart';
 
 final _uuid = new Uuid();
 
-void fauiAssert(bool expr, String message){
-  if (!expr){
+void fauiAssert(bool expr, String message) {
+  if (!expr) {
     throw Error.safeToString(message);
   }
 }
