@@ -8,17 +8,11 @@ import '../../util/test_db.dart';
 void main() {
   FauiUser user;
   setUp(() async {
-    user = await AuthUtil.signIn();
+    user = await TestAuthUtil.signIn();
   });
 
   tearDown(() async {
-    await AuthUtil.deleteUser(user);
-  });
-
-  test('Register, sign-in, send reset, delete and delete', () async {
-    // await AuthConnector.sendResetLink(apiKey: testDb.apiKey, email: user.email);
-    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: user.token);
-    await fauiDeleteUserIfExists(apiKey: testDb.apiKey, idToken: user.token);
+    await TestAuthUtil.deleteUser(user);
   });
 
   test('Refresh token', () async {
@@ -31,7 +25,12 @@ void main() {
 
   test('Registration fails if user exists', () async {
     try {
-      await fauiRegisterUser(apiKey: testDb.apiKey, email: user.email);
+      await fauiRegisterUser(
+        apiKey: testDb.apiKey,
+        email: user.email,
+        password: "abcd12345HJ",
+        sendResetLink: false,
+      );
       expect(true, false);
     } on FauiError catch (exception) {
       expect(

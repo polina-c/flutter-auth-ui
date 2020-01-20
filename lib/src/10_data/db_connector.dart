@@ -38,7 +38,8 @@ Future<Map<String, dynamic>> dbGet(
     docId,
     FauiHttpMethod.get,
     idToken,
-    acceptableWordsInErrorBody: HashSet.from({FbCodes.DocumentNotFoundCode}),
+    acceptableWordsInErrorBody:
+        HashSet.from({FirebaseErrorCodes.DocumentNotFoundCode}),
   );
 }
 

@@ -1,7 +1,7 @@
 import '../90_utility/util.dart';
 import 'package:http/http.dart';
 
-class FbCodes {
+class FirebaseErrorCodes {
   static const UserNotFoundCode = "USER_NOT_FOUND";
   static const EmailNotFoundCode = "EMAIL_NOT_FOUND";
   static const InvalidEmailCode = "INVALID_EMAIL";
@@ -45,15 +45,15 @@ class FauiError extends Error {
     }
 
     if (exception is FauiError) {
-      if (exception.message.contains(FbCodes.UserNotFoundCode))
+      if (exception.message.contains(FirebaseErrorCodes.UserNotFoundCode))
         return "User not found.";
-      if (exception.message.contains(FbCodes.EmailNotFoundCode))
+      if (exception.message.contains(FirebaseErrorCodes.EmailNotFoundCode))
         return "EMail not found.";
-      if (exception.message.contains(FbCodes.InvalidEmailCode))
+      if (exception.message.contains(FirebaseErrorCodes.InvalidEmailCode))
         return "Invalid EMail.";
-      if (exception.message.contains(FbCodes.InvalidPasswordCode))
+      if (exception.message.contains(FirebaseErrorCodes.InvalidPasswordCode))
         return "Invalid password.";
-      if (exception.message.contains(FbCodes.EmailExistsCode))
+      if (exception.message.contains(FirebaseErrorCodes.EmailExistsCode))
         return "This email is already registered.";
     }
 

@@ -122,3 +122,15 @@
 ## [2.0.10] - Jan 19, 2020
 
 * Published FauiError
+
+## [2.0.11-dev] - Jan 20, 2020
+
+* Made password reset email optional for registration
+
+* Removed password reset email from test registrations
+
+* Removed dependency on 'flutter any'
+
+## [2.0.11] - Jan 20, 2020
+
+* Fixed tests

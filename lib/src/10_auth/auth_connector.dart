@@ -21,11 +21,17 @@ Future<void> fauiDeleteUserIfExists({
     content: {
       "idToken": idToken,
     },
-    acceptableWordsInErrorBody: HashSet.from({FbCodes.UserNotFoundCode}),
+    acceptableWordsInErrorBody:
+        HashSet.from({FirebaseErrorCodes.UserNotFoundCode}),
   );
 }
 
-fauiRegisterUser({String apiKey, String email, String password}) async {
+fauiRegisterUser({
+  String apiKey,
+  String email,
+  String password,
+  bool sendResetLink: true,
+}) async {
   FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
   FauiError.throwIfEmpty(email, "email", FauiFailures.user);
 
@@ -38,7 +44,9 @@ fauiRegisterUser({String apiKey, String email, String password}) async {
     },
   );
 
-  await _sendResetLink(apiKey: apiKey, email: email);
+  if (sendResetLink) {
+    await _sendResetLink(apiKey: apiKey, email: email);
+  }
 }
 
 Future<FauiUser> fauiSignInUser({

@@ -8,11 +8,11 @@ import '../../util/test_db.dart';
 void main() {
   FauiUser user;
   setUp(() async {
-    user = await AuthUtil.signIn();
+    user = await TestAuthUtil.signIn();
   });
 
   tearDown(() async {
-    await AuthUtil.deleteUser(user);
+    await TestAuthUtil.deleteUser(user);
   });
 
   test('Write, read and delete doc', () async {

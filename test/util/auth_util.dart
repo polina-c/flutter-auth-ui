@@ -6,12 +6,17 @@ import 'package:test/test.dart';
 
 import 'test_db.dart';
 
-class AuthUtil {
+class TestAuthUtil {
   static Future<FauiUser> signIn() async {
     final String id = newId();
     final String email = "_test_$id@fakedomain.com";
 
-    await fauiRegisterUser(apiKey: testDb.apiKey, email: email, password: id);
+    await fauiRegisterUser(
+      apiKey: testDb.apiKey,
+      email: email,
+      password: id,
+      sendResetLink: false,
+    );
 
     FauiUser user =
         await fauiSignInUser(apiKey: testDb.apiKey, email: email, password: id);
