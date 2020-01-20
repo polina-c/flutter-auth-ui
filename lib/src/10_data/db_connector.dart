@@ -1,7 +1,7 @@
 import 'dart:collection';
 import 'dart:core';
 
-import '../90_infra/faui_exception.dart';
+import '../90_infra/faui_error.dart';
 import '../90_infra/faui_http.dart';
 
 import '../90_model/faui_db.dart';

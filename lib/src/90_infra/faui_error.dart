@@ -18,33 +18,33 @@ enum FauiFailures {
   dependency,
 }
 
-void throwIfEmpty(dynamic value, String name, FauiFailures failure) {
-  if (!isEmpty(value)) {
-    return;
-  }
-
-  if (failure == FauiFailures.user) {
-    throw FauiException("$name should not be empty", FauiFailures.user);
-  }
-  throw FauiException("$name should not be empty, but it is $value", failure);
-}
-
-class FauiException extends Error {
+class FauiError extends Error {
   final FauiFailures type;
   final String message;
-  FauiException(this.message, this.type);
+  FauiError(this.message, this.type);
 
   @override
   String toString() => '$runtimeType(this). $type. $message';
 
+  static void throwIfEmpty(dynamic value, String name, FauiFailures failure) {
+    if (!isEmpty(value)) {
+      return;
+    }
+
+    if (failure == FauiFailures.user) {
+      throw FauiError("$name should not be empty", FauiFailures.user);
+    }
+    throw FauiError("$name should not be empty, but it is $value", failure);
+  }
+
   static String exceptionToUiMessage(dynamic exception) {
     if (exception is String) return exception;
 
-    if (exception is FauiException && exception.type == FauiFailures.user) {
+    if (exception is FauiError && exception.type == FauiFailures.user) {
       return exception.message;
     }
 
-    if (exception is FauiException) {
+    if (exception is FauiError) {
       if (exception.message.contains(FbCodes.UserNotFoundCode))
         return "User not found.";
       if (exception.message.contains(FbCodes.EmailNotFoundCode))

@@ -3,7 +3,7 @@ import 'dart:core';
 
 import '../90_infra/faui_http.dart';
 import '../90_utility/util.dart';
-import '../90_infra/faui_exception.dart';
+import '../90_infra/faui_error.dart';
 import '../90_model/faui_user.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
@@ -12,8 +12,8 @@ Future<void> fauiDeleteUserIfExists({
   String apiKey,
   String idToken,
 }) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(idToken, "idToken", FauiFailures.arg);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(idToken, "idToken", FauiFailures.arg);
 
   await _sendFbApiRequest(
     apiKey: apiKey,
@@ -26,8 +26,8 @@ Future<void> fauiDeleteUserIfExists({
 }
 
 fauiRegisterUser({String apiKey, String email, String password}) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(email, "email", FauiFailures.user);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(email, "email", FauiFailures.user);
 
   await _sendFbApiRequest(
     apiKey: apiKey,
@@ -46,9 +46,9 @@ Future<FauiUser> fauiSignInUser({
   String email,
   String password,
 }) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(email, "email", FauiFailures.user);
-  throwIfEmpty(password, "password", FauiFailures.user);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(email, "email", FauiFailures.user);
+  FauiError.throwIfEmpty(password, "password", FauiFailures.user);
 
   Map<String, dynamic> response = await _sendFbApiRequest(
     apiKey: apiKey,
@@ -76,8 +76,8 @@ Future<FauiUser> fauiVerifyToken({
   String apiKey,
   String token,
 }) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(token, "token", FauiFailures.arg);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(token, "token", FauiFailures.arg);
 
   Map<String, dynamic> response = await _sendFbApiRequest(
     apiKey: apiKey,
@@ -109,8 +109,8 @@ Future<void> _sendResetLink({
   String apiKey,
   String email,
 }) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(email, "email", FauiFailures.user);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(email, "email", FauiFailures.user);
   await _sendFbApiRequest(
     apiKey: apiKey,
     action: _FirebaseActions.SendResetLink,
@@ -142,8 +142,8 @@ Future<Map<String, dynamic>> _sendFbApiRequest({
   Map<String, dynamic> content,
   HashSet<String> acceptableWordsInErrorBody,
 }) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(action, "action", FauiFailures.arg);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(action, "action", FauiFailures.arg);
 
   Map<String, String> headers = {'Content-Type': 'application/json'};
   String url =
@@ -160,8 +160,8 @@ Future<Map<String, dynamic>> _sendFbApiRequest({
 }
 
 Future<FauiUser> fauiRefreshToken({FauiUser user, String apiKey}) async {
-  throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
-  throwIfEmpty(user.refreshToken, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(apiKey, "apiKey", FauiFailures.arg);
+  FauiError.throwIfEmpty(user.refreshToken, "apiKey", FauiFailures.arg);
 
   Map<String, String> headers = {'Content-Type': 'application/json'};
   String url = "https://securetoken.googleapis.com/v1/token?key=$apiKey";

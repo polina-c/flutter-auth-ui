@@ -1,6 +1,6 @@
 import 'dart:convert' show utf8, base64, jsonEncode, jsonDecode;
 
-import '../90_infra/faui_exception.dart';
+import '../90_infra/faui_error.dart';
 
 import '../90_model/faui_db.dart';
 import 'db_connector.dart' as db_connector;
@@ -57,7 +57,7 @@ class FauiDbAccess {
       }
       return result;
     } catch (ex, trace) {
-      throw FauiException(
+      throw FauiError(
           "Firebase returned unexpected data format for collection "
           "$collection, docId $docId, with message '$ex', and trace: \n$trace",
           FauiFailures.data);

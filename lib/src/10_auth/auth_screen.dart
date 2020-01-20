@@ -1,4 +1,4 @@
-import '../90_infra/faui_exception.dart';
+import '../90_infra/faui_error.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +144,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             this.switchScreen(AuthScreen.verifyEmail, emailController.text);
           } catch (e) {
             this.setState(() {
-              this._error = FauiException.exceptionToUiMessage(e);
+              this._error = FauiError.exceptionToUiMessage(e);
               this._email = emailController.text;
             });
           }
@@ -195,7 +195,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               this.afterAuthorized(context, user);
             } catch (e) {
               this.setState(() {
-                this._error = FauiException.exceptionToUiMessage(e);
+                this._error = FauiError.exceptionToUiMessage(e);
                 this._email = emailController.text;
               });
             }
@@ -284,7 +284,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
               this.switchScreen(AuthScreen.resetPassword, emailController.text);
             } catch (e) {
               this.setState(() {
-                this._error = FauiException.exceptionToUiMessage(e);
+                this._error = FauiError.exceptionToUiMessage(e);
                 this._email = emailController.text;
               });
             }

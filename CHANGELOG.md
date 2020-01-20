@@ -119,3 +119,6 @@
 
 * Published FauiDb
 
+## [2.0.10] - Jan 19, 2020
+
+* Published FauiError

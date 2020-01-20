@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:faui/src/90_utility/util.dart';
 import 'package:http/http.dart';
 
-import 'faui_exception.dart';
+import 'faui_error.dart';
 
 enum FauiHttpMethod {
   patch,
@@ -70,7 +70,7 @@ Future<Map<String, dynamic>> sendFauiHttp(
   String message = "Error requesting firebase api: $actionToLog.";
   print(message);
   _printResponse(response);
-  throw FauiException(message + response.body, FauiFailures.dependency);
+  throw FauiError(message + response.body, FauiFailures.dependency);
 }
 
 void _printResponse(dynamic response) {

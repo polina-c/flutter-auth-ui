@@ -1,5 +1,5 @@
 import '../../../lib/src/10_auth/auth_connector.dart';
-import '../../../lib/src/90_infra/faui_exception.dart';
+import '../../../lib/src/90_infra/faui_error.dart';
 import '../../../lib/src/90_model/faui_user.dart';
 import 'package:test/test.dart';
 import '../../util/auth_util.dart';
@@ -33,9 +33,9 @@ void main() {
     try {
       await fauiRegisterUser(apiKey: testDb.apiKey, email: user.email);
       expect(true, false);
-    } on FauiException catch (exception) {
+    } on FauiError catch (exception) {
       expect(
-          FauiException.exceptionToUiMessage(exception)
+          FauiError.exceptionToUiMessage(exception)
               .contains("already registered"),
           true);
     }
