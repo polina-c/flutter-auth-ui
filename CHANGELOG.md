@@ -134,3 +134,7 @@
 ## [2.0.11] - Jan 20, 2020
 
 * Fixed tests
+
+## [2.0.14] - Feb 1, 2020
+
+* Submit form on Enter
