@@ -45,7 +45,7 @@ fauiRegisterUser({
   );
 
   if (sendResetLink) {
-    await _sendResetLink(apiKey: apiKey, email: email);
+    await fauiSendResetLink(apiKey: apiKey, email: email);
   }
 }
 
@@ -113,7 +113,7 @@ Future<FauiUser> fauiVerifyToken({
   return user;
 }
 
-Future<void> _sendResetLink({
+Future<void> fauiSendResetLink({
   String apiKey,
   String email,
 }) async {

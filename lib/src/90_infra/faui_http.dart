@@ -44,7 +44,7 @@ Future<Map<String, dynamic>> sendFauiHttp(
       );
       break;
     case FauiHttpMethod.delete:
-      fauiAssert(content == null, "Content should be null fot http delete.");
+      fauiAssert(content == null, "Content should be null for http delete.");
       response = await delete(
         url,
         headers: headers,

@@ -12,6 +12,7 @@ class FauiAuthScreen extends StatefulWidget {
   final String firebaseApiKey;
   final bool startWithRegistration;
   final Map<FauiPhrases, String> phrases;
+
   final Widget Function(
     BuildContext context,
     String title,
@@ -123,32 +124,39 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   Widget _buildCreateAccountScreen(BuildContext context) {
     final TextEditingController emailController =
         new TextEditingController(text: this._email);
+
+    final submit = () async {
+      try {
+        await fauiRegisterUser(
+          apiKey: this.widget.firebaseApiKey,
+          email: emailController.text,
+        );
+
+        this.switchScreen(AuthScreen.verifyEmail, emailController.text);
+      } catch (e) {
+        this.setState(() {
+          this._error = FauiError.exceptionToUiMessage(e);
+          this._email = emailController.text;
+        });
+      }
+    };
+
     return Column(children: <Widget>[
       TextField(
+        autofocus: true,
         controller: emailController,
         decoration: InputDecoration(
           labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
         ),
+        onSubmitted: (s) {
+          submit();
+        },
       ),
       _buildError(context, _error),
       RaisedButton(
         child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
             'Create Account'),
-        onPressed: () async {
-          try {
-            await fauiRegisterUser(
-              apiKey: this.widget.firebaseApiKey,
-              email: emailController.text,
-            );
-
-            this.switchScreen(AuthScreen.verifyEmail, emailController.text);
-          } catch (e) {
-            this.setState(() {
-              this._error = FauiError.exceptionToUiMessage(e);
-              this._email = emailController.text;
-            });
-          }
-        },
+        onPressed: submit,
       ),
       FlatButton(
         child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
@@ -166,13 +174,33 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
         new TextEditingController();
 
+    final submit = () async {
+      try {
+        FauiUser user = await fauiSignInUser(
+          apiKey: this.widget.firebaseApiKey,
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        this.afterAuthorized(context, user);
+      } catch (e) {
+        this.setState(() {
+          this._error = FauiError.exceptionToUiMessage(e);
+          this._email = emailController.text;
+        });
+      }
+    };
+
     return Column(
       children: <Widget>[
         TextField(
           controller: emailController,
+          autofocus: true,
           decoration: InputDecoration(
             labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
           ),
+          onSubmitted: (s) {
+            submit();
+          },
         ),
         TextField(
           controller: passwordController,
@@ -181,25 +209,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             labelText:
                 widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
           ),
+          onSubmitted: (s) {
+            submit();
+          },
         ),
         _buildError(context, _error),
         RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
-          onPressed: () async {
-            try {
-              FauiUser user = await fauiSignInUser(
-                apiKey: this.widget.firebaseApiKey,
-                email: emailController.text,
-                password: passwordController.text,
-              );
-              this.afterAuthorized(context, user);
-            } catch (e) {
-              this.setState(() {
-                this._error = FauiError.exceptionToUiMessage(e);
-                this._email = emailController.text;
-              });
-            }
-          },
+          onPressed: submit,
         ),
         FlatButton(
           child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
@@ -263,32 +280,38 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController emailController =
         new TextEditingController(text: this._email);
 
+    final submit = () async {
+      try {
+        await fauiSendResetLink(
+          apiKey: this.widget.firebaseApiKey,
+          email: emailController.text,
+        );
+        this.switchScreen(AuthScreen.resetPassword, emailController.text);
+      } catch (e) {
+        this.setState(() {
+          this._error = FauiError.exceptionToUiMessage(e);
+          this._email = emailController.text;
+        });
+      }
+    };
+
     return Column(
       children: <Widget>[
         TextField(
+          autofocus: true,
           controller: emailController,
           decoration: InputDecoration(
             labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
           ),
+          onSubmitted: (s) {
+            submit();
+          },
         ),
         _buildError(context, _error),
         RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
               'Send Password Reset Link'),
-          onPressed: () async {
-            try {
-//              await fauiSendResetLink(
-////                apiKey: this.widget.firebaseApiKey,
-////                email: emailController.text,
-////              );
-              this.switchScreen(AuthScreen.resetPassword, emailController.text);
-            } catch (e) {
-              this.setState(() {
-                this._error = FauiError.exceptionToUiMessage(e);
-                this._email = emailController.text;
-              });
-            }
-          },
+          onPressed: submit,
         ),
         FlatButton(
           child: Text(widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
