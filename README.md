@@ -3,7 +3,7 @@
 It registers users with email and password using Firebase security as a service 
 ( [SECaaS]( https://en.wikipedia.org/wiki/Security_as_a_service) ).
 The library provides UI to register user, validate email, sign in, sign out and restore password.
-Also it supports silent sign in.
+Supports silent sign in and access to Firestore.
 
 ## Demos
 
