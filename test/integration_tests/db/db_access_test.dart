@@ -1,7 +1,10 @@
-import '../../../lib/src/10_data/faui_db_access.dart';
+import 'dart:convert';
 
-import '../../../lib/src/90_model/faui_user.dart';
+import 'package:faui/src/90_utility/util.dart';
 import 'package:test/test.dart';
+
+import '../../../lib/src/10_data/faui_db_access.dart';
+import '../../../lib/src/90_model/faui_user.dart';
 import '../../util/auth_util.dart';
 import '../../util/test_db.dart';
 
@@ -13,6 +16,28 @@ void main() {
 
   tearDown(() async {
     await TestAuthUtil.deleteUser(user);
+  });
+
+  test("List docs", () async {
+    var collection = 'test';
+    var dbAccess = FauiDbAccess(testDb, user.token);
+
+    var content = <Map<String, dynamic>>[
+      {
+        "message": "message 1",
+      },
+      {
+        "message": "message 2",
+      },
+    ];
+
+    var futures =
+        content.map((d) => dbAccess.saveDoc(collection, newId(), d)).toList();
+
+    await Future.wait(futures);
+    var list = await dbAccess.listDocs(collection);
+
+    print(jsonEncode(list));
   });
 
   test('Write, read and delete doc', () async {

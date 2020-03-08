@@ -3,36 +3,51 @@ import 'dart:core';
 
 import '../90_infra/faui_error.dart';
 import '../90_infra/faui_http.dart';
-
 import '../90_model/faui_db.dart';
 
 // https://cloud.google.com/firestore/docs/reference/rest/?apix=true
 
-Future<void> dbPatch(
+Future<void> dbCommand(
+  FauiDb db,
+  String idToken,
+  String collection,
+  String command,
+  Map<String, dynamic> content,
+) async {
+  await _sendFbApiRequest(
+    db,
+    collection,
+    FauiHttpMethod.patch,
+    command,
+    idToken,
+    content: content,
+  );
+}
+
+Future<void> dbPatchDoc(
   FauiDb db,
   String idToken,
   String collection,
   String docId,
   Map<String, dynamic> content,
 ) async {
-  await _sendFbApiRequest(
+  await _sendFbApiDocRequest(
     db,
     collection,
     docId,
     FauiHttpMethod.patch,
     idToken,
     content: content,
-    acceptableWordsInErrorBody: null,
   );
 }
 
-Future<Map<String, dynamic>> dbGet(
+Future<Map<String, dynamic>> dbGetDoc(
   FauiDb db,
   String idToken,
   String collection,
   String docId,
 ) async {
-  return await _sendFbApiRequest(
+  return await _sendFbApiDocRequest(
     db,
     collection,
     docId,
@@ -43,13 +58,13 @@ Future<Map<String, dynamic>> dbGet(
   );
 }
 
-Future<void> dbDelete(
+Future<void> dbDeleteDoc(
   FauiDb db,
   String idToken,
   String collection,
   String docId,
 ) async {
-  return await _sendFbApiRequest(
+  return await _sendFbApiDocRequest(
     db,
     collection,
     docId,
@@ -58,7 +73,9 @@ Future<void> dbDelete(
   );
 }
 
-Future<Map<String, dynamic>> _sendFbApiRequest(
+const String _fbApiUrl = "https://firestore.googleapis.com/v1/";
+
+Future<Map<String, dynamic>> _sendFbApiDocRequest(
   FauiDb db,
   String collection,
   String docId,
@@ -67,8 +84,30 @@ Future<Map<String, dynamic>> _sendFbApiRequest(
   HashSet<String> acceptableWordsInErrorBody,
   Map<String, dynamic> content,
 }) async {
-  String url = "https://firestore.googleapis.com/v1/projects/" +
+  String url = "${_fbApiUrl}projects/" +
       "${db.projectId}/databases/${db.db}/documents/$collection/$docId/?key=${db.apiKey}";
+
+  Map<String, String> headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $idToken',
+  };
+
+  Map<String, dynamic> map = await sendFauiHttp(operation, headers, url,
+      content, acceptableWordsInErrorBody, operation.toString());
+  return map;
+}
+
+Future<Map<String, dynamic>> _sendFbApiRequest(
+  FauiDb db,
+  String collection,
+  FauiHttpMethod operation,
+  String command,
+  String idToken, {
+  HashSet<String> acceptableWordsInErrorBody,
+  Map<String, dynamic> content,
+}) async {
+  String url = "${_fbApiUrl}projects/" +
+      "${db.projectId}/databases/${db.db}/documents/$collection:$command/?key=${db.apiKey}";
 
   Map<String, String> headers = {
     'Content-Type': 'application/json',
