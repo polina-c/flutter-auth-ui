@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:faui/src/90_utility/util.dart';
 import 'package:test/test.dart';
 
@@ -19,25 +17,29 @@ void main() {
   });
 
   test("List docs", () async {
-    var collection = 'test';
+    // prepare
+    var collection = 'test', field = "field1", v1 = newId(), v2 = newId();
     var dbAccess = FauiDbAccess(testDb, user.token);
 
-    var content = <Map<String, dynamic>>[
-      {
-        "message": "message 1",
-      },
-      {
-        "message": "message 2",
-      },
-    ];
+    var content = <String, Map<String, dynamic>>{
+      newId(): {field: v1},
+      newId(): {field: v2},
+      newId(): {field: v2},
+    };
 
-    var futures =
-        content.map((d) => dbAccess.saveDoc(collection, newId(), d)).toList();
-
+    var futures = content.keys
+        .map((id) => dbAccess.saveDoc(collection, id, content[id]))
+        .toList();
     await Future.wait(futures);
-    var list = await dbAccess.listDocs(collection);
 
-    print(jsonEncode(list));
+    // test
+    var list = await dbAccess.listDocsByStringValue(collection, field, v2);
+    //print(jsonEncode(list));
+
+    // clean up
+    futures =
+        content.keys.map((id) => dbAccess.deleteDoc(collection, id)).toList();
+    await Future.wait(futures);
   });
 
   test('Write, read and delete doc', () async {

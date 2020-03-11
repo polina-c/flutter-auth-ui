@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:faui/src/90_utility/util.dart';
 import 'package:http/http.dart';
 
@@ -12,7 +13,7 @@ enum FauiHttpMethod {
   delete,
 }
 
-Future<Map<String, dynamic>> sendFauiHttp(
+Future<T> sendFauiHttp<T>(
   FauiHttpMethod method,
   Map<String, String> headers,
   String url,
@@ -55,7 +56,7 @@ Future<Map<String, dynamic>> sendFauiHttp(
   }
 
   if (response.statusCode == 200) {
-    Map<String, dynamic> map = json.decode(response.body);
+    T map = json.decode(response.body);
     return map;
   }
 

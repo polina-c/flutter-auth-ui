@@ -7,17 +7,15 @@ import '../90_model/faui_db.dart';
 
 // https://cloud.google.com/firestore/docs/reference/rest/?apix=true
 
-Future<void> dbCommand(
+Future<List<dynamic>> dbPostCommand(
   FauiDb db,
   String idToken,
-  String collection,
   String command,
   Map<String, dynamic> content,
 ) async {
-  await _sendFbApiRequest(
+  return await _sendFbApiRequest(
     db,
-    collection,
-    FauiHttpMethod.patch,
+    FauiHttpMethod.post,
     command,
     idToken,
     content: content,
@@ -97,9 +95,8 @@ Future<Map<String, dynamic>> _sendFbApiDocRequest(
   return map;
 }
 
-Future<Map<String, dynamic>> _sendFbApiRequest(
+Future<List<dynamic>> _sendFbApiRequest(
   FauiDb db,
-  String collection,
   FauiHttpMethod operation,
   String command,
   String idToken, {
@@ -107,14 +104,14 @@ Future<Map<String, dynamic>> _sendFbApiRequest(
   Map<String, dynamic> content,
 }) async {
   String url = "${_fbApiUrl}projects/" +
-      "${db.projectId}/databases/${db.db}/documents/$collection:$command/?key=${db.apiKey}";
+      "${db.projectId}/databases/${db.db}/documents:$command/?key=${db.apiKey}";
 
   Map<String, String> headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $idToken',
   };
 
-  Map<String, dynamic> map = await sendFauiHttp(operation, headers, url,
-      content, acceptableWordsInErrorBody, operation.toString());
-  return map;
+  List<dynamic> list = await sendFauiHttp(operation, headers, url, content,
+      acceptableWordsInErrorBody, operation.toString());
+  return list;
 }
