@@ -27,7 +27,8 @@ Map<String, dynamic> map2doc(Map<String, dynamic> map) {
   return fbDoc;
 }
 
-Map<String, dynamic> doc2map(Map<String, dynamic> doc, String error) {
+Map<String, dynamic> doc2map(
+    Map<String, dynamic> doc, String descriptionForErrorLog) {
   if (doc == null) {
     return null;
   }
@@ -41,7 +42,8 @@ Map<String, dynamic> doc2map(Map<String, dynamic> doc, String error) {
     return result;
   } catch (ex, trace) {
     throw FauiError(
-        "$error, with message '$ex', and trace: \n$trace", FauiFailures.data);
+        "$descriptionForErrorLog, with message '$ex', and trace: \n$trace",
+        FauiFailures.data);
   }
 }
 

@@ -1,5 +1,3 @@
-import 'dart:convert' show utf8, base64, jsonEncode, jsonDecode;
-
 import 'package:faui/src/10_data/doc_converter.dart';
 
 import '../90_model/faui_db.dart';
@@ -45,14 +43,12 @@ class FauiDbAccess {
       }
     };
 
-    List<dynamic> result =
-        await db_connector.dbPostCommand(db, token, "runQuery", query);
+    List<dynamic> result = await db_connector.dbQuery(db, token, query);
 
-    for (Map<String, dynamic> record in result) {
-      print(jsonEncode(record)); ??????
-    }
-
-    return null;
+    List<Map<String, dynamic>> docs = result
+        .map((r) => doc2map(r["document"], "Faild to pars documents in list."))
+        .toList();
+    return docs;
   }
 
   Future<Map<String, dynamic>> loadDoc(

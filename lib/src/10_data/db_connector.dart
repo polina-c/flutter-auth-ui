@@ -6,17 +6,17 @@ import '../90_infra/faui_http.dart';
 import '../90_model/faui_db.dart';
 
 // https://cloud.google.com/firestore/docs/reference/rest/?apix=true
-
-Future<List<dynamic>> dbPostCommand(
+// https://stackoverflow.com/questions/46632042/how-to-perform-compound-queries-with-logical-or-in-cloud-firestore
+//
+Future<List<dynamic>> dbQuery(
   FauiDb db,
   String idToken,
-  String command,
   Map<String, dynamic> content,
 ) async {
   return await _sendFbApiRequest(
     db,
     FauiHttpMethod.post,
-    command,
+    "runQuery",
     idToken,
     content: content,
   );
