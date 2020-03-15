@@ -33,8 +33,8 @@ void main() {
     await Future.wait(futures);
 
     // test
-    List<Map<String, dynamic>> list =
-        await dbAccess.listDocsByStringValue(collection, {field: v2});
+    List<Map<String, dynamic>> list = await dbAccess.listDocsByStringValue(
+        collection, [FilterItem(field, FilterOp.eq, v2)]);
     expect(list.length, 2);
     expect(list[0][field], v2);
 

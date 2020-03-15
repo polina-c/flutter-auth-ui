@@ -3,6 +3,25 @@ import 'package:faui/src/10_data/doc_converter.dart';
 import '../90_model/faui_db.dart';
 import 'db_connector.dart' as db_connector;
 
+class FilterItem {
+  final String field;
+  final String operation;
+  final dynamic value;
+
+  FilterItem(this.field, this.operation, this.value);
+}
+
+class FilterOp {
+  static const String lt = "LESS_THAN";
+  static const String le = "LESS_THAN_OR_EQUAL";
+  static const String gt = "GREATER_THAN";
+  static const String ge = "GREATER_THAN_OR_EQUAL";
+  static const String eq = "EQUAL";
+  static const String ac = "ARRAY_CONTAINS";
+  static const String iin = "IN";
+  static const String any = "ARRAY_CONTAINS_ANY";
+}
+
 class FauiDbAccess {
   final FauiDb db;
   final String token;
@@ -23,9 +42,11 @@ class FauiDbAccess {
   //Future<List<Map<String, dynamic>>>
   Future<List<Map<String, dynamic>>> listDocsByStringValue(
     String collection, [
-    Map<String, dynamic> filter,
+    List<FilterItem> filter,
   ]) async {
     // https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/runQuery
+    // https://cloud.google.com/firestore/docs/reference/rest/?apix=true
+    // https://stackoverflow.com/questions/46632042/how-to-perform-compound-queries-with-logical-or-in-cloud-firestore
 
     Map<String, dynamic> query = {
       "structuredQuery": {
@@ -33,12 +54,12 @@ class FauiDbAccess {
           "where": {
             "compositeFilter": {
               "op": "AND",
-              "filters": filter.keys
-                  .map((k) => {
+              "filters": filter
+                  .map((f) => {
                         "fieldFilter": {
-                          "field": {"fieldPath": k},
-                          "op": "EQUAL",
-                          "value": {toFbType(filter[k]): filter[k]}
+                          "field": {"fieldPath": f.field},
+                          "op": f.operation,
+                          "value": {toFbType(f.value): f.value}
                         }
                       })
                   .toList(),
