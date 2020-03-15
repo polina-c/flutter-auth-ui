@@ -146,3 +146,11 @@
 ## [2.0.16] - Mar 15, 2020
 
 * Fix version
+
+## [2.0.17] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.18] - Mar 15, 2020
+
+* Fix versions
