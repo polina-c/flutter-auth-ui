@@ -20,7 +20,7 @@ String extractId(String docName) {
 Map<String, dynamic> map2doc(Map<String, dynamic> map) {
   Map<String, dynamic> fbDoc = {
     "fields": {
-      for (var key in map.keys) key: {_toFbType(map[key]): _toFbValue(map[key])}
+      for (var key in map.keys) key: {toFbType(map[key]): _toFbValue(map[key])}
     }
   };
 
@@ -48,7 +48,7 @@ Map<String, dynamic> doc2map(
 }
 
 dynamic _toFbValue(dynamic value) {
-  if (_toFbType(value) == _FbTypes.bytes) {
+  if (toFbType(value) == _FbTypes.bytes) {
     return base64.encode(utf8.encode(jsonEncode(value)));
   }
   return value;
@@ -64,7 +64,7 @@ dynamic _fromFbValue(dynamic value, String type) {
   return value;
 }
 
-String _toFbType(dynamic value) {
+String toFbType(dynamic value) {
   return value == null
       ? _FbTypes.nullV
       : value is String

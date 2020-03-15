@@ -34,7 +34,7 @@ void main() {
 
     // test
     List<Map<String, dynamic>> list =
-        await dbAccess.listDocsByStringValue(collection, field, v2);
+        await dbAccess.listDocsByStringValue(collection, {field: v2});
     expect(list.length, 2);
     expect(list[0][field], v2);
 

@@ -22,21 +22,28 @@ class FauiDbAccess {
 
   //Future<List<Map<String, dynamic>>>
   Future<List<Map<String, dynamic>>> listDocsByStringValue(
-    String collection,
-    String field,
-    String value,
-  ) async {
+    String collection, [
+    Map<String, dynamic> filter,
+  ]) async {
     // https://cloud.google.com/firestore/docs/reference/rest/v1/projects.databases.documents/runQuery
 
     Map<String, dynamic> query = {
       "structuredQuery": {
-        "where": {
-          "fieldFilter": {
-            "field": {"fieldPath": field},
-            "op": "EQUAL",
-            "value": {"stringValue": value}
-          }
-        },
+        if (filter != null && filter.length > 0)
+          "where": {
+            "compositeFilter": {
+              "op": "AND",
+              "filters": filter.keys
+                  .map((k) => {
+                        "fieldFilter": {
+                          "field": {"fieldPath": k},
+                          "op": "EQUAL",
+                          "value": {toFbType(filter[k]): filter[k]}
+                        }
+                      })
+                  .toList(),
+            }
+          },
         "from": [
           {"collectionId": collection}
         ]
