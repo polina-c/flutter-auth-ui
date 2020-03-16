@@ -138,3 +138,35 @@
 ## [2.0.14] - Feb 1, 2020
 
 * Submit form on Enter
+
+## [2.0.15] - Mar 15, 2020
+
+* Add support for querying data lists
+
+## [2.0.16] - Mar 15, 2020
+
+* Fix version
+
+## [2.0.17] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.18] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.19] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.20] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.21] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.22] - Mar 15, 2020
+
+* Description

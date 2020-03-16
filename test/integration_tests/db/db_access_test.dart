@@ -1,7 +1,8 @@
-import '../../../lib/src/10_data/faui_db_access.dart';
-
-import '../../../lib/src/90_model/faui_user.dart';
+import 'package:faui/src/90_utility/util.dart';
 import 'package:test/test.dart';
+
+import '../../../lib/src/10_data/faui_db_access.dart';
+import '../../../lib/src/90_model/faui_user.dart';
 import '../../util/auth_util.dart';
 import '../../util/test_db.dart';
 
@@ -13,6 +14,34 @@ void main() {
 
   tearDown(() async {
     await TestAuthUtil.deleteUser(user);
+  });
+
+  test("List docs", () async {
+    // prepare
+    var collection = 'test', field = "field1", v1 = newId(), v2 = newId();
+    var dbAccess = FauiDbAccess(testDb, user.token);
+
+    var content = <String, Map<String, dynamic>>{
+      newId(): {field: v1},
+      newId(): {field: v2},
+      newId(): {field: v2},
+    };
+
+    var futures = content.keys
+        .map((id) => dbAccess.saveDoc(collection, id, content[id]))
+        .toList();
+    await Future.wait(futures);
+
+    // test
+    List<Map<String, dynamic>> list = await dbAccess.listDocsByStringValue(
+        collection, [FilterItem(field, FilterOp.eq, v2)]);
+    expect(list.length, 2);
+    expect(list[0][field], v2);
+
+    // clean up
+    futures =
+        content.keys.map((id) => dbAccess.deleteDoc(collection, id)).toList();
+    await Future.wait(futures);
   });
 
   test('Write, read and delete doc', () async {
