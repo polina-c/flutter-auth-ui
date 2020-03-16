@@ -5,11 +5,11 @@ description: >
   Authentication UI for Flutter. Uses Firebase auth as security provider.
   The library provides UI to register user, validate email, sign in, sign out,
   restore password, access data in Firestore.
-version: 2.0.18
+version: 2.0.20
 homepage: https://github.com/polina-c/flutter-auth-ui
 
 environment:
-  sdk: '>=2.8.0-dev.5.0 <3.0.0'
+  sdk: '>=2.7.0 <3.0.0'
   flutter: '>=1.14.6 <2.0.0'
 
 dependencies:

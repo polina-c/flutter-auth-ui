@@ -154,3 +154,11 @@
 ## [2.0.18] - Mar 15, 2020
 
 * Fix versions
+
+## [2.0.19] - Mar 15, 2020
+
+* Fix versions
+
+## [2.0.20] - Mar 15, 2020
+
+* Fix versions
