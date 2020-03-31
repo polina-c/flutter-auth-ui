@@ -40,7 +40,7 @@ class FauiDbAccess {
   }
 
   //Future<List<Map<String, dynamic>>>
-  Future<List<Map<String, dynamic>>> listDocsByStringValue(
+  Future<List<Map<String, dynamic>>> listDocs(
     String collection, [
     List<FilterItem> filter,
   ]) async {
