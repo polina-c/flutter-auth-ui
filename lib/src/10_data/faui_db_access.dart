@@ -73,8 +73,17 @@ class FauiDbAccess {
 
     List<dynamic> result = await db_connector.dbQuery(db, token, query);
 
+    if (result.length == 1) {
+      var v = result[0];
+      if (v is Map<String, dynamic> &&
+          v.keys.length == 1 &&
+          v.containsKey("readTime")) {
+        return [];
+      }
+    }
+
     List<Map<String, dynamic>> docs = result
-        .map((r) => doc2map(r["document"], "Faild to pars documents in list."))
+        .map((r) => doc2map(r["document"], "Faild to parse documents in list."))
         .toList();
     return docs;
   }

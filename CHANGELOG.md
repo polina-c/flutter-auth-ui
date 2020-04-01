@@ -174,3 +174,7 @@
 ## [2.0.23] - Mar 30, 2020
 
 * Description
+
+## [2.0.24] - Mar 31, 2020
+
+* Fix method 'list' for empty array

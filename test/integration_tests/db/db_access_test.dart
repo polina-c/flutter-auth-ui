@@ -38,6 +38,10 @@ void main() {
     expect(list.length, 2);
     expect(list[0][field], v2);
 
+    list = await dbAccess
+        .listDocs(collection, [FilterItem(field, FilterOp.eq, "wrong value")]);
+    expect(list.length, 0);
+
     // clean up
     futures =
         content.keys.map((id) => dbAccess.deleteDoc(collection, id)).toList();
