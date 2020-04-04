@@ -3,6 +3,7 @@ import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
 import 'package:flutter/material.dart';
 
+import 'auth_progress.dart';
 import 'auth_connector.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
@@ -14,23 +15,23 @@ class FauiAuthScreen extends StatefulWidget {
   final Map<FauiPhrases, String> phrases;
 
   final Widget Function(
-    BuildContext context,
-    String title,
-    Widget content,
-    VoidCallback close,
-  ) builder;
+      BuildContext context,
+      String title,
+      Widget content,
+      VoidCallback close,
+      ) builder;
 
   FauiAuthScreen(this.onExit, this.firebaseApiKey, this.startWithRegistration)
       : this.builder = DefaultScreenBuilder.builder,
         this.phrases = Map<FauiPhrases, String>();
 
   FauiAuthScreen.custom(
-    this.onExit,
-    this.firebaseApiKey,
-    this.builder,
-    this.phrases,
-    this.startWithRegistration,
-  );
+      this.onExit,
+      this.firebaseApiKey,
+      this.builder,
+      this.phrases,
+      this.startWithRegistration,
+      );
 
   @override
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
@@ -48,6 +49,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
+  bool _loading = false;
 
   @override
   void initState() {
@@ -123,15 +125,21 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildCreateAccountScreen(BuildContext context) {
     final TextEditingController emailController =
-        new TextEditingController(text: this._email);
+    new TextEditingController(text: this._email);
 
-    final submit = () async {
+    Future<void> submit () async {
       try {
+        this.setState(() {
+          _loading = true;
+          AuthProgress();
+        });
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
-
+        this.setState(() {
+          _loading = false;
+        });
         this.switchScreen(AuthScreen.verifyEmail, emailController.text);
       } catch (e) {
         this.setState(() {
@@ -170,17 +178,24 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildSignInScreen(BuildContext context) {
     final TextEditingController emailController =
-        new TextEditingController(text: this._email);
+    new TextEditingController(text: this._email);
     final TextEditingController passwordController =
-        new TextEditingController();
+    new TextEditingController();
 
-    final submit = () async {
+    Future<void> submit () async {
       try {
+        this.setState(() {
+          _loading = true;
+          AuthProgress();
+        });
         FauiUser user = await fauiSignInUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
           password: passwordController.text,
         );
+        this.setState(() {
+          _loading = false;
+        });
         this.afterAuthorized(context, user);
       } catch (e) {
         this.setState(() {
@@ -207,7 +222,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           obscureText: true,
           decoration: InputDecoration(
             labelText:
-                widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
+            widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
           ),
           onSubmitted: (s) {
             submit();
@@ -278,14 +293,21 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildForgotPasswordScreen(BuildContext context, String email) {
     final TextEditingController emailController =
-        new TextEditingController(text: this._email);
+    new TextEditingController(text: this._email);
 
-    final submit = () async {
+    Future<void> submit () async {
       try {
+        this.setState(() {
+          _loading = true;
+          AuthProgress();
+        });
         await fauiSendResetLink(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
+        this.setState(() {
+          _loading = false;
+        });
         this.switchScreen(AuthScreen.resetPassword, emailController.text);
       } catch (e) {
         this.setState(() {
