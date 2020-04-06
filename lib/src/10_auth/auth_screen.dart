@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
+
 import '../90_infra/faui_error.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
-import 'package:flutter/material.dart';
-
 import 'auth_connector.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
@@ -48,6 +48,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
+  bool _onExitInvoked = false;
 
   @override
   void initState() {
@@ -68,7 +69,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   void afterAuthorized(BuildContext context, FauiUser user) {
     FauiAuthState.user = user;
-    this.widget.onExit();
+    if (!_onExitInvoked) {
+      _onExitInvoked = true;
+      this.widget.onExit();
+    }
   }
 
   @override

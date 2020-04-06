@@ -178,3 +178,7 @@
 ## [2.0.24] - Mar 31, 2020
 
 * Fix method 'list' for empty array
+
+## [2.0.25] - Apr 5, 2020
+
+* Invoke onExit only ones
