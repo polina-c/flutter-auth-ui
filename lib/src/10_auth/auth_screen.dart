@@ -133,57 +133,45 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     Future<void> submit() async {
       try {
         if (_showOverlay == true) {
-        OverlayState overlayState = Overlay.of(context);
-        OverlayEntry overlayEntry = OverlayEntry(
-            builder: (context) =>
-                Positioned(
-                  top: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.40,
-                  left: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.37,
-                  child: Container(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.25,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.25,
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                            Text('Creating account',
-                                style: TextStyle(color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15)
-                            ),
-                          ])),
-                ));
-        overlayState.insert(overlayEntry);
-        await Future.delayed(Duration(seconds: 2));
-        await fauiRegisterUser(
-          apiKey: this.widget.firebaseApiKey,
-          email: emailController.text,
-        );
-        overlayEntry.remove();
-        this.switchScreen(AuthScreen.verifyEmail, emailController.text);
-      } else {
-      await fauiRegisterUser(
-      apiKey: this.widget.firebaseApiKey,
-      email: emailController.text,
-      );
-      this.switchScreen(AuthScreen.verifyEmail, emailController.text);
-      }
+          OverlayState overlayState = Overlay.of(context);
+          OverlayEntry overlayEntry = OverlayEntry(
+              builder: (context) =>
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.40,
+                    left: MediaQuery.of(context).size.width * 0.37,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        color: Colors.white,
+                        alignment: Alignment.center,
+                        child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text('Creating account',
+                                  style: TextStyle(color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15)
+                              ),
+                            ])),
+                  ));
+          overlayState.insert(overlayEntry);
+          await Future.delayed(Duration(seconds: 2));
+          await fauiRegisterUser(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+          );
+          overlayEntry.remove();
+          this.switchScreen(AuthScreen.verifyEmail, emailController.text);
+        } else {
+          await fauiRegisterUser(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+          );
+          this.switchScreen(AuthScreen.verifyEmail, emailController.text);
+        }
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
@@ -206,10 +194,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           ),
           _buildError(context, _error),
           RaisedButton(
-              child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
-                  'Create Account'),
-              onPressed:
-                submit,
+            child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
+                'Create Account'),
+            onPressed:
+            submit,
           ),
           FlatButton(
             child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
@@ -262,15 +250,15 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           );
           this.afterAuthorized(context, user);
           overlayEntry.remove();
-      }
-      else {
-      FauiUser user = await fauiSignInUser(
-      apiKey: this.widget.firebaseApiKey,
-      email: emailController.text,
-      password: passwordController.text,
-      );
-      this.afterAuthorized(context, user);
-      }
+        }
+        else {
+          FauiUser user = await fauiSignInUser(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+            password: passwordController.text,
+          );
+          this.afterAuthorized(context, user);
+        }
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
@@ -377,50 +365,38 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     Future<void> submit() async {
       try {
         if (_showOverlay == true) {
-        OverlayState overlayState = Overlay.of(context);
-        OverlayEntry overlayEntry = OverlayEntry(
-            builder: (context) =>
-                Positioned(
-                  top: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.42,
-                  left: MediaQuery
-                      .of(context)
-                      .size
-                      .width * 0.38,
-                  child: Container(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.25,
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width * 0.25,
-                      color: Colors.white,
-                      alignment: Alignment.center,
-                      child: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: CircularProgressIndicator(),
-                            ),
-                            Text('Resetting Password',
-                                style: TextStyle(color: Colors.black,
-                                    fontWeight: FontWeight.normal,
-                                    fontSize: 15)
-                            ),
-                          ])),
-                ));
-        overlayState.insert(overlayEntry);
-        await Future.delayed(Duration(seconds: 2));
-        await fauiSendResetLink(
-          apiKey: this.widget.firebaseApiKey,
-          email: emailController.text,
-        );
-        overlayEntry.remove();
-        this.switchScreen(AuthScreen.resetPassword, emailController.text);
+          OverlayState overlayState = Overlay.of(context);
+          OverlayEntry overlayEntry = OverlayEntry(
+              builder: (context) =>
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.42,
+                    left: MediaQuery.of(context).size.width * 0.38,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        color: Colors.white,
+                        alignment: Alignment.center,
+                        child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text('Resetting Password',
+                                  style: TextStyle(color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15)
+                              ),
+                            ])),
+                  ));
+          overlayState.insert(overlayEntry);
+          await Future.delayed(Duration(seconds: 2));
+          await fauiSendResetLink(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+          );
+          overlayEntry.remove();
+          this.switchScreen(AuthScreen.resetPassword, emailController.text);
         }
         else {
           await fauiSendResetLink(
@@ -455,14 +431,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                 widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
                     'Send Password Reset Link'),
             onPressed: () {
-               _showOverlay = true;
-               submit;
-               _showOverlay = false;
-    }
-               ),
-    FlatButton(
-    child: Text(
-    widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
+              _showOverlay = true;
+              submit;
+              _showOverlay = false;
+            }
+        ),
+        FlatButton(
+          child: Text(
+              widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
