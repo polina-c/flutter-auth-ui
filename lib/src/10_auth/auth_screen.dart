@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import '../90_infra/faui_error.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
 import 'package:flutter/material.dart';
 
-import 'auth_progress.dart';
 import 'auth_connector.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
@@ -49,7 +50,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   AuthScreen _authScreen = AuthScreen.signIn;
   String _error;
   String _email;
-  bool _loading = false;
+  bool _showOverlay = false;
 
   @override
   void initState() {
@@ -119,7 +120,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   static Widget _buildError(BuildContext context, String error) {
     return Text(
       error ?? "",
-      style: TextStyle(color: Theme.of(context).errorColor),
+      style: TextStyle(color: Theme
+          .of(context)
+          .errorColor),
     );
   }
 
@@ -127,53 +130,95 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController emailController =
     new TextEditingController(text: this._email);
 
-    Future<void> submit () async {
+    Future<void> submit() async {
       try {
-        this.setState(() {
-          _loading = true;
-          AuthProgress();
-        });
+        if (_showOverlay == true) {
+        OverlayState overlayState = Overlay.of(context);
+        OverlayEntry overlayEntry = OverlayEntry(
+            builder: (context) =>
+                Positioned(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.40,
+                  left: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.37,
+                  child: Container(
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.25,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.25,
+                      color: Colors.white,
+                      alignment: Alignment.center,
+                      child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                            Text('Creating account',
+                                style: TextStyle(color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15)
+                            ),
+                          ])),
+                ));
+        overlayState.insert(overlayEntry);
+        await Future.delayed(Duration(seconds: 2));
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
-        this.setState(() {
-          _loading = false;
-        });
+        overlayEntry.remove();
         this.switchScreen(AuthScreen.verifyEmail, emailController.text);
+      } else {
+      await fauiRegisterUser(
+      apiKey: this.widget.firebaseApiKey,
+      email: emailController.text,
+      );
+      this.switchScreen(AuthScreen.verifyEmail, emailController.text);
+      }
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
       }
-    };
+    }
 
-    return Column(children: <Widget>[
-      TextField(
-        autofocus: true,
-        controller: emailController,
-        decoration: InputDecoration(
-          labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
-        ),
-        onSubmitted: (s) {
-          submit();
-        },
-      ),
-      _buildError(context, _error),
-      RaisedButton(
-        child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
-            'Create Account'),
-        onPressed: submit,
-      ),
-      FlatButton(
-        child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
-            'Have account? Sign in.'),
-        onPressed: () {
-          this.switchScreen(AuthScreen.signIn, emailController.text);
-        },
-      ),
-    ]);
+    return Column(
+        children: <Widget>[
+          TextField(
+            autofocus: true,
+            controller: emailController,
+            decoration: InputDecoration(
+              labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
+            ),
+            onSubmitted: (s) {
+              submit();
+            },
+          ),
+          _buildError(context, _error),
+          RaisedButton(
+              child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
+                  'Create Account'),
+              onPressed:
+                submit,
+          ),
+          FlatButton(
+            child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
+                'Have account? Sign in.'),
+            onPressed: () {
+              this.switchScreen(AuthScreen.signIn, emailController.text);
+            },
+          ),
+        ]);
   }
 
   Widget _buildSignInScreen(BuildContext context) {
@@ -182,73 +227,107 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController passwordController =
     new TextEditingController();
 
-    Future<void> submit () async {
+    Future<void> submit() async {
       try {
-        this.setState(() {
-          _loading = true;
-          AuthProgress();
-        });
-        FauiUser user = await fauiSignInUser(
-          apiKey: this.widget.firebaseApiKey,
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        this.setState(() {
-          _loading = false;
-        });
-        this.afterAuthorized(context, user);
+        if (_showOverlay == true) {
+          OverlayState overlayState = Overlay.of(context);
+          OverlayEntry overlayEntry = OverlayEntry(
+              builder: (context) =>
+                  Positioned(
+                    top: MediaQuery.of(context).size.height * 0.51,
+                    left: MediaQuery.of(context).size.width * 0.35,
+                    child: Container(
+                        height: MediaQuery.of(context).size.height * 0.25,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        color: Colors.white,
+                        alignment: Alignment.center,
+                        child: Column(
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: CircularProgressIndicator(),
+                              ),
+                              Text('Signing in',
+                                  style: TextStyle(color: Colors.black,
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 15)),
+                            ])),
+                  ));
+          overlayState.insert(overlayEntry);
+          await Future.delayed(Duration(seconds: 2));
+          FauiUser user = await fauiSignInUser(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+            password: passwordController.text,
+          );
+          this.afterAuthorized(context, user);
+          overlayEntry.remove();
+      }
+      else {
+      FauiUser user = await fauiSignInUser(
+      apiKey: this.widget.firebaseApiKey,
+      email: emailController.text,
+      password: passwordController.text,
+      );
+      this.afterAuthorized(context, user);
+      }
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
       }
-    };
+    }
 
     return Column(
-      children: <Widget>[
-        TextField(
-          controller: emailController,
-          autofocus: true,
-          decoration: InputDecoration(
-            labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
+        children: <Widget>[
+          TextField(
+            controller: emailController,
+            autofocus: true,
+            decoration: InputDecoration(
+              labelText: widget.phrases[FauiPhrases.EmailTextField] ?? "EMail",
+            ),
+            onSubmitted: (s) {
+              submit();
+            },
           ),
-          onSubmitted: (s) {
-            submit();
-          },
-        ),
-        TextField(
-          controller: passwordController,
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText:
-            widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
+          TextField(
+            controller: passwordController,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText:
+              widget.phrases[FauiPhrases.PasswordTextField] ?? "Password",
+            ),
+            onSubmitted: (s) {
+              submit();
+            },
           ),
-          onSubmitted: (s) {
-            submit();
-          },
-        ),
-        _buildError(context, _error),
-        RaisedButton(
-          child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
-          onPressed: submit,
-        ),
-        FlatButton(
-          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
-              'Create Account'),
-          onPressed: () {
-            this.switchScreen(AuthScreen.createAccount, emailController.text);
-          },
-        ),
-        FlatButton(
-          child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
-              'Forgot Password?'),
-          onPressed: () {
-            this.switchScreen(AuthScreen.forgotPassword, emailController.text);
-          },
-        ),
-      ],
-    );
+          _buildError(context, _error),
+          RaisedButton(
+              child: Text(
+                  widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
+              onPressed: () {
+                _showOverlay = true;
+                submit;
+                _showOverlay = false;
+              }
+          ),
+          FlatButton(
+            child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+                'Create Account'),
+            onPressed: () {
+              this.switchScreen(AuthScreen.createAccount, emailController.text);
+            },
+          ),
+          FlatButton(
+            child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
+                'Forgot Password?'),
+            onPressed: () {
+              this.switchScreen(
+                  AuthScreen.forgotPassword, emailController.text);
+            },
+          ),
+        ]);
   }
 
   Widget _buildVerifyEmailScreen(BuildContext context, String email) {
@@ -295,27 +374,68 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     final TextEditingController emailController =
     new TextEditingController(text: this._email);
 
-    Future<void> submit () async {
+    Future<void> submit() async {
       try {
-        this.setState(() {
-          _loading = true;
-          AuthProgress();
-        });
+        if (_showOverlay == true) {
+        OverlayState overlayState = Overlay.of(context);
+        OverlayEntry overlayEntry = OverlayEntry(
+            builder: (context) =>
+                Positioned(
+                  top: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.42,
+                  left: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.38,
+                  child: Container(
+                      height: MediaQuery
+                          .of(context)
+                          .size
+                          .height * 0.25,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width * 0.25,
+                      color: Colors.white,
+                      alignment: Alignment.center,
+                      child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: CircularProgressIndicator(),
+                            ),
+                            Text('Sending Reset Password Link',
+                                style: TextStyle(color: Colors.black,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 15)
+                            ),
+                          ])),
+                ));
+        overlayState.insert(overlayEntry);
+        await Future.delayed(Duration(seconds: 2));
         await fauiSendResetLink(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
-        this.setState(() {
-          _loading = false;
-        });
+        overlayEntry.remove();
         this.switchScreen(AuthScreen.resetPassword, emailController.text);
-      } catch (e) {
+        }
+        else {
+          await fauiSendResetLink(
+            apiKey: this.widget.firebaseApiKey,
+            email: emailController.text,
+          );
+          this.switchScreen(AuthScreen.resetPassword, emailController.text);
+        }
+      }catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
       }
-    };
+    }
 
     return Column(
       children: <Widget>[
@@ -331,12 +451,18 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         ),
         _buildError(context, _error),
         RaisedButton(
-          child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
-              'Send Password Reset Link'),
-          onPressed: submit,
-        ),
-        FlatButton(
-          child: Text(widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
+            child: Text(
+                widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
+                    'Send Password Reset Link'),
+            onPressed: () {
+               _showOverlay = true;
+               submit;
+               _showOverlay = false;
+    }
+               ),
+    FlatButton(
+    child: Text(
+    widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
