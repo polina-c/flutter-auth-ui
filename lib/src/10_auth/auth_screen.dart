@@ -406,7 +406,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                               padding: const EdgeInsets.all(15.0),
                               child: CircularProgressIndicator(),
                             ),
-                            Text('Sending Reset Password Link',
+                            Text('Resetting Password',
                                 style: TextStyle(color: Colors.black,
                                     fontWeight: FontWeight.normal,
                                     fontSize: 15)
