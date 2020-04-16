@@ -140,29 +140,34 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         setState(() {
           _loadingCreateAccount = true;
         });
-        if (_loadingCreateAccount == true && emailController.text != '') {
+        if (_loadingCreateAccount == true && emailController.text != null) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AuthProgress(emailController.text,"Creating account");
               });
         }
-        await Future.delayed(Duration(seconds: 5));
+        await Future.delayed(Duration(seconds: 2));
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
+        Navigator.pop(context);
         setState((){
           _loadingCreateAccount = false;
-          Navigator.pop(context);
         });
         this.switchScreen(AuthScreen.verifyEmail, emailController.text);
       } catch (e) {
+        _loadingCreateAccount = false;
+        Navigator.pop(context);
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
       }
+      setState((){
+        _loadingCreateAccount = false;
+      });
     };
 
     return Column(children: <Widget>[
@@ -203,14 +208,14 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         setState(() {
           _loadingSignIn = true;
         });
-        if (_loadingSignIn == true && emailController.text != '' && passwordController.text != '') {
+        if (_loadingSignIn == true && emailController.text != null && passwordController.text != null) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AuthProgress(emailController.text,"Signing in");
               });
         }
-        await Future.delayed(Duration(seconds: 5));
+        //await Future.delayed(Duration(seconds: 2));
         FauiUser user = await fauiSignInUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
@@ -222,6 +227,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         });
         this.afterAuthorized(context, user);
       } catch (e) {
+        _loadingSignIn = false;
+        Navigator.pop(context);
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
@@ -342,6 +349,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         });
         this.switchScreen(AuthScreen.resetPassword, emailController.text);
       } catch (e) {
+        _loadingForgotPassword = false;
+        Navigator.pop(context);
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
