@@ -144,7 +144,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                 return AuthProgress(emailController.text,"Creating account");
               });
         }
-        await Future.delayed(Duration(seconds: 5));
+        await Future.delayed(Duration(seconds: 2));
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
@@ -206,7 +206,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                 return AuthProgress(emailController.text, "Signing in");
               });
         }
-        await Future.delayed(Duration(seconds: 5));
+        await Future.delayed(Duration(seconds: 2));
         FauiUser user = await fauiSignInUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
@@ -334,7 +334,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
                 return AuthProgress(emailController.text,"Sending Password Reset");
               });
         }
-        await Future.delayed(Duration(seconds: 5));
+        await Future.delayed(Duration(seconds: 2));
         await fauiSendResetLink(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
