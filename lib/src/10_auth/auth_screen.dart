@@ -137,25 +137,22 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     final submit = () async {
       try {
-        setState(() {
-          _loadingCreateAccount = true;
-        });
-        if (_loadingCreateAccount == true && emailController.text != null) {
+        if (_loadingCreateAccount == true) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
                 return AuthProgress(emailController.text,"Creating account");
               });
         }
-        await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 5));
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
-        Navigator.pop(context);
-        setState((){
+        if (_loadingCreateAccount == true) {
           _loadingCreateAccount = false;
-        });
+          Navigator.pop(context);
+        }
         this.switchScreen(AuthScreen.verifyEmail, emailController.text);
       } catch (e) {
         _loadingCreateAccount = false;
@@ -165,9 +162,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           this._email = emailController.text;
         });
       }
-      setState((){
-        _loadingCreateAccount = false;
-      });
     };
 
     return Column(children: <Widget>[
@@ -205,31 +199,30 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     final submit = () async {
       try {
-        setState(() {
-          _loadingSignIn = true;
-        });
-        if (_loadingSignIn == true && emailController.text != null && passwordController.text != null) {
+        if (_loadingSignIn == true) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AuthProgress(emailController.text,"Signing in");
+                return AuthProgress(emailController.text, "Signing in");
               });
         }
-        //await Future.delayed(Duration(seconds: 2));
+        await Future.delayed(Duration(seconds: 5));
         FauiUser user = await fauiSignInUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
           password: passwordController.text,
         );
-        Navigator.pop(context);
-        setState(() {
+        if (_loadingSignIn == true) {
           _loadingSignIn = false;
-        });
+          Navigator.pop(context);
+        }
         this.afterAuthorized(context, user);
       } catch (e) {
-        _loadingSignIn = false;
-        Navigator.pop(context);
-        this.setState(() {
+        if (_loadingSignIn == true) {
+          _loadingSignIn = false;
+          Navigator.pop(context);
+        }
+        setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
@@ -262,12 +255,17 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         _buildError(context, _error),
         RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
-          onPressed: submit,
-        ),
-        FlatButton(
-          child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
+          onPressed: () {
+            _loadingSignIn = true;
+            submit();
+          }
+    ),
+    FlatButton(
+    child: Text(
+    widget.phrases[FauiPhrases.CreateAccountLink] ??
               'Create Account'),
           onPressed: () {
+            _loadingCreateAccount = true;
             this.switchScreen(AuthScreen.createAccount, emailController.text);
           },
         ),
@@ -275,6 +273,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
               'Forgot Password?'),
           onPressed: () {
+            _loadingForgotPassword = true;
             this.switchScreen(AuthScreen.forgotPassword, emailController.text);
           },
         ),
@@ -328,14 +327,11 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     final submit = () async {
       try {
-        this.setState(() {
-          _loadingForgotPassword = true;
-        });
-        if (_loadingForgotPassword == true && emailController.text != '') {
+        if (_loadingForgotPassword == true && emailController.text != null) {
           showDialog(
               context: context,
               builder: (BuildContext context) {
-                return AuthProgress(emailController.text,"Resetting Password");
+                return AuthProgress(emailController.text,"Sending Password Reset");
               });
         }
         await Future.delayed(Duration(seconds: 5));
@@ -343,15 +339,15 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
-        Navigator.pop(context);
-        this.setState(() {
+        if (_loadingForgotPassword == true) {
+          Navigator.pop(context);
           _loadingForgotPassword = false;
-        });
+        };
         this.switchScreen(AuthScreen.resetPassword, emailController.text);
       } catch (e) {
         _loadingForgotPassword = false;
         Navigator.pop(context);
-        this.setState(() {
+        setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
         });
