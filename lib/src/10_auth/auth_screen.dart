@@ -129,20 +129,28 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildCreateAccountScreen(BuildContext context) {
     final TextEditingController emailController =
+
         new TextEditingController(text: this._email);
 
     final submit = () async {
       try {
+        setState(() {
+          _loading = true;
+        });
         await fauiRegisterUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
+        setState(() {
+          _loading = false;
+        });
 
         this.switchScreen(AuthScreen.verifyEmail, emailController.text);
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
+          _loading = false;
         });
       }
     };
@@ -159,12 +167,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         },
       ),
       _buildError(context, _error),
-      RaisedButton(
+      (_loading == true) ? AuthProgress('Creating account') : RaisedButton(
         child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
             'Create Account'),
         onPressed: submit,
       ),
-      FlatButton(
+      if (_loading == false) FlatButton(
         child: Text(widget.phrases[FauiPhrases.HaveAccountLink] ??
             'Have account? Sign in.'),
         onPressed: () {
@@ -199,6 +207,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
+          _loading = false;
         });
       }
     };
@@ -227,19 +236,19 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         _buildError(context, _error),
-        (_loading == true) ? Text("Loading...") :
-        RaisedButton(
+
+        (_loading == true) ? AuthProgress('Signing in') : RaisedButton(
     child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
     onPressed: submit,
     ),
-    FlatButton(
+        if (_loading == false) FlatButton(
     child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
     'Create Account'),
     onPressed: () {
     this.switchScreen(AuthScreen.createAccount, emailController.text);
     },
     ),
-    FlatButton(
+        if (_loading == false) FlatButton(
     child: Text(widget.phrases[FauiPhrases.ForgotPassordLink] ??
     'Forgot Password?'),
     onPressed: () {

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 
 class AuthProgress extends StatelessWidget {
-  final String email;
+  final String displayMessage;
 
-  AuthProgress(this.email);
-
+  AuthProgress(this.displayMessage);
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: MediaQuery.of(context).size.height * 0.40,
-    width: MediaQuery.of(context).size.width * 0.40,
-    child: Column(
-        children: [
-              Text(this.email),
-              Text("Loading....."),
-            ]),
-    );
+        height: MediaQuery.of(context).size.height * 0.15,
+        width: MediaQuery.of(context).size.width * 0.15,
+        color: Colors.white,
+        child: Column(
+            children: <Widget>[
+              CircularProgressIndicator(),
+              Text(displayMessage,
+                  style: TextStyle(color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                  )),
+            ]));
   }
 }
