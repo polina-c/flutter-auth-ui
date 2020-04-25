@@ -193,7 +193,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         setState(() {
           _loading = true;
         });
-        await Future.delayed(Duration(seconds: 2));
         FauiUser user = await fauiSignInUser(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
@@ -304,15 +303,22 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     final submit = () async {
       try {
+        setState(() {
+          _loading = true;
+        });
         await fauiSendResetLink(
           apiKey: this.widget.firebaseApiKey,
           email: emailController.text,
         );
+        setState(() {
+          _loading = false;
+        });
         this.switchScreen(AuthScreen.resetPassword, emailController.text);
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
           this._email = emailController.text;
+          _loading = false;
         });
       }
     };
@@ -330,18 +336,18 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         _buildError(context, _error),
-        RaisedButton(
+        (_loading == true) ? AuthProgress('Sending Password Reset Link') : RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
               'Send Password Reset Link'),
           onPressed: submit,
         ),
-        FlatButton(
+        if (_loading == false) FlatButton(
           child: Text(widget.phrases[FauiPhrases.SignInLink] ?? 'Sign In'),
           onPressed: () {
             this.switchScreen(AuthScreen.signIn, email);
           },
         ),
-        FlatButton(
+        if (_loading == false) FlatButton(
           child: Text(widget.phrases[FauiPhrases.CreateAccountLink] ??
               'Create Account'),
           onPressed: () {
