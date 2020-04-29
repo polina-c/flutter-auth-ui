@@ -16,5 +16,8 @@ enum FauiPhrases {
   SendPasswordResetLinkButton,
   WeSentVerificationEmailMessage,
   WeSentLinkToResetPasswordMEssage,
+  CreatingAccountMessage,
+  SigningInMessage,
+  SendingPasswordResetLinkMessage,
   ForgotPassordLink,
 }
