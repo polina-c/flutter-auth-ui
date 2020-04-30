@@ -167,7 +167,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         },
       ),
       _buildError(context, _error),
-      (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.CreatingAccountMessage],'creating account...') : RaisedButton(
+      (_loading == true) ? AuthProgress('widget.phrases[FauiPhrases.CreatingAccountMessage]') : RaisedButton(
         child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
             'Create Account'),
         onPressed: submit,
@@ -236,7 +236,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         ),
         _buildError(context, _error),
 
-        (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.SigningInMessage],'signing in...') : RaisedButton(
+        (_loading == true) ? AuthProgress('widget.phrases[FauiPhrases.SigningInMessage]') : RaisedButton(
     child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
     onPressed: submit,
     ),
@@ -336,7 +336,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         _buildError(context, _error),
-        (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.SendingPasswordResetLinkMessage],'sending password reset link...') : RaisedButton(
+        (_loading == true) ? AuthProgress('widget.phrases[FauiPhrases.SendingPasswordResetLinkMessage]') : RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
               'Send Password Reset Link'),
           onPressed: submit,
