@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 
 class AuthProgress extends StatelessWidget {
-  final String Phrase;
+  final displayMessage;
 
-  AuthProgress(this.Phrase);
-
- String displayMessage(String phrase) {
-    switch (phrase) {
-      case 'widget.phrases[FauiPhrases.CreatingAccountMessage]':
-        return "creating account...";
-      case 'widget.phrases[FauiPhrases.SigningInMessage]':
-        return "signing in...";
-      case 'widget.phrases[FauiPhrases.SendingPasswordResetLinkMessage]':
-        return "sending password reset link...";
-    }
-  }
+  AuthProgress(this.displayMessage);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +15,7 @@ class AuthProgress extends StatelessWidget {
             children: <Widget>[
               CircularProgressIndicator(),
               SizedBox(height: 20),
-              Text(displayMessage(this.Phrase),
+              Text(this.displayMessage,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.black,
                       fontWeight: FontWeight.normal,
