@@ -127,17 +127,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  String _createDisplayMessage(FauiPhrases phrase) {
-    switch (phrase) {
-      case FauiPhrases.CreatingAccountMessage:
-        return widget.phrases[FauiPhrases.CreatingAccountMessage] ?? 'creating account...';
-      case FauiPhrases.SigningInMessage:
-        return widget.phrases[FauiPhrases.SigningInMessage] ?? 'signing in...';
-      case FauiPhrases.SendingPasswordResetLinkMessage:
-        return widget.phrases[FauiPhrases.SendingPasswordResetLinkMessage] ?? 'sending password reset link...';
-    }
-  }
-
   Widget _buildCreateAccountScreen(BuildContext context) {
     final TextEditingController emailController =
 
@@ -178,7 +167,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         },
       ),
       _buildError(context, _error),
-      (_loading == true) ? AuthProgress(_createDisplayMessage(FauiPhrases.CreatingAccountMessage)) : RaisedButton(
+      (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.CreatingAccountMessage] ?? 'creating account...') : RaisedButton(
         child: Text(widget.phrases[FauiPhrases.CreateAccountButton] ??
             'Create Account'),
         onPressed: submit,
@@ -247,7 +236,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         ),
         _buildError(context, _error),
 
-        (_loading == true) ? AuthProgress(_createDisplayMessage(FauiPhrases.SigningInMessage)) : RaisedButton(
+        (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.SigningInMessage] ?? 'signing in...') : RaisedButton(
     child: Text(widget.phrases[FauiPhrases.SignInButton] ?? 'Sign In'),
     onPressed: submit,
     ),
@@ -347,7 +336,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           },
         ),
         _buildError(context, _error),
-        (_loading == true) ? AuthProgress(_createDisplayMessage(FauiPhrases.SendingPasswordResetLinkMessage)) : RaisedButton(
+        (_loading == true) ? AuthProgress(widget.phrases[FauiPhrases.SendingPasswordResetLinkMessage] ?? 'sending password reset link...') : RaisedButton(
           child: Text(widget.phrases[FauiPhrases.SendPasswordResetLinkButton] ??
               'Send Password Reset Link'),
           onPressed: submit,
