@@ -182,3 +182,8 @@
 ## [2.0.25] - Apr 5, 2020
 
 * Invoke onExit only ones
+
+## [2.0.26] - May 9, 2020
+
+* Show spin wheel during user authentication.
+
