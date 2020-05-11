@@ -187,3 +187,7 @@
 
 * Show spin wheel during user authentication.
 
+## [2.0.27] - May 10, 2020
+
+* Replaced deprecated title with headline6
+

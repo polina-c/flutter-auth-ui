@@ -32,7 +32,7 @@ class DefaultScreenBuilder {
                 IconButton(
                   icon: Icon(
                     Icons.close,
-                    size: Theme.of(context).textTheme.title.fontSize,
+                    size: Theme.of(context).textTheme.headline6.fontSize,
                   ),
                   onPressed: close,
                 ),
@@ -40,7 +40,7 @@ class DefaultScreenBuilder {
             ),
             Text(
               title,
-              style: Theme.of(context).textTheme.title,
+              style: Theme.of(context).textTheme.headline6,
             ),
             content,
           ],
