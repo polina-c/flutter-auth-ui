@@ -220,16 +220,25 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(
         children: <Widget>[
-          TextField(
-            controller: emailController,
-            autofocus: true,
-            decoration: InputDecoration(
-              labelText: resolvePhrase(FauiPhrases.EmailTextField,"EMail"),
+          Focus(
+            child: TextField(
+              controller: emailController,
+              autofocus: true,
+              decoration: InputDecoration(
+                labelText: resolvePhrase(FauiPhrases.EmailTextField,"EMail"),
+              ),
+              onSubmitted: (s) {
+                submit();
+              },
             ),
-            onSubmitted: (s) {
-              submit();
-            },
-          ),
+            onFocusChange: (hasFocus) {
+             if (hasFocus && this._error != null) {
+                if (this._error.isNotEmpty && this._email.isEmpty) {
+                   setState(() {
+    this._error = "";
+    });
+    }}
+    }),
           Focus(
               child: TextField(
                 controller: passwordController,
