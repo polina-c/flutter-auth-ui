@@ -161,7 +161,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         autofocus: true,
         controller: emailController,
         decoration: InputDecoration(
-          labelText: resolvePhrase(FauiPhrases.EmailTextField,"EMail"),
+          labelText: resolvePhrase(FauiPhrases.EmailTextField,"Email"),
         ),
         onSubmitted: (s) {
           submit();
