@@ -186,9 +186,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     return Column(children: <Widget>[
       Focus(
         child: TextField(
-          controller: emailController,
-          autofocus: true,
-          decoration: InputDecoration(
+           autofocus: true,
+           controller: emailController,
+           decoration: InputDecoration(
             labelText: resolvePhrase(FauiPhrases.EmailTextField, "EMail"),
           ),
           onSubmitted: (s) {
