@@ -128,32 +128,54 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  void rebuildScreen(String screenType, bool focus, String fieldType) {
-    if (focus) {
-      if (screenType == 'create account' || screenType == 'reset password') {
-        if (focus && (this._error?.isNotEmpty ?? true)) {
-          setState(() {
-            this._error = "";
-          });
-        }
-      } else if (screenType == 'sign in') {
-        if (fieldType == 'email') {
-          if (this._error != null) {
-            if (this._error.isNotEmpty && this._email.isEmpty) {
-              setState(() {
-                this._error = "";
-              });
+  Widget _buildTextBox(TextEditingController controllerName, String field,
+      String screen, Future<Widget> Function() submit) {
+    FauiPhrases phrase;
+    if (field == 'Email') {
+      phrase = FauiPhrases.EmailTextField;
+    } else if (field == 'Password') {
+      phrase = FauiPhrases.PasswordTextField;
+    }
+    return Focus(
+        child: TextField(
+          autofocus: (field == 'Email') ? true : false,
+          controller: controllerName,
+          decoration: InputDecoration(
+            labelText: resolvePhrase(phrase, field),
+          ),
+          onSubmitted: (s) {
+            submit();
+          },
+        ),
+        onFocusChange: (hasFocus) {
+          if (hasFocus) {
+            if (screen == 'sign in') {
+              if (field == 'Email') {
+                if (this._error != null) {
+                  if (this._error.isNotEmpty && this._email.isEmpty) {
+                    setState(() {
+                      this._error = "";
+                    });
+                  }
+                }
+              } else if (field == 'Password') {
+                if ((this._error?.isNotEmpty ?? true) &&
+                    (this._email.isNotEmpty)) {
+                  setState(() {
+                    this._error = "";
+                  });
+                }
+              }
+            } else if ((screen == 'create account') ||
+                (screen == 'reset password')) {
+              if (this._error?.isNotEmpty ?? true) {
+                setState(() {
+                  this._error = "";
+                });
+              }
             }
           }
-        } else if (fieldType == 'password') {
-          if ((this._error?.isNotEmpty ?? true) && (this._email.isNotEmpty)) {
-            setState(() {
-              this._error = "";
-            });
-          }
-        }
-      }
-    }
+        });
   }
 
   Widget _buildCreateAccountScreen(BuildContext context) {
@@ -184,21 +206,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      Focus(
-        child: TextField(
-           autofocus: true,
-           controller: emailController,
-           decoration: InputDecoration(
-            labelText: resolvePhrase(FauiPhrases.EmailTextField, "EMail"),
-          ),
-          onSubmitted: (s) {
-            submit();
-          },
-        ),
-        onFocusChange: (hasFocus) {
-          rebuildScreen('create account', hasFocus, 'email');
-        },
-      ),
+      _buildTextBox(emailController, 'Email', 'create account', submit),
       _buildError(context, _error),
       (_loading == true)
           ? AuthProgress(resolvePhrase(
@@ -248,35 +256,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      Focus(
-          child: TextField(
-            controller: emailController,
-            autofocus: true,
-            decoration: InputDecoration(
-              labelText: resolvePhrase(FauiPhrases.EmailTextField, "EMail"),
-            ),
-            onSubmitted: (s) {
-              submit();
-            },
-          ),
-          onFocusChange: (hasFocus) {
-            rebuildScreen('sign in', hasFocus, 'email');
-          }),
-      Focus(
-          child: TextField(
-            controller: passwordController,
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText:
-                  resolvePhrase(FauiPhrases.PasswordTextField, "Password"),
-            ),
-            onSubmitted: (s) {
-              submit();
-            },
-          ),
-          onFocusChange: (hasFocus) {
-            rebuildScreen('sign in', hasFocus, 'password');
-          }),
+      _buildTextBox(emailController, 'Email', 'sign in', submit),
+      _buildTextBox(passwordController, 'Password', 'sign in', submit),
       _buildError(context, _error),
       (_loading == true)
           ? AuthProgress(
@@ -372,20 +353,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(
       children: <Widget>[
-        Focus(
-            child: TextField(
-              controller: emailController,
-              autofocus: true,
-              decoration: InputDecoration(
-                labelText: resolvePhrase(FauiPhrases.EmailTextField, "EMail"),
-              ),
-              onSubmitted: (s) {
-                submit();
-              },
-            ),
-            onFocusChange: (hasFocus) {
-              rebuildScreen('reset password', hasFocus, 'email');
-            }),
+        _buildTextBox(emailController, 'Email', 'reset password', submit),
         _buildError(context, _error),
         (_loading == true)
             ? AuthProgress(resolvePhrase(
