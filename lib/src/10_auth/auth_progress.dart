@@ -15,11 +15,10 @@ class AuthProgress extends StatelessWidget {
             children: <Widget>[
               CircularProgressIndicator(),
               SizedBox(height: 20),
-              Text(this.displayMessage,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black,
-                      fontWeight: FontWeight.normal,
-                  )),
+              Text(
+                this.displayMessage,
+                textAlign: TextAlign.center,
+              ),
             ]));
   }
 }
