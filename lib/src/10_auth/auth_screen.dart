@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import '../90_infra/faui_error.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
-import 'auth_connector.dart';
 import 'auth_progress.dart';
+import 'auth_connector.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
 
@@ -51,6 +51,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   String _email;
   bool _onExitInvoked = false;
   bool _loading = false;
+  FocusNode _emailNode = FocusNode();
+  FocusNode _passwordNode = FocusNode();
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
 
   @override
   void initState() {
@@ -79,6 +83,20 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   String resolvePhrase(FauiPhrases phrase, String message) {
     return widget.phrases[phrase] ?? message;
+  }
+
+  @override
+  void dispose() {
+    _emailNode.dispose();
+    _passwordNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  void setState(fn) {
+    if (mounted) {
+      super.setState(fn);
+    }
   }
 
   @override
@@ -128,10 +146,45 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  Widget _buildCreateAccountScreen(BuildContext context) {
-    final TextEditingController emailController =
-        new TextEditingController(text: this._email);
+  Widget _buildTextBox(
+      TextEditingController controllerName,
+      FocusNode currentNode,
+      FocusNode nextNode,
+      String fieldName,
+      bool autoFocus,
+      Future<Widget> Function() submit) {
+    handleKey(RawKeyEvent key) {
+      if (key is RawKeyDownEvent) {
+        if (key.physicalKey.debugName == 'Enter') {
+          submit();
+        } else {
+          {
+            setState(() {
+              this._error = "";
+            });
+          }
+        }
+      }
+      if ((key.logicalKey.debugName == 'Tab') && (nextNode != null)) {
+        nextNode.requestFocus();
+      }
+    }
 
+    return RawKeyboardListener(
+        focusNode: FocusNode(),
+        onKey: (key) => handleKey(key),
+        child: TextFormField(
+          focusNode: currentNode,
+          controller: controllerName,
+          autofocus: autoFocus,
+          onEditingComplete: () => {},
+          decoration: InputDecoration(
+            labelText: fieldName,
+          ),
+        ));
+  }
+
+  Widget _buildCreateAccountScreen(BuildContext context) {
     final submit = () async {
       try {
         setState(() {
@@ -156,43 +209,28 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      TextField(
-        autofocus: true,
-        controller: emailController,
-        decoration: InputDecoration(
-          labelText: resolvePhrase(FauiPhrases.EmailTextField, "Email"),
-        ),
-        onSubmitted: (s) {
-          submit();
-        },
-      ),
+      _buildTextBox(emailController, _emailNode, null,
+          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
       _buildError(context, _error),
-      if (_loading == true)
-        AuthProgress(resolvePhrase(
-            FauiPhrases.CreatingAccountMessage, 'creating account...')),
-      if (_loading == false)
-        RaisedButton(
-          child: Text(
-              resolvePhrase(FauiPhrases.CreateAccountButton, 'Create Account')),
-          onPressed: submit,
-        ),
+      (_loading == true)
+          ? AuthProgress(resolvePhrase(
+              FauiPhrases.CreatingAccountMessage, 'creating account...'))
+          : RaisedButton(
+              child: Text(resolvePhrase(
+                  FauiPhrases.CreateAccountButton, 'Create Account')),
+              onPressed: submit,
+            ),
       if (_loading == false)
         FlatButton(
-          child: Text(resolvePhrase(
-              FauiPhrases.HaveAccountLink, 'Have account? Sign in.')),
-          onPressed: () {
-            this.switchScreen(AuthScreen.signIn, emailController.text);
-          },
-        ),
+            child: Text(resolvePhrase(
+                FauiPhrases.HaveAccountLink, 'Have account? Sign in.')),
+            onPressed: () {
+              this.switchScreen(AuthScreen.signIn, emailController.text);
+            }),
     ]);
   }
 
   Widget _buildSignInScreen(BuildContext context) {
-    final TextEditingController emailController =
-        new TextEditingController(text: this._email);
-    final TextEditingController passwordController =
-        new TextEditingController();
-
     final submit = () async {
       try {
         setState(() {
@@ -217,35 +255,23 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      TextField(
-        controller: emailController,
-        autofocus: true,
-        decoration: InputDecoration(
-          labelText: resolvePhrase(FauiPhrases.EmailTextField, "Email"),
-        ),
-        onSubmitted: (s) {
-          submit();
-        },
-      ),
-      TextField(
-        controller: passwordController,
-        obscureText: true,
-        decoration: InputDecoration(
-          labelText: resolvePhrase(FauiPhrases.PasswordTextField, "Password"),
-        ),
-        onSubmitted: (s) {
-          submit();
-        },
-      ),
+      _buildTextBox(emailController, _emailNode, _passwordNode,
+          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
+      _buildTextBox(
+          passwordController,
+          _passwordNode,
+          null,
+          resolvePhrase(FauiPhrases.PasswordTextField, 'Password'),
+          false,
+          submit),
       _buildError(context, _error),
-      if (_loading == true)
-        AuthProgress(
-            resolvePhrase(FauiPhrases.SigningInMessage, 'signing in...')),
-      if (_loading == false)
-        RaisedButton(
-          child: Text(resolvePhrase(FauiPhrases.SignInButton, 'Sign In')),
-          onPressed: submit,
-        ),
+      (_loading == true)
+          ? AuthProgress(
+              resolvePhrase(FauiPhrases.SigningInMessage, 'signing in...'))
+          : RaisedButton(
+              child: Text(resolvePhrase(FauiPhrases.SignInButton, 'Sign In')),
+              onPressed: submit,
+            ),
       if (_loading == false)
         FlatButton(
           child: Text(
@@ -306,9 +332,6 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
   }
 
   Widget _buildForgotPasswordScreen(BuildContext context, String email) {
-    final TextEditingController emailController =
-        new TextEditingController(text: this._email);
-
     final submit = () async {
       try {
         setState(() {
@@ -333,27 +356,19 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(
       children: <Widget>[
-        TextField(
-          autofocus: true,
-          controller: emailController,
-          decoration: InputDecoration(
-            labelText: resolvePhrase(FauiPhrases.EmailTextField, "Email"),
-          ),
-          onSubmitted: (s) {
-            submit();
-          },
-        ),
+        _buildTextBox(emailController, _emailNode, null,
+            resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
         _buildError(context, _error),
-        if (_loading == true)
-          AuthProgress(resolvePhrase(
-              FauiPhrases.SendingPasswordResetLinkMessage,
-              'sending password reset link...')),
-        if (_loading == false)
-          RaisedButton(
-            child: Text(resolvePhrase(FauiPhrases.SendPasswordResetLinkButton,
-                'Send Password Reset Link')),
-            onPressed: submit,
-          ),
+        (_loading == true)
+            ? AuthProgress(resolvePhrase(
+                FauiPhrases.SendingPasswordResetLinkMessage,
+                'sending password reset link...'))
+            : RaisedButton(
+                child: Text(resolvePhrase(
+                    FauiPhrases.SendPasswordResetLinkButton,
+                    'Send Password Reset Link')),
+                onPressed: submit,
+              ),
         if (_loading == false)
           FlatButton(
             child: Text(resolvePhrase(FauiPhrases.SignInLink, 'Sign In')),
