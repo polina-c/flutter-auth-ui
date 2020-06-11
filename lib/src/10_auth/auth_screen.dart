@@ -146,28 +146,17 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  Widget _buildTextBox(
-      TextEditingController controllerName,
-      FocusNode currentNode,
-      FocusNode nextNode,
-      String fieldName,
-      bool autoFocus,
-      Future<Widget> Function() submit) {
+  Widget _buildTextBox(TextEditingController controller, FocusNode currentNode,
+      FocusNode nextNode, String fieldName, Future<Widget> Function() submit) {
     handleKey(RawKeyEvent key) {
       if (key is RawKeyDownEvent) {
-        if (key.physicalKey.debugName == 'Enter') {
+        if (key.physicalKey.debugName == 'Enter')
           submit();
-        } else {
-          {
-            setState(() {
-              this._error = "";
-            });
-          }
-        }
+        else
+          setState(() => this._error = "");
       }
-      if ((key.logicalKey.debugName == 'Tab') && (nextNode != null)) {
+      if ((key.logicalKey.debugName == 'Tab') && (nextNode != null))
         nextNode.requestFocus();
-      }
     }
 
     return RawKeyboardListener(
@@ -175,9 +164,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         onKey: (key) => handleKey(key),
         child: TextFormField(
           focusNode: currentNode,
-          controller: controllerName,
-          autofocus: autoFocus,
-          onEditingComplete: () => {},
+          controller: controller,
+          autofocus: true,
+          onEditingComplete: () =>
+              {}, // it is important to have this handler to catch 'Enter'
           decoration: InputDecoration(
             labelText: fieldName,
           ),
@@ -210,7 +200,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(children: <Widget>[
       _buildTextBox(emailController, _emailNode, null,
-          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
+          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
       _buildError(context, _error),
       (_loading == true)
           ? AuthProgress(resolvePhrase(
@@ -256,14 +246,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(children: <Widget>[
       _buildTextBox(emailController, _emailNode, _passwordNode,
-          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
-      _buildTextBox(
-          passwordController,
-          _passwordNode,
-          null,
-          resolvePhrase(FauiPhrases.PasswordTextField, 'Password'),
-          false,
-          submit),
+          resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
+      _buildTextBox(passwordController, _passwordNode, null,
+          resolvePhrase(FauiPhrases.PasswordTextField, 'Password'), submit),
       _buildError(context, _error),
       (_loading == true)
           ? AuthProgress(
@@ -357,7 +342,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     return Column(
       children: <Widget>[
         _buildTextBox(emailController, _emailNode, null,
-            resolvePhrase(FauiPhrases.EmailTextField, 'Email'), true, submit),
+            resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
         _buildError(context, _error),
         (_loading == true)
             ? AuthProgress(resolvePhrase(
