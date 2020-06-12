@@ -92,6 +92,12 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     super.dispose();
   }
 
+  // The following override takes care of "setState() called after dispose()" exception.
+  // This exception is raised because when Enter key is pressed, it calls submit().
+  // This causes the Future to complete after the widget has already been disposed.
+  // More details can be found at the given link:
+  // "https://github.com/Norbert515/flutter_villains/issues/8".
+  
   @override
   void setState(fn) {
     if (mounted) {
