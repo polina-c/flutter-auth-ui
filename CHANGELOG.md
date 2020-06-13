@@ -191,7 +191,7 @@
 
 * Replaced deprecated title with headline6
 
-##[2.0.28] - Jun 12, 2020
+## [2.0.28] - Jun 12, 2020
 
 * Made field should not be empty message disappear when user starts typing
 
