@@ -153,15 +153,18 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _buildTextBox(TextEditingController controller, FocusNode currentNode,
       FocusNode nextNode, String fieldName, Future<Widget> Function() submit) {
+    
     handleKey(RawKeyEvent key) {
-      if (key is RawKeyDownEvent) {
-        if (key.physicalKey.debugName == 'Enter')
-          submit();
-        else
-          setState(() => this._error = "");
+      if (!(key is RawKeyDownEvent)) {
+        return;
       }
-      if ((key.logicalKey.debugName == 'Tab') && (nextNode != null))
-        nextNode.requestFocus();
+        setState(() => this._error = "");
+        if (key.physicalKey.debugName == 'Enter') {
+          submit();
+        }
+        if ((key.logicalKey.debugName == 'Tab') && (nextNode != null)) {
+          nextNode.requestFocus();
+        }
     }
 
     return RawKeyboardListener(
