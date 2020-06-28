@@ -151,7 +151,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  Widget _buildTextBox(TextEditingController controller, FocusNode currentNode,
+  Widget _buildTextBox(TextEditingController controller, bool hideFieldValue, FocusNode currentNode,
       FocusNode nextNode, String fieldName, Future<Widget> Function() submit) {
     handleKey(RawKeyEvent key) {
       if (key is! RawKeyDownEvent) {
@@ -171,6 +171,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         onKey: (key) => handleKey(key),
         child: TextFormField(
           focusNode: currentNode,
+          obscureText: hideFieldValue,
           controller: controller,
           autofocus: true,
           onEditingComplete: () => {},
@@ -206,7 +207,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      _buildTextBox(_emailcontroller, _emailNode, null,
+      _buildTextBox(_emailcontroller, false, _emailNode, null,
           resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
       _buildError(context, _error),
       if (_loading == true)
@@ -253,9 +254,9 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     };
 
     return Column(children: <Widget>[
-      _buildTextBox(_emailcontroller, _emailNode, _passwordNode,
+      _buildTextBox(_emailcontroller, false, _emailNode, _passwordNode,
           resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
-      _buildTextBox(_passwordcontroller, _passwordNode, null,
+      _buildTextBox(_passwordcontroller, true, _passwordNode, null,
           resolvePhrase(FauiPhrases.PasswordTextField, 'Password'), submit),
       _buildError(context, _error),
       if (_loading == true)
@@ -350,7 +351,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
     return Column(
       children: <Widget>[
-        _buildTextBox(_emailcontroller, _emailNode, null,
+        _buildTextBox(_emailcontroller, false, _emailNode, null,
             resolvePhrase(FauiPhrases.EmailTextField, 'Email'), submit),
         _buildError(context, _error),
         if (_loading == true)
