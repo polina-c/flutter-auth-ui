@@ -1,5 +1,3 @@
-author: Polina Cherkasova <polina.c@live.com>
-
 name: faui
 description: >
   Authentication UI and data access for Flutter. Uses Firebase auth as security provider.
