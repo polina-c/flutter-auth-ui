@@ -2,7 +2,7 @@ name: faui
 description: >
   Authentication UI and data access for Flutter. Uses Firebase auth as security provider.
 
-version: 2.0.28
+version: 2.0.29
 homepage: https://github.com/polina-c/flutter-auth-ui
 
 environment:

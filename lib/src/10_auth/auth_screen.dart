@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../90_infra/faui_error.dart';
 import '../90_model/faui_phrases.dart';
 import '../90_model/faui_user.dart';
-import 'auth_progress.dart';
 import 'auth_connector.dart';
+import 'auth_progress.dart';
 import 'auth_state.dart';
 import 'default_screen_builder.dart';
 
@@ -37,7 +38,7 @@ class FauiAuthScreen extends StatefulWidget {
   _FauiAuthScreenState createState() => _FauiAuthScreenState();
 }
 
-enum AuthScreen {
+enum _AuthScreen {
   signIn,
   createAccount,
   forgotPassword,
@@ -46,11 +47,12 @@ enum AuthScreen {
 }
 
 class _FauiAuthScreenState extends State<FauiAuthScreen> {
-  AuthScreen _authScreen = AuthScreen.signIn;
+  _AuthScreen _authScreen = _AuthScreen.signIn;
   String _error;
   String _email;
   bool _onExitInvoked = false;
   bool _loading = false;
+  FocusNode _focusNodeCurrent;
   FocusNode _emailNode = FocusNode();
   FocusNode _passwordNode = FocusNode();
   final TextEditingController _emailcontroller = new TextEditingController();
@@ -61,11 +63,11 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     super.initState();
 
     if (this.widget.startWithRegistration) {
-      this._authScreen = AuthScreen.createAccount;
+      this._authScreen = _AuthScreen.createAccount;
     }
   }
 
-  void switchScreen(AuthScreen authScreen, String email) {
+  void switchScreen(_AuthScreen authScreen, String email) {
     setState(() {
       this._authScreen = authScreen;
       this._error = null;
@@ -97,7 +99,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     // This check takes care of "setState() called after dispose()" exception.
     // This exception is raised because when Enter key is pressed, it calls submit().
     // This causes the Future to complete after the widget has already been disposed.
-    // More details can be found at the given link:
+    // More details can be found at the link:
     // "https://github.com/Norbert515/flutter_villains/issues/8".
     if (mounted) {
       super.setState(fn);
@@ -106,21 +108,23 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (_focusNodeCurrent != null)
+      FocusScope.of(context).requestFocus(_focusNodeCurrent);
     return this.widget.builder(
         context, _getScreenTitle(), _getScreen(context), this.widget.onExit);
   }
 
   String _getScreenTitle() {
     switch (this._authScreen) {
-      case AuthScreen.signIn:
+      case _AuthScreen.signIn:
         return resolvePhrase(FauiPhrases.SignInTitle, 'Sign In');
-      case AuthScreen.createAccount:
+      case _AuthScreen.createAccount:
         return resolvePhrase(FauiPhrases.CreateAccountTitle, 'Create Account');
-      case AuthScreen.forgotPassword:
+      case _AuthScreen.forgotPassword:
         return resolvePhrase(FauiPhrases.ForgotPassordTitle, 'Forgot Password');
-      case AuthScreen.verifyEmail:
+      case _AuthScreen.verifyEmail:
         return resolvePhrase(FauiPhrases.VerifyEmailTitle, 'Verify Email');
-      case AuthScreen.resetPassword:
+      case _AuthScreen.resetPassword:
         return resolvePhrase(FauiPhrases.ResetPasswordTitle, 'Reset Password');
       default:
         throw "Unexpected screen $_authScreen";
@@ -129,15 +133,15 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   Widget _getScreen(BuildContext context) {
     switch (this._authScreen) {
-      case AuthScreen.signIn:
+      case _AuthScreen.signIn:
         return _buildSignInScreen(context);
-      case AuthScreen.createAccount:
+      case _AuthScreen.createAccount:
         return _buildCreateAccountScreen(context);
-      case AuthScreen.forgotPassword:
+      case _AuthScreen.forgotPassword:
         return _buildForgotPasswordScreen(context, this._email);
-      case AuthScreen.verifyEmail:
+      case _AuthScreen.verifyEmail:
         return _buildVerifyEmailScreen(context, this._email);
-      case AuthScreen.resetPassword:
+      case _AuthScreen.resetPassword:
         return _buildResetPasswordScreen(context, this._email);
       default:
         throw "Unexpected screen $_authScreen";
@@ -151,18 +155,29 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
     );
   }
 
-  Widget _buildTextBox(TextEditingController controller, bool hideFieldValue, FocusNode currentNode,
-      FocusNode nextNode, String fieldName, Future<Widget> Function() submit) {
+  _changeFocus(FocusNode current, FocusNode next) {
+    // https://stackoverflow.com/questions/56221653/focusnode-why-is-requestfocus-not-working/57104572#57104572
+    current?.unfocus();
+    setState(() => _focusNodeCurrent = next);
+  }
+
+  Widget _buildTextBox(
+      TextEditingController controller,
+      bool hideFieldValue,
+      FocusNode currentNode,
+      FocusNode nextNode,
+      String fieldName,
+      Future<Widget> Function() submit) {
     handleKey(RawKeyEvent key) {
       if (key is! RawKeyDownEvent) {
         return;
       }
-      setState(() => this._error = "");
+      setState(() => _error = "");
       if (key.physicalKey.debugName == 'Enter') {
         submit();
       }
       if ((key.logicalKey.debugName == 'Tab') && (nextNode != null)) {
-        nextNode.requestFocus();
+        _changeFocus(currentNode, nextNode);
       }
     }
 
@@ -196,7 +211,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           _loading = false;
         });
 
-        this.switchScreen(AuthScreen.verifyEmail, _emailcontroller.text);
+        this.switchScreen(_AuthScreen.verifyEmail, _emailcontroller.text);
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
@@ -224,7 +239,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             child: Text(resolvePhrase(
                 FauiPhrases.HaveAccountLink, 'Have account? Sign in.')),
             onPressed: () {
-              this.switchScreen(AuthScreen.signIn, _emailcontroller.text);
+              this.switchScreen(_AuthScreen.signIn, _emailcontroller.text);
             }),
     ]);
   }
@@ -272,7 +287,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text(
               resolvePhrase(FauiPhrases.CreateAccountLink, 'Create Account')),
           onPressed: () {
-            this.switchScreen(AuthScreen.createAccount, _emailcontroller.text);
+            this.switchScreen(_AuthScreen.createAccount, _emailcontroller.text);
           },
         ),
       if (_loading == false)
@@ -280,7 +295,8 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           child: Text(
               resolvePhrase(FauiPhrases.ForgotPassordLink, 'Forgot Password?')),
           onPressed: () {
-            this.switchScreen(AuthScreen.forgotPassword, _emailcontroller.text);
+            this.switchScreen(
+                _AuthScreen.forgotPassword, _emailcontroller.text);
           },
         ),
     ]);
@@ -299,7 +315,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         RaisedButton(
           child: Text(resolvePhrase(FauiPhrases.SignInButton, 'Sign In')),
           onPressed: () {
-            this.switchScreen(AuthScreen.signIn, email);
+            this.switchScreen(_AuthScreen.signIn, email);
           },
         ),
       ],
@@ -319,7 +335,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         RaisedButton(
           child: Text(resolvePhrase(FauiPhrases.SignInButton, 'Sign In')),
           onPressed: () {
-            this.switchScreen(AuthScreen.signIn, email);
+            this.switchScreen(_AuthScreen.signIn, email);
           },
         ),
       ],
@@ -339,7 +355,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
         setState(() {
           _loading = false;
         });
-        this.switchScreen(AuthScreen.resetPassword, _emailcontroller.text);
+        this.switchScreen(_AuthScreen.resetPassword, _emailcontroller.text);
       } catch (e) {
         this.setState(() {
           this._error = FauiError.exceptionToUiMessage(e);
@@ -368,7 +384,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
           FlatButton(
             child: Text(resolvePhrase(FauiPhrases.SignInLink, 'Sign In')),
             onPressed: () {
-              this.switchScreen(AuthScreen.signIn, email);
+              this.switchScreen(_AuthScreen.signIn, email);
             },
           ),
         if (_loading == false)
@@ -376,7 +392,7 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
             child: Text(
                 resolvePhrase(FauiPhrases.CreateAccountLink, 'Create Account')),
             onPressed: () {
-              this.switchScreen(AuthScreen.createAccount, email);
+              this.switchScreen(_AuthScreen.createAccount, email);
             },
           ),
       ],
