@@ -108,8 +108,10 @@ class _FauiAuthScreenState extends State<FauiAuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (_focusNodeCurrent != null)
+    if (_focusNodeCurrent != null) {
       FocusScope.of(context).requestFocus(_focusNodeCurrent);
+      _focusNodeCurrent = null;
+    }
     return this.widget.builder(
         context, _getScreenTitle(), _getScreen(context), this.widget.onExit);
   }

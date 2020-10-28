@@ -198,3 +198,7 @@
 ## [2.0.29] - Oct 28, 2020
 
 * Fixed issue with tab order during sign in.
+
+## [2.0.30] - Oct 28, 2020
+
+* Fixed issue with tab order during typing.
