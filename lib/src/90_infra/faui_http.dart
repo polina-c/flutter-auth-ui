@@ -69,17 +69,5 @@ Future<T> sendFauiHttp<T>(
   }
 
   String message = "Error requesting firebase api: $actionToLog.";
-  print(message);
-  _printResponse(response);
   throw FauiError(message + response.body, FauiFailures.dependency);
-}
-
-void _printResponse(dynamic response) {
-  if (response is Response) {
-    print("code: " + response.statusCode.toString());
-    print("response body: " + response.body);
-    print("reason: " + response.reasonPhrase);
-    return;
-  }
-  print("Could not print response of type ${response.runtimeType.toString()}");
 }

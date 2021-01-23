@@ -1,6 +1,9 @@
-import '../90_utility/util.dart';
 import 'package:http/http.dart';
 
+import '../90_utility/util.dart';
+
+/// Error codes, that can be returned by Firebase API and need to be processed
+/// by this library.
 class FirebaseErrorCodes {
   static const UserNotFoundCode = "USER_NOT_FOUND";
   static const EmailNotFoundCode = "EMAIL_NOT_FOUND";
@@ -10,6 +13,7 @@ class FirebaseErrorCodes {
   static const DocumentNotFoundCode = "NOT_FOUND";
 }
 
+/// Types of the library failure modes.
 enum FauiFailures {
   arg,
   data,
@@ -18,6 +22,7 @@ enum FauiFailures {
   dependency,
 }
 
+/// An error that can be thrown by the library.
 class FauiError extends Error {
   final FauiFailures type;
   final String message;

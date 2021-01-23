@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../90_model/faui_user.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../90_model/faui_user.dart';
 import 'auth_connector.dart';
 import 'auth_state.dart';
 
@@ -77,7 +78,7 @@ class FauiLocalStorage {
       if (prefs.getString(key) != value)
         throw ("sso: Error - Unable to verify data stored correctly");
     } catch (ex) {
-      print(ex);
+      print("sso: Error storing value in SharedPreferences: " + ex);
     }
   }
 }

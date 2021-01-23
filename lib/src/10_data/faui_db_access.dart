@@ -3,6 +3,7 @@ import 'package:faui/src/10_data/doc_converter.dart';
 import '../90_model/faui_db.dart';
 import 'db_connector.dart' as db_connector;
 
+/// A filter to be applied to a field when invoking [FauiDbAccess.listDocs].
 class FilterItem {
   final String field;
   final String operation;
@@ -11,6 +12,7 @@ class FilterItem {
   FilterItem(this.field, this.operation, this.value);
 }
 
+/// Filter operations to be applied when invoking [FauiDbAccess.listDocs].
 class FilterOp {
   static const String lt = "LESS_THAN";
   static const String le = "LESS_THAN_OR_EQUAL";
@@ -22,6 +24,7 @@ class FilterOp {
   static const String any = "ARRAY_CONTAINS_ANY";
 }
 
+/// Provides access to Firebase DB.
 class FauiDbAccess {
   final FauiDb db;
   final String token;

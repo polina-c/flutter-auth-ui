@@ -202,3 +202,15 @@
 ## [2.0.30] - Oct 28, 2020
 
 * Fixed issue with tab order during typing.
+
+## [2.0.31] - Oct 30, 2020
+
+* Stopped printing firebase api request errors to the console.
+
+## [2.0.32] - Oct 30, 2020
+
+* Fix localstorage compilation error.
+
+## [2.0.33] - Jan 23, 2021
+
+* Added documentation.

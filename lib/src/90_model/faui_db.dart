@@ -1,4 +1,4 @@
-/// The class represents a firebase storage.
+/// A Firebase storage.
 class FauiDb {
   final String apiKey;
   final String db;

@@ -73,5 +73,7 @@ String toFbType(dynamic value) {
               ? _FbTypes.bool
               : value is int
                   ? _FbTypes.int
-                  : value is double ? _FbTypes.double : _FbTypes.bytes;
+                  : value is double
+                      ? _FbTypes.double
+                      : _FbTypes.bytes;
 }

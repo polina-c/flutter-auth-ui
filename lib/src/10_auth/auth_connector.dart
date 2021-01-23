@@ -1,13 +1,14 @@
 import 'dart:collection';
 import 'dart:core';
 
-import '../90_infra/faui_http.dart';
-import '../90_utility/util.dart';
 import '../90_infra/faui_error.dart';
+import '../90_infra/faui_http.dart';
 import '../90_model/faui_user.dart';
+import '../90_utility/util.dart';
 
 // https://firebase.google.com/docs/reference/rest/auth
 
+/// Deletes a registered user from the Firebase project, if the user exists.
 Future<void> fauiDeleteUserIfExists({
   String apiKey,
   String idToken,
@@ -26,6 +27,7 @@ Future<void> fauiDeleteUserIfExists({
   );
 }
 
+/// Registers a new user in the Firebase project.
 fauiRegisterUser({
   String apiKey,
   String email,
@@ -49,6 +51,7 @@ fauiRegisterUser({
   }
 }
 
+/// Signs in a user and returns token.
 Future<FauiUser> fauiSignInUser({
   String apiKey,
   String email,
@@ -80,6 +83,7 @@ Future<FauiUser> fauiSignInUser({
   return user;
 }
 
+/// Verifies if a user token is valid.
 Future<FauiUser> fauiVerifyToken({
   String apiKey,
   String token,
@@ -113,6 +117,7 @@ Future<FauiUser> fauiVerifyToken({
   return user;
 }
 
+/// Emais a reset password link to the user.
 Future<void> fauiSendResetLink({
   String apiKey,
   String email,
